@@ -2,7 +2,6 @@
 namespace app\Model;
 
 // this database configuration is only for MySQL
-use PDO;
 
 class Model
 {
@@ -36,6 +35,6 @@ class Model
     protected function initDatabase() {
         $env = json_decode(file_get_contents(__DIR__ . "/../../.env"), true);
         $dsn = "mysql:dbname={$env['dbname']}; host={$env['host']}; charset={$env['charset']}";
-        $this->db = new PDO($dsn, $env['user'], $env['password']);
+        $this->db = new \PDO($dsn, $env['user'], $env['password']);
     }
 }

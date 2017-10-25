@@ -1,9 +1,6 @@
 <?php
 namespace app\Controller;
 
-require __DIR__ . '/../Model/Posts.php';
-require __DIR__ . '/Controller.php';
-
 use app\Model\Posts;
 
 class PostsController extends Controller
@@ -19,5 +16,7 @@ class PostsController extends Controller
         $posts = new Posts;
         $posts->save($params);
         // TODO: redirect
+        $action = ['controller' => 'posts', 'action' => 'index'];
+        return $this->redirect($action);
     }
 }

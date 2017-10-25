@@ -14,4 +14,12 @@ class Controller
 
         return $html;
     }
+
+    public function redirect($action) {
+        $class = ucfirst($action['controller']) . 'Controller';
+        $controller = new $class;
+        return $controller->{$action['action']}();
+    }
+
+
 }
