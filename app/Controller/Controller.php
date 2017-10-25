@@ -3,12 +3,12 @@ namespace app\Controller;
 
 class Controller
 {
-    public function render($view, $params = []) {
+    public function render($route, $params = []) {
         extract($params);
         include(__DIR__ . '/../Core/Helper.php');
 
         ob_start();
-        include(__DIR__ . "/../View/{$view['controller']}/{$view['action']}.php");
+        include(__DIR__ . "/../View/{$route['controller']}/{$route['action']}.php");
         $html = ob_get_contents();
         ob_end_clean();
 
