@@ -15,11 +15,11 @@ class Controller
         return $html;
     }
 
-    public function redirect($action) {
-        $class = ucfirst($action['controller']) . 'Controller';
+    // TODO ステータスコード 302
+    public function redirect($route) {
+        $prefix = __NAMESPACE__ . '\\';
+        $class = $prefix . ucfirst($route['controller']) . 'Controller';
         $controller = new $class;
-        return $controller->{$action['action']}();
+        return $controller->{$route['action']}();
     }
-
-
 }
