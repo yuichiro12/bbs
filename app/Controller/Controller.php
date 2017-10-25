@@ -3,7 +3,7 @@ namespace app\Controller;
 
 class Controller
 {
-    public function render($view, $params) {
+    public function render($view, $params = []) {
         extract($params);
         include(__DIR__ . '/../Core/Helper.php');
 
