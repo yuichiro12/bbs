@@ -15,7 +15,7 @@ class Controller
         return $html;
     }
 
-    // TODO ステータスコード 302
+    // TODO ステータスコード 302 などのヘッダ情報
     public function redirect($route) {
         $prefix = __NAMESPACE__ . '\\';
         $class = $prefix . ucfirst($route['controller']) . 'Controller';
