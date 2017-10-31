@@ -7,11 +7,13 @@
     <script src="/js/default.js"></script>
   </head>
   <body>
-    <?php if (isset($_SESSION['id'])): ?>
-	  <a href="/logout" method="post" id="logoutLink">ログアウト</a>
-	  <form action="/logout" method="post" id="logoutForm"></form>
+    <?php if (session_id() !== ''): ?>
+	  <a href="javascript:void(0)" id="logoutLink">ログアウト</a>
+	  <form action="/logout" method="post" id="logoutForm">
+	  </form>
     <?php else: ?>
 	  <a href="/login">ログイン</a>
+	  <a href="/signup">ユーザー登録</a>
     <?php endif; ?>
 	@contents
   </body>

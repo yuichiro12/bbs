@@ -3,6 +3,14 @@ namespace app\Controller;
 
 class Controller
 {
+    public function __construct() {
+        $this->beforeAction();
+    }
+
+    public function beforeAction() {
+        SessionsController::getSession();
+    }
+
     public function render($route, $params = []) {
         extract($params);
         include(__DIR__ . '/../Core/Helper.php');

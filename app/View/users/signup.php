@@ -1,5 +1,9 @@
-<h2>ログイン</h2>
-<form action="/login" method="post">
+<h2>ユーザー登録</h2>
+<form action="/signup" method="post">
+  <div>
+	<label for="name">ユーザー名</label>
+	<input name="name" type="text" value="" required/>
+  </div>
   <div>
 	<label for="email">email</label>
 	<input name="email" type="email" value="" required/>
@@ -9,7 +13,7 @@
 	<input name="password" type="password" value="" required/>
   </div>
   <div>
-	<input type="submit" value="ログイン"/>
+	<input type="submit" value="登録"/>
   </div>
 </form>
 <hr/>
