@@ -20,15 +20,16 @@ class SessionsController extends Controller
         $user = $users->find('email', $data['email']);
 
         if (password_verify($data['password'], $user['password'])) {
-            session_name('bbs_session');
-            session_start();
-            $_SESSION['flash'] = 'ログインしました。';
-            $params = [
-                'session_id' => session_id(),
-                'user_id' => $user['id'],
-            ];
-            $sessions = new Sessions;
-            $sessions->save($params);
+            if (!(isset($_SESSION))) {
+                session_name('bbs_session');
+                session_start();
+                $params = [
+                    'session_id' => session_id(),
+                    'user_id' => $user['id'],
+                ];
+                $sessions = new Sessions;
+                $sessions->save($params);
+            }
             $route = ['controller' => 'posts', 'action' => 'index'];
         } else {
             $route = ['controller' => 'sessions', 'action' => 'index'];
