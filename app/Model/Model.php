@@ -11,18 +11,16 @@ class Model
 
     public function __construct() {
         $this->initDatabase();
-        date("Y-m-d H:i:s");
     }
 
     public function save($data) {
-        $params = $this->setTime($data);
+        $params = $this->setCreated($data);
         $count = count($params);
         $columns = implode(', ', array_keys($params));
         $ph = implode(', ', array_fill(0, $count, '?'));
 
-        $stmt = $this->db->prepare(
-            'INSERT INTO ' . static::$model . "($columns) VALUES($ph)"
-        );
+        $query = 'INSERT INTO ' . static::$model . "($columns) VALUES($ph)";
+        $stmt = $this->db->prepare($query);
 
         $i = 1;
         foreach ($params as $v) {
@@ -30,15 +28,64 @@ class Model
             $i++;
         }
 
-        $stmt->execute();
+        return $stmt->execute();
     }
 
-    public function findAll($column = null, $order = 'ASC') {
+    public function find($column, $value, $table = null) {
+        $condition = " WHERE $column = :value";
+        $model = is_null($table) ? static::$model : $table;
+        
+        $query = 'SELECT * FROM ' . $model . $condition;
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':value', $value);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+
+    public function findAll($column = null, $order = 'ASC', $table = null) {
         $sort = $this->getOrder($column, $order);
-        $query = 'SELECT * FROM ' . static::$model . $sort;
+        $model = is_null($table) ? static::$model : $table;
+
+        $query = 'SELECT * FROM ' . $model . $sort;
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll();
+    }
+
+    public function update($data, $column, $value) {
+        $params = $this->setUpdated($data);
+        $count = count($params);
+        $setval = '';
+
+        foreach($params as $k => $v) {
+            $setval .= "$k = :$k";
+        }
+        
+        $condition = "WHERE $column = :valueOfCondition";
+        $query = 'UPDATE ' . static::$model . " SET $setval $condition";
+
+        $stmt = $this->db->prepare();
+        foreach($params as $k => $v) {
+            $stmt->bindValue(":$k", $v);
+        }
+        $stmt->bindValue(':valueOfCondition', $value);
+
+        return $stmt->execute();
+    }
+
+    public function delete($column, $value) {
+        $condition = " WHERE $column = :value";
+        $query = 'DELETE FROM ' . static::$model . $condition;
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':value', $value);
+        $stmt->execute();
+    }
+
+    public function join($joined, $key, $referenced, $prefix = 'LEFT') {
+        $model = static::$model;
+        $table = "$model $prefix JOIN $joined ON
+                  $model.$key = $joined.$referenced";
+        return $table;
     }
 
     // バリデーション（マスアサインメント対策）
@@ -59,15 +106,21 @@ class Model
         $this->db = new \PDO($dsn, $env['user'], $env['password']);
     }
 
-    private function setTime($data) {
-        if (isset($data['created_at']) && $data['created_at'] === '') {
-            $data['created_at'] = date("Y-m-d H:i:s");
+    private function setCreated($data) {
+        $params = $data;
+        if (array_key_exists('created_at', $params)) {
+            $params['created_at'] = date("Y-m-d H:i:s");
         }
-        if (isset($data['updated_at']) && $data['updated_at'] === '') {
-            $data['updated_at'] = date("Y-m-d H:i:s");
-        }
+        $params = $this->setUpdated($params);
+        return $params;
+    }
 
-        return $data;
+    private function setUpdated($data) {
+        $params = $data;
+        if (array_key_exists('updated_at', $params)) {
+            $params['updated_at'] = date("Y-m-d H:i:s");
+        }
+        return $params;
     }
 
     private function getOrder($column, $order) {

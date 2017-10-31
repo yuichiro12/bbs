@@ -50,21 +50,15 @@ class SessionsController extends Controller
     }
 
 
-    // TODO: Interfaceにするのがいいかも
-
     public static function getSession() {
         if (array_key_exists('bbs_session', $_COOKIE)) {
             $cookie = $_COOKIE['bbs_session'];
             $sessions = new Sessions;
             $session = $sessions->find('session_id', $cookie);
-            if (($session !== false) && (!$this->isLogin())) {
+            if (($session !== false) && (!(isset($_SESSION)))) {
                 session_name('bbs_session');
                 session_start();
             }            
         }
-    }
-
-    public static function isLogin() {
-        return isset($_SESSION);
     }
 }
