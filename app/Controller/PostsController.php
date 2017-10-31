@@ -7,15 +7,14 @@ class PostsController extends Controller
 {
     public function index() {
         $posts = new Posts;
-        $view = ['controller' => 'posts', 'action' => 'index'];
+        $route = ['controller' => 'posts', 'action' => 'index'];
         $params['posts'] = $posts->findAll();
-        return $this->render($view, $params);
+        return $this->render($route, $params);
     }
 
     public function create($params) {
         $posts = new Posts;
         $posts->save($params);
-        // TODO: redirect
         $route = ['controller' => 'posts', 'action' => 'index'];
         return $this->redirect($route);
     }

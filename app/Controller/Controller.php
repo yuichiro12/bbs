@@ -3,19 +3,27 @@ namespace app\Controller;
 
 class Controller
 {
-    public function render($view, $params = []) {
+    public function __construct() {
+        $this->beforeAction();
+    }
+
+    public function beforeAction() {
+        SessionsController::getSession();
+    }
+
+    public function render($route, $params = []) {
         extract($params);
         include(__DIR__ . '/../Core/Helper.php');
 
         ob_start();
-        include(__DIR__ . '/../View/' . $view['controller'] . '/' . $view['action'] . '.php');
+        include(__DIR__ . "/../View/{$route['controller']}/{$route['action']}.php");
         $html = ob_get_contents();
         ob_end_clean();
 
         return $html;
     }
 
-    // TODO ステータスコード 302
+    // TODO ステータスコード 302 などのヘッダ情報
     public function redirect($route) {
         $prefix = __NAMESPACE__ . '\\';
         $class = $prefix . ucfirst($route['controller']) . 'Controller';

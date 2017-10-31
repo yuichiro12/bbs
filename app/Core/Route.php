@@ -1,8 +1,6 @@
 <?php
 namespace app\Core;
 
-use app\Controller\PostsController;
-
 class Route
 {
     private $method;
@@ -13,26 +11,42 @@ class Route
         $this->url = $_SERVER['REQUEST_URI'];
     }
 
-
-    // TODO 共通化，例外処理
     public function run() {
+        $route = $this->getRoute();
+        $prefix = 'app\Controller\\';
+        $ctrlname = $prefix . ucfirst($route['controller']) . 'Controller';
+        $action = $route['action'];
+        $controller = new $ctrlname();
+
+        return $controller->$action();
+    }
+
+    // TODO 例外処理（404）
+    private function getRoute() {
+        $path = parse_url($this->url, PHP_URL_PATH);
         switch ($this->method) {
         case 'GET':
-            switch (parse_url($this->url, PHP_URL_PATH)) {
+            switch ($path) {
             case '/':
-                $controller = new PostsController();
-                return $controller->index();
+                return ['controller' => 'posts', 'action' => 'index'];
+            case '/login':
+                return ['controller' => 'sessions', 'action' => 'index'];
+            case '/signup':
+                return ['controller' => 'users', 'action' => 'signup'];
             }
             break;
         case 'POST':
-            switch (parse_url($this->url, PHP_URL_PATH)) {
+            switch ($path) {
             case '/':
-                $params = $_POST;
-                $controller = new PostsController();
-                return $controller->create($params);
+                return ['controller' => 'posts', 'action' => 'create'];
+            case '/login':
+                return ['controller' => 'sessions', 'action' => 'login'];
+            case '/logout':
+                return ['controller' => 'sessions', 'action' => 'logout'];
+            case '/signup':
+                return ['controller' => 'users', 'action' => 'create'];
             }
             break;
         }
-
     }
 }

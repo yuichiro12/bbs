@@ -9,5 +9,10 @@ use app\Core\Route;
 $route = new Route();
 
 $body = $route->run();
-$html = file_get_contents(__DIR__ . '/../app/View/default.php');
-echo str_replace("@contents", $body, $html);
+
+ob_start();
+include(__DIR__ . '/../app/View/default.php');
+$html = ob_get_contents();
+ob_end_clean();
+
+echo str_replace('@contents', $body, $html);
