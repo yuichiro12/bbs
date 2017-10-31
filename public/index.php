@@ -7,7 +7,6 @@ spl_autoload_register(function($class) {
 use app\Core\Route;
 
 $route = new Route();
-
 $body = $route->run();
 
 ob_start();
