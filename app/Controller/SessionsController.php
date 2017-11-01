@@ -32,11 +32,11 @@ class SessionsController extends Controller
                 $sessions->save($sessions->validate($params));
                 $_SESSION['user_name'] = $user['name'];
             }
-            $route = ['controller' => 'posts', 'action' => 'index'];
+            $path = '/';
         } else {
-            $route = ['controller' => 'sessions', 'action' => 'index'];
+            $path = '/login';
         }
-        return $this->redirect($route);
+        return $this->redirect($path);
     }
 
     public function logout() {
@@ -48,8 +48,7 @@ class SessionsController extends Controller
             setcookie(session_name(), '');
         }
         session_destroy();
-        $route = ['controller' => 'posts', 'action' => 'index'];
-        return $this->redirect($route);
+        return $this->redirect('/');
     }
 
 
@@ -64,8 +63,7 @@ class SessionsController extends Controller
             if (($session !== false) && (!(isset($_SESSION)))) {
                 session_name('bbs_session');
                 session_start();
-                var_dump($_SESSION['user_name']);
-            }            
+            }
         }
     }
 }

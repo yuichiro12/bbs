@@ -60,7 +60,6 @@ class Model
                   : $join['columns']; 
         
         $query = "SELECT $contents FROM $model $condition";
-        var_dump($query);
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':value', $value);
         $stmt->execute();
@@ -118,9 +117,11 @@ class Model
 
     // DB接続
     protected function initDatabase() {
-        $env = json_decode(file_get_contents(__DIR__ . "/../../.env"), true);
-        $dsn = "mysql:dbname={$env['dbname']}; host={$env['host']}; charset={$env['charset']}";
-        $this->db = new \PDO($dsn, $env['user'], $env['password']);
+        $dsn = 'mysql:dbname='
+             . ENV['dbname'] . ';host='
+             . ENV['host'] . '; charset='
+             . ENV['charset'];
+        $this->db = new \PDO($dsn, ENV['user'], ENV['password']);
     }
 
     private function setCreated($data) {

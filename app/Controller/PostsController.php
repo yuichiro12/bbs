@@ -17,7 +17,6 @@ class PostsController extends Controller
         $posts = new Posts;
         $params = $posts->validate($data);
         $posts->save($params);
-        $route = ['controller' => 'posts', 'action' => 'index'];
-        return $this->redirect($route);
+        return $this->redirect('/');
     }
 }
