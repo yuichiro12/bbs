@@ -4,10 +4,11 @@ spl_autoload_register(function($class) {
     require_once __DIR__ . '/../' . str_replace('\\', '/', $class) . '.php';
 });
 
+define('ENV', json_decode(file_get_contents(__DIR__ . "/../.env"), true));
+
 use app\Core\Route;
 
 $route = new Route();
-
 $body = $route->run();
 
 ob_start();

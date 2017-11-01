@@ -17,23 +17,26 @@ class SessionsController extends Controller
         $route = [];
 
         $users = new Users;
-        $user = $users->find('email', $data['email']);
+        $result = $users->find('email', $data['email']);
+        $user = $result['users'];
 
         if (password_verify($data['password'], $user['password'])) {
-            session_name('bbs_session');
-            session_start();
-            $_SESSION['flash'] = 'ログインしました。';
-            $params = [
-                'session_id' => session_id(),
-                'user_id' => $user['id'],
-            ];
-            $sessions = new Sessions;
-            $sessions->save($params);
-            $route = ['controller' => 'posts', 'action' => 'index'];
+            if (!(isset($_SESSION))) {
+                session_name('bbs_session');
+                session_start();
+                $params = [
+                    'session_id' => session_id(),
+                    'user_id' => $user['id'],
+                ];
+                $sessions = new Sessions;
+                $sessions->save($sessions->validate($params));
+                $_SESSION['user_name'] = $user['name'];
+            }
+            $path = '/';
         } else {
-            $route = ['controller' => 'sessions', 'action' => 'index'];
+            $path = '/login';
         }
-        return $this->redirect($route);
+        return $this->redirect($path);
     }
 
     public function logout() {
@@ -45,26 +48,22 @@ class SessionsController extends Controller
             setcookie(session_name(), '');
         }
         session_destroy();
-        $route = ['controller' => 'posts', 'action' => 'index'];
-        return $this->redirect($route);
+        return $this->redirect('/');
     }
 
-
-    // TODO: Interfaceにするのがいいかも
 
     public static function getSession() {
         if (array_key_exists('bbs_session', $_COOKIE)) {
             $cookie = $_COOKIE['bbs_session'];
             $sessions = new Sessions;
-            $session = $sessions->find('session_id', $cookie);
-            if (($session !== false) && (!$this->isLogin())) {
+            $join = $sessions->join('users', 'user_id', 'id');
+            $result = $sessions->find('session_id', $cookie, $join);
+            $session = $result['sessions'];
+            $user = $result['users'];
+            if (($session !== false) && (!(isset($_SESSION)))) {
                 session_name('bbs_session');
                 session_start();
-            }            
+            }
         }
-    }
-
-    public static function isLogin() {
-        return isset($_SESSION);
     }
 }

@@ -6,7 +6,6 @@ use app\Model\Users;
 class UsersController extends Controller
 {
     public function index() {
-        
     }
 
     public function create() {
@@ -16,7 +15,7 @@ class UsersController extends Controller
         $params['password'] = password_hash($params['password'], PASSWORD_DEFAULT);
         $users->save($params);
         $route = ['controller' => 'sessions', 'action' => 'login'];
-        return $this->redirect($route);
+        return $this->callAction($route);
     }
 
     public function signup() {

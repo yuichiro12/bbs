@@ -18,7 +18,7 @@ class Route
         $action = $route['action'];
         $controller = new $ctrlname();
 
-        return $controller->$action();
+        return $controller->{$action}();
     }
 
     // TODO 例外処理（404）
