@@ -5,7 +5,7 @@ use app\Model\Posts;
 
 class PostsController extends Controller
 {
-    public function create() {
+    public function store() {
         $data = $_POST;
         $posts = new Posts;
         $params = $posts->validate($data);

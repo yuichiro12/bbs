@@ -20,9 +20,12 @@ class ThreadsController extends Controller
         return $this->render($route, $params);
     }
 
-    
-
     public function create() {
+        $route = ['controller' => 'threads', 'action' => 'create'];
+        return $this->render($route);
+    }
+
+    public function store() {
         $data = $_POST;
         $threads = new Threads;
         $params = $threads->validate($data);
