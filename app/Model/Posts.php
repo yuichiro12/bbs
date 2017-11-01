@@ -7,6 +7,7 @@ class Posts extends Model
     protected static $columns = [
         'id' => null,
         'user_id' => null,
+        'thread_id' => null,
         'body' => '',
         'name' => '',
         'created_at' => '',

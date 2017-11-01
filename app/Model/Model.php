@@ -53,6 +53,7 @@ class Model
         return $stmt->execute();
     }
 
+    // 1行だけ取得
     public function find($column, $value, $join = null) {
         $condition = "WHERE $column = :value";
         $model = is_null($join) ? static::$model : $join['table'];
@@ -66,20 +67,21 @@ class Model
         return $this->collectTableRow($stmt->fetch(\PDO::FETCH_ASSOC));
     }
 
-    public function findAll($column = null, $order = 'ASC', $join = null) {
-        $sort = $this->getOrder($column, $order);
+    // 複数行取得
+    public function findAll($column = null, $value = null,
+                            $order = [], $join = null) {
+        $condition = is_null($column) ? '' : "WHERE $column = :value";
+        $sort = ($order === []) ? '' : $this->getOrder($order);
         $model = is_null($join) ? static::$model : $join['table'];
         $contents = is_null($join) ? $this->columnsToString($model)
                   : $join['columns']; 
 
-        $query = "SELECT $contents FROM $model $sort";
+        $query = "SELECT $contents FROM $model $condition $sort";
         $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':value', $value);
         $stmt->execute();
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        $params = [];
-        foreach ($result as $row) {
-            $params[] = $this->collectTableRow($row);
-        }
+        $params = $this->collectTableRows($result);
         return $params;
     }
 
@@ -141,8 +143,8 @@ class Model
         return $params;
     }
 
-    private function getOrder($column, $order) {
-        return is_null($column) ? '' : "ORDER BY `$column` $order";
+    private function getOrder($order) {
+        return  "ORDER BY `{$order['column']}` {$order['direction']}";
     }
 
     private function columnsToString($modelName) {
@@ -155,13 +157,28 @@ class Model
         return $str;
     }
 
-    private function collectTableRow($data) {
+    // 結果セットを[$table => $row]に変換
+    private function collectTableRow($row) {
         $params = [];
-        foreach ($data as $k => $v) {
+        foreach ($row as $k => $v) {
             $tmp = explode('.', $k, 2);
             $params[$tmp[0]][$tmp[1]] = $v;
         }
 
         return $params;
     }
+
+    // 結果セットを[$table => [$index => $row]]に変換
+    private function collectTableRows($rows) {
+        $params = [];
+        foreach ($rows as $i => $row) {
+            foreach ($row as $k => $v) {
+                $tmp = explode('.', $k, 2);
+                $params[$tmp[0]][$i][$tmp[1]] = $v;
+            }
+        }
+
+        return $params;
+    }
+
 }

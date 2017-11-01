@@ -7,7 +7,7 @@ use app\Model\Users;
 class SessionsController extends Controller
 {
     public function index() {
-        $controller = isset($_SESSION['id']) ? 'posts' : 'sessions';
+        $controller = isset($_SESSION['id']) ? 'threads' : 'sessions';
         $route = ['controller' => $controller, 'action' => 'index'];
         return $this->render($route);
     }

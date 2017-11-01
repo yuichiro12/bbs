@@ -28,7 +28,7 @@ class Route
         case 'GET':
             switch ($path) {
             case '/':
-                return ['controller' => 'posts', 'action' => 'index'];
+                return ['controller' => 'threads', 'action' => 'index'];
             case '/login':
                 return ['controller' => 'sessions', 'action' => 'index'];
             case '/signup':
