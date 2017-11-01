@@ -11,8 +11,8 @@
   </div>
 </form>
 <hr/>
-<?php foreach ($posts as $post): ?>
-  <div><?= h($post["name"]) ?></div>
-  <div><?= h($post["body"]) ?></div>
-  <div><?= h($post["created_at"]) ?></div>
+<?php foreach ($params as $param): ?>
+  <div><?= h($param["posts"]["name"]) ?></div>
+  <div><?= h($param["posts"]["body"]) ?></div>
+  <div><?= h($param["posts"]["created_at"]) ?></div>
 <?php endforeach; ?>

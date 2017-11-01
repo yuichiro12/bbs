@@ -5,6 +5,7 @@ class Posts extends Model
 {
     protected static $model = 'posts';
     protected static $columns = [
+        'id' => null,
         'user_id' => null,
         'body' => '',
         'name' => '',

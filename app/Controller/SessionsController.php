@@ -17,7 +17,8 @@ class SessionsController extends Controller
         $route = [];
 
         $users = new Users;
-        $user = $users->find('email', $data['email']);
+        $result = $users->find('email', $data['email']);
+        $user = $result['users'];
 
         if (password_verify($data['password'], $user['password'])) {
             if (!(isset($_SESSION))) {
@@ -28,7 +29,8 @@ class SessionsController extends Controller
                     'user_id' => $user['id'],
                 ];
                 $sessions = new Sessions;
-                $sessions->save($params);
+                $sessions->save($sessions->validate($params));
+                $_SESSION['user_name'] = $user['name'];
             }
             $route = ['controller' => 'posts', 'action' => 'index'];
         } else {
@@ -55,10 +57,14 @@ class SessionsController extends Controller
         if (array_key_exists('bbs_session', $_COOKIE)) {
             $cookie = $_COOKIE['bbs_session'];
             $sessions = new Sessions;
-            $session = $sessions->find('session_id', $cookie);
+            $join = $sessions->join('users', 'user_id', 'id');
+            $result = $sessions->find('session_id', $cookie, $join);
+            $session = $result['sessions'];
+            $user = $result['users'];
             if (($session !== false) && (!(isset($_SESSION)))) {
                 session_name('bbs_session');
                 session_start();
+                var_dump($_SESSION['user_name']);
             }            
         }
     }

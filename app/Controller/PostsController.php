@@ -8,7 +8,7 @@ class PostsController extends Controller
     public function index() {
         $posts = new Posts;
         $route = ['controller' => 'posts', 'action' => 'index'];
-        $params['posts'] = $posts->findAll('created_at', 'DESC');
+        $params['params'] = $posts->findAll('created_at', 'DESC');
         return $this->render($route, $params);
     }
 

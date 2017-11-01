@@ -8,6 +8,7 @@ class Model
     protected $db = null;
     protected static $model = '';
     protected static $columns = [];
+    private $tableCount = 0;
 
     public function __construct() {
         $this->initDatabase();
@@ -15,9 +16,9 @@ class Model
 
     public function save($data) {
         $params = $this->setCreated($data);
-        $count = count($params);
+        unset($params['id']);
         $columns = implode(', ', array_keys($params));
-        $ph = implode(', ', array_fill(0, $count, '?'));
+        $ph = implode(', ', array_fill(0, count($params), '?'));
 
         $query = 'INSERT INTO ' . static::$model . "($columns) VALUES($ph)";
         $stmt = $this->db->prepare($query);
@@ -31,38 +32,17 @@ class Model
         return $stmt->execute();
     }
 
-    public function find($column, $value, $table = null) {
-        $condition = " WHERE $column = :value";
-        $model = is_null($table) ? static::$model : $table;
-        
-        $query = 'SELECT * FROM ' . $model . $condition;
-        $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':value', $value);
-        $stmt->execute();
-        return $stmt->fetch();
-    }
-
-    public function findAll($column = null, $order = 'ASC', $table = null) {
-        $sort = $this->getOrder($column, $order);
-        $model = is_null($table) ? static::$model : $table;
-
-        $query = 'SELECT * FROM ' . $model . $sort;
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
-        return $stmt->fetchAll();
-    }
-
     public function update($data, $column, $value) {
         $params = $this->setUpdated($data);
-        $count = count($params);
+        unset($params['id']);
         $setval = '';
 
         foreach($params as $k => $v) {
             $setval .= "$k = :$k";
         }
-        
+        $model =  static::$model;
         $condition = "WHERE $column = :valueOfCondition";
-        $query = 'UPDATE ' . static::$model . " SET $setval $condition";
+        $query = "UPDATE $model SET $setval $condition";
 
         $stmt = $this->db->prepare();
         foreach($params as $k => $v) {
@@ -73,9 +53,41 @@ class Model
         return $stmt->execute();
     }
 
+    public function find($column, $value, $join = null) {
+        $condition = "WHERE $column = :value";
+        $model = is_null($join) ? static::$model : $join['table'];
+        $contents = is_null($join) ? $this->columnsToString($model)
+                  : $join['columns']; 
+        
+        $query = "SELECT $contents FROM $model $condition";
+        var_dump($query);
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':value', $value);
+        $stmt->execute();
+        return $this->collectTableRow($stmt->fetch(\PDO::FETCH_ASSOC));
+    }
+
+    public function findAll($column = null, $order = 'ASC', $join = null) {
+        $sort = $this->getOrder($column, $order);
+        $model = is_null($join) ? static::$model : $join['table'];
+        $contents = is_null($join) ? $this->columnsToString($model)
+                  : $join['columns']; 
+
+        $query = "SELECT $contents FROM $model $sort";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $params = [];
+        foreach ($result as $row) {
+            $params[] = $this->collectTableRow($row);
+        }
+        return $params;
+    }
+
     public function delete($column, $value) {
-        $condition = " WHERE $column = :value";
-        $query = 'DELETE FROM ' . static::$model . $condition;
+        $condition = "WHERE $column = :value";
+        $model = static::$model;
+        $query = "DELETE FROM $model $condition";
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':value', $value);
         $stmt->execute();
@@ -85,14 +97,19 @@ class Model
         $model = static::$model;
         $table = "$model $prefix JOIN $joined ON
                   $model.$key = $joined.$referenced";
-        return $table;
+        $columns = $this->columnsToString($model) . ', '
+                 . $this->columnsToString($joined);
+        return ['table' => $table, 'columns' => $columns];
+    }
+
+    // TODO
+    public function multiJoin() {
     }
 
     // バリデーション（マスアサインメント対策）
     public function validate($data) {
         $columns = static::$columns;
         $params = [];
-
         foreach ($columns as $k => $v) {
             $params[$k] = isset($data[$k]) ? $data[$k] : $v;
         }
@@ -124,6 +141,26 @@ class Model
     }
 
     private function getOrder($column, $order) {
-        return is_null($column) ? '' : " ORDER BY `$column` $order";
+        return is_null($column) ? '' : "ORDER BY `$column` $order";
+    }
+
+    private function columnsToString($modelName) {
+        $model = __NAMESPACE__ . '\\' . ucfirst($modelName);
+        $columns = [];
+        foreach ($model::$columns as $k => $v) {
+            $columns[] = "$modelName.$k AS '$modelName.$k'";
+        }
+        $str = implode(', ', $columns);
+        return $str;
+    }
+
+    private function collectTableRow($data) {
+        $params = [];
+        foreach ($data as $k => $v) {
+            $tmp = explode('.', $k, 2);
+            $params[$tmp[0]][$tmp[1]] = $v;
+        }
+
+        return $params;
     }
 }
