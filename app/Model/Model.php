@@ -1,17 +1,17 @@
 <?php
 namespace app\Model;
 
-// this database configuration is only for MySQL
+use app\Core\Database;
 
 class Model
 {
-    protected $db = null;
+    public $db = null;
     protected static $model = '';
     protected static $columns = [];
     private $tableCount = 0;
 
     public function __construct() {
-        $this->initDatabase();
+        $this->db = Database::getDb();
     }
 
     public function save($data) {
@@ -131,19 +131,6 @@ class Model
             $params[$k] = isset($data[$k]) ? $data[$k] : $v;
         }
         return $params;
-    }
-
-    // DB接続
-    protected function initDatabase() {
-        $dsn = 'mysql:dbname='
-             . ENV['dbname'] . ';host='
-             . ENV['host'] . '; charset='
-             . ENV['charset'];
-        try {
-            $this->db = new \PDO($dsn, ENV['user'], ENV['password']);
-        } catch (\PDOException $e) {
-            // TODO: 例外処理 500
-        }
     }
 
     private function setCreated($data) {
