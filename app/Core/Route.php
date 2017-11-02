@@ -28,23 +28,27 @@ class Route
         case 'GET':
             switch ($path) {
             case '/':
-                return ['controller' => 'posts', 'action' => 'index'];
+                return ['controller' => 'threads', 'action' => 'index'];
             case '/login':
                 return ['controller' => 'sessions', 'action' => 'index'];
             case '/signup':
-                return ['controller' => 'users', 'action' => 'signup'];
+                return ['controller' => 'users', 'action' => 'create'];
+            case '/threads/create':
+                return ['controller' => 'threads', 'action' => 'create'];
             }
             break;
         case 'POST':
             switch ($path) {
             case '/':
-                return ['controller' => 'posts', 'action' => 'create'];
+                return ['controller' => 'posts', 'action' => 'store'];
             case '/login':
                 return ['controller' => 'sessions', 'action' => 'login'];
             case '/logout':
                 return ['controller' => 'sessions', 'action' => 'logout'];
             case '/signup':
-                return ['controller' => 'users', 'action' => 'create'];
+                return ['controller' => 'users', 'action' => 'store'];
+            case '/threads/create':
+                return ['controller' => 'threads', 'action' => 'store'];
             }
             break;
         }

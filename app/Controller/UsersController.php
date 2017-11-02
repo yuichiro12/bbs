@@ -9,6 +9,11 @@ class UsersController extends Controller
     }
 
     public function create() {
+        $route = ['controller' => 'users', 'action' => 'create'];
+        return $this->render($route);
+    }
+
+    public function store() {
         $data = $_POST;
         $users = new Users;
         $params = $users->validate($data);
@@ -16,10 +21,5 @@ class UsersController extends Controller
         $users->save($params);
         $route = ['controller' => 'sessions', 'action' => 'login'];
         return $this->callAction($route);
-    }
-
-    public function signup() {
-        $route = ['controller' => 'users', 'action' => 'signup'];
-        return $this->render($route);
     }
 }

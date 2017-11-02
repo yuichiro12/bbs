@@ -7,7 +7,7 @@ use app\Model\Users;
 class SessionsController extends Controller
 {
     public function index() {
-        $controller = isset($_SESSION['id']) ? 'posts' : 'sessions';
+        $controller = isset($_SESSION['id']) ? 'threads' : 'sessions';
         $route = ['controller' => $controller, 'action' => 'index'];
         return $this->render($route);
     }
@@ -31,6 +31,7 @@ class SessionsController extends Controller
                 $sessions = new Sessions;
                 $sessions->save($sessions->validate($params));
                 $_SESSION['user_name'] = $user['name'];
+                $_SESSION['user_id'] = $user['id'];
             }
             $path = '/';
         } else {
