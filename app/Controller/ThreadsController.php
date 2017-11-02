@@ -28,8 +28,24 @@ class ThreadsController extends Controller
     public function store() {
         $data = $_POST;
         $threads = new Threads;
-        $params = $threads->validate($data);
-        $threads->save($params);
+        $posts = new Posts;
+        $threadData = ['title' => $data['title']];
+        $threadData = $threads->validate($threadData);
+
+        $threads->beginTransaction();
+        $isSuccess = [];
+        $isSuccess[] = $threads->save($threadData);
+        $threadId = (int) $threads->getLastInsertId();
+        $threads->commit($isSuccess);
+        $postData = [
+            'thread_id' => $threadId,
+            'user_id' => isset($data['user_id']) ? $data['user_id'] : null,
+            'name' => $data['name'],
+            'body' => $data['body'],
+        ];
+        $postData = $posts->validate($postData);
+        $isSuccess[] = $posts->save($postData);
+
         return $this->redirect('/');
     }
 }

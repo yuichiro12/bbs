@@ -107,6 +107,22 @@ class Model
     public function multiJoin() {
     }
 
+    public function beginTransaction() {
+        $this->db->beginTransaction();
+    }
+
+    public function commit($array) {
+        foreach ($array as $val) {
+            if (!$val) return $this->db->rollBack();
+        }
+        return $this->db->commit();
+    }
+
+    public function getLastInsertId() {
+        return $this->db->lastInsertId();
+        
+    }
+
     // バリデーション（マスアサインメント対策）
     public function validate($data) {
         $columns = static::$columns;
@@ -123,7 +139,11 @@ class Model
              . ENV['dbname'] . ';host='
              . ENV['host'] . '; charset='
              . ENV['charset'];
-        $this->db = new \PDO($dsn, ENV['user'], ENV['password']);
+        try {
+            $this->db = new \PDO($dsn, ENV['user'], ENV['password']);
+        } catch (\PDOException $e) {
+            // TODO: 例外処理 500
+        }
     }
 
     private function setCreated($data) {
@@ -180,5 +200,4 @@ class Model
 
         return $params;
     }
-
 }

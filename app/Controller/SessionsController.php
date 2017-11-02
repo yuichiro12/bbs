@@ -31,6 +31,7 @@ class SessionsController extends Controller
                 $sessions = new Sessions;
                 $sessions->save($sessions->validate($params));
                 $_SESSION['user_name'] = $user['name'];
+                $_SESSION['user_id'] = $user['id'];
             }
             $path = '/';
         } else {
