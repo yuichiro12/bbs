@@ -24,17 +24,9 @@ class SessionsController extends Controller
             if (!(isset($_SESSION))) {
                 session_name('bbs_session');
                 session_start();
-                $csrf = $this->getCsrfToken();
-                $params = [
-                    'session_id' => session_id(),
-                    'user_id' => $user['id'],
-                    'csrf_token' => $csrf,
-                ];
-                $sessions = new Sessions;
-                $sessions->save($sessions->validate($params));
                 $_SESSION['user_name'] = $user['name'];
                 $_SESSION['user_id'] = $user['id'];
-                $_SESSION['csrf_token'] = $csrf;
+                $_SESSION['csrf_token'] = $this->getCsrfToken();
             }
             $path = '/';
         } else {
@@ -44,8 +36,6 @@ class SessionsController extends Controller
     }
 
     public function logout() {
-        $sessions = new Sessions;
-        $sessions->delete('session_id', session_id());
         $_SESSION = [];
         if (ini_get('session.use_cookies')) {
             $params = session_get_cookie_params();
@@ -57,16 +47,8 @@ class SessionsController extends Controller
 
     public static function getSession() {
         if (array_key_exists('bbs_session', $_COOKIE)) {
-            $cookie = $_COOKIE['bbs_session'];
-            $sessions = new Sessions;
-            $join = $sessions->join('users', 'user_id', 'id');
-            $result = $sessions->find('session_id', $cookie, $join);
-            if (!empty($result) && (!(isset($_SESSION)))) {
-                $user = $result['users'];
-                $session = $result['sessions'];
-                session_name('bbs_session');
-                session_start();
-            }
+            session_name('bbs_session');
+            session_start();
         }
     }
 
