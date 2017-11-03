@@ -8,7 +8,6 @@ class Model
     public $db = null;
     protected static $model = '';
     protected static $columns = [];
-    private $tableCount = 0;
 
     public function __construct() {
         $this->db = Database::getDb();
@@ -68,21 +67,42 @@ class Model
     }
 
     // 複数行取得
-    public function findAll($column = null, $value = null,
-                            $order = [], $join = null) {
+    // TODO: 連想配列にする
+    public function findAll($column = null, $value = null, $offset = null,
+                            $count = null, $order = [], $join = null) {
         $condition = is_null($column) ? '' : "WHERE $column = :value";
         $sort = ($order === []) ? '' : $this->getOrder($order);
+        $limit = '';
+        if (is_numeric($count)) {
+            $limit = "LIMIT $offset, $count";
+        }
         $model = is_null($join) ? static::$model : $join['table'];
         $contents = is_null($join) ? $this->columnsToString($model)
-                  : $join['columns']; 
+                  : $join['columns'];
 
-        $query = "SELECT $contents FROM $model $condition $sort";
+        $query = "SELECT $contents FROM $model $condition $limit $sort";
         $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':value', $value);
+        if (!is_null($column) && !is_null($value)) {
+            $stmt->bindValue(':value', $value);
+        }
         $stmt->execute();
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         $params = $this->collectTableRows($result);
         return $params;
+    }
+
+    public function count($column = null, $value = null, $join = null) {
+        $condition = is_null($column) ? '' : "WHERE $column = :value";
+        $model = is_null($join) ? static::$model : $join['table'];
+
+        $query = "SELECT COUNT(*) AS count FROM $model $condition";
+        $stmt = $this->db->prepare($query);
+        if (!is_null($column) && !is_null($value)) {
+            $stmt->bindValue(':value', $value);
+        }
+        $stmt->execute();
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return (int)$result['count'];
     }
 
     public function delete($column, $value) {

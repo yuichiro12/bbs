@@ -15,6 +15,7 @@
 	  <a href="/login">ログイン</a>
 	  <a href="/signup">ユーザー登録</a>
     <?php endif; ?>
+	<a href="/">Home</a>
 	@contents
   </body>
 </html>

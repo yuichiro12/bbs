@@ -11,6 +11,14 @@ class Controller
         SessionsController::getSession();
     }
 
+    public function paginate($model, $limit) {
+        if (array_key_exists('page', $_GET) && is_numeric($_GET['page'])) {
+            $offset = (((int) $_GET['page']) - 1) * $limit;
+            return $model->findAll(null, null, $offset, $limit);
+        }
+        return $model->findAll();
+    }
+
     public function render($route, $params = []) {
         extract($params);
         include(__DIR__ . '/../Core/Helper.php');
