@@ -15,7 +15,7 @@ class ThreadsController extends Controller
         if (empty($result)) {
             // TODO: 404 exception
         }
-        $pageCount = $threads->count() / $limit + 1;
+        $pageCount = ($threads->count() / $limit) + 1;
         $params['pageCount'] = $pageCount;
 
         $posts = new Posts;

@@ -24,14 +24,17 @@ class SessionsController extends Controller
             if (!(isset($_SESSION))) {
                 session_name('bbs_session');
                 session_start();
+                $csrf = $this->getCsrfToken();
                 $params = [
                     'session_id' => session_id(),
                     'user_id' => $user['id'],
+                    'csrf_token' => $csrf,
                 ];
                 $sessions = new Sessions;
                 $sessions->save($sessions->validate($params));
                 $_SESSION['user_name'] = $user['name'];
                 $_SESSION['user_id'] = $user['id'];
+                $_SESSION['csrf_token'] = $csrf;
             }
             $path = '/';
         } else {
@@ -52,19 +55,24 @@ class SessionsController extends Controller
         return $this->redirect('/');
     }
 
-
     public static function getSession() {
         if (array_key_exists('bbs_session', $_COOKIE)) {
             $cookie = $_COOKIE['bbs_session'];
             $sessions = new Sessions;
             $join = $sessions->join('users', 'user_id', 'id');
             $result = $sessions->find('session_id', $cookie, $join);
-            $session = $result['sessions'];
-            $user = $result['users'];
-            if (($session !== false) && (!(isset($_SESSION)))) {
+            if (!empty($result) && (!(isset($_SESSION)))) {
+                $user = $result['users'];
+                $session = $result['sessions'];
                 session_name('bbs_session');
                 session_start();
             }
         }
+    }
+
+    public function getCsrfToken() {
+        $TOKEN_LENGTH = 16;
+        $bytes = openssl_random_pseudo_bytes($TOKEN_LENGTH);
+        return bin2hex($bytes);
     }
 }

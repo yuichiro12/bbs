@@ -9,6 +9,12 @@ class Controller
 
     public function beforeAction() {
         SessionsController::getSession();
+        if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_SESSION)) {
+            if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+                // TODO: flashメッセージ
+                $this->redirect('/');
+            }
+        }
     }
 
     public function paginate($model, $limit) {
@@ -16,7 +22,7 @@ class Controller
             $offset = (((int) $_GET['page']) - 1) * $limit;
             return $model->findAll(null, null, $offset, $limit);
         }
-        return $model->findAll();
+        return $model->findAll(null, null, 0, $limit);
     }
 
     public function render($route, $params = []) {

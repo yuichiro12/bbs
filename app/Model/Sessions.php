@@ -9,6 +9,7 @@ class Sessions extends Model
         'session_id' => '',
         'user_id' => null,
         'data' => '',
+        'csrf_token' => '',
         'created_at' => '',
         'updated_at' => '',
     ];
