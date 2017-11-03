@@ -1,6 +1,10 @@
 <a href="/threads/create">新規スレッド作成</a>
 <?php foreach ($threads as $thread): ?>
-  <h2><?= h($thread['title']) ?></h2>
+  <h2>
+	<a href="/threads/<?= $thread['id'] ?>">
+	  <?= h($thread['title']) ?>
+	</a>
+  </h2>
   <?php foreach ($thread['posts'] as $i => $post): ?>
 	<div>
 	  <div>
@@ -31,3 +35,4 @@
   </form>
   <hr/>
 <?php endforeach; ?>
+<?= paginate('/', $pageCount) ?>
