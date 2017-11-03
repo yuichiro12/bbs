@@ -43,7 +43,7 @@ class Model
         $condition = "WHERE $column=:valueOfCondition";
         $query = "UPDATE $model SET $setval $condition";
 
-        $stmt = $this->db->prepare();
+        $stmt = $this->db->prepare($query);
         foreach($params as $k => $v) {
             $stmt->bindValue(":$k", $v);
         }

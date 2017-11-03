@@ -9,6 +9,7 @@
   <body>
     <?php if (isset($_SESSION)): ?>
 	  <form action="/logout" method="post" id="logoutForm">
+      <?= csrf_token() ?>
 	  </form>
 	  <a href="javascript:void(0)" id="logoutLink">ログアウト</a>
     <?php else: ?>

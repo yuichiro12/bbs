@@ -19,16 +19,24 @@ class DatabaseSessionHandler
     public function read($id) {
         $result = $this->session->find('session_id', $id);
         $data = $result['sessions']['data'];
-        return empty($data) ? null : $data;
+        return empty($data) ? '' : $data;
     }
 
     public function write($id, $data) {
-        $this->session->update(['data' => $data], 'session_id', $id);
+        if (empty($this->session->find('session_id', $id))) {
+            $params = ['session_id' => $id,'data' => $data];
+            $this->session->save($this->session->validate($params));
+        } else {
+            $this->session->update(['data' => $data], 'session_id', $id);
+        }
         return true;
     }
 
     public function destroy($id) {
-        $this->session->delete('session_id', $id);
+        if ($this->session->delete('session_id', $id)) {
+            return true;
+        }
+        return false;
     }
 
     public function gc($maxlifetime) {
