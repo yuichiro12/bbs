@@ -5,6 +5,7 @@ class Route
 {
     private $method;
     private $url;
+    private $param;
 
     public function __construct() {
         $this->method = $_SERVER['REQUEST_METHOD'];
@@ -18,39 +19,57 @@ class Route
         $action = $route['action'];
         $controller = new $ctrlname();
 
-        return $controller->{$action}();
+        return $controller->{$action}($this->param);
     }
 
     // TODO 例外処理（404）
     private function getRoute() {
-        $path = parse_url($this->url, PHP_URL_PATH);
         switch ($this->method) {
         case 'GET':
-            switch ($path) {
-            case '/':
+            switch (true) {
+            case $this->match('/'):
                 return ['controller' => 'threads', 'action' => 'index'];
-            case '/login':
+            case $this->match('/login'):
                 return ['controller' => 'sessions', 'action' => 'index'];
-            case '/signup':
+            case $this->match('/signup'):
                 return ['controller' => 'users', 'action' => 'create'];
-            case '/threads/create':
+            case $this->match('/threads/create'):
                 return ['controller' => 'threads', 'action' => 'create'];
+            case $this->match('/threads/:id'):
+                return ['controller' => 'threads', 'action' => 'show'];
             }
             break;
         case 'POST':
-            switch ($path) {
-            case '/':
+            switch (true) {
+            case $this->match('/'):
                 return ['controller' => 'posts', 'action' => 'store'];
-            case '/login':
+            case $this->match('/login'):
                 return ['controller' => 'sessions', 'action' => 'login'];
-            case '/logout':
+            case $this->match('/logout'):
                 return ['controller' => 'sessions', 'action' => 'logout'];
-            case '/signup':
+            case $this->match('/signup'):
                 return ['controller' => 'users', 'action' => 'store'];
-            case '/threads/create':
+            case $this->match('/threads/create'):
                 return ['controller' => 'threads', 'action' => 'store'];
             }
             break;
         }
+    }
+
+    private function match($pattern) {
+        $path = parse_url($this->url, PHP_URL_PATH);
+        $patterns = explode('/', $pattern);
+        $paths = explode('/', $path);
+        foreach($patterns as $i => $v) {
+            if (isset($paths[$i]) && ($v === $paths[$i])) {
+                continue;
+            } elseif ((strpos($v, ':') === 0) && is_numeric($paths[$i])) {
+                $this->param = $paths[$i];
+                continue;
+            }
+            $this->param = null;
+            return false;
+        }
+        return true;
     }
 }
