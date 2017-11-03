@@ -3,14 +3,7 @@ namespace app\Core;
 
 class Route
 {
-    private $method;
-    private $url;
     private $param;
-
-    public function __construct() {
-        $this->method = $_SERVER['REQUEST_METHOD'];
-        $this->url = $_SERVER['REQUEST_URI'];
-    }
 
     public function run() {
         $route = $this->getRoute();
@@ -24,7 +17,7 @@ class Route
 
     // TODO 例外処理（404）
     private function getRoute() {
-        switch ($this->method) {
+        switch ($_SERVER['REQUEST_METHOD']) {
         case 'GET':
             switch (true) {
             case $this->match('/'):
@@ -57,7 +50,7 @@ class Route
     }
 
     private function match($pattern) {
-        $path = parse_url($this->url, PHP_URL_PATH);
+        $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $patterns = explode('/', $pattern);
         $paths = explode('/', $path);
         foreach($patterns as $i => $v) {

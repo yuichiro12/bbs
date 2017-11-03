@@ -63,7 +63,8 @@ class Model
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':value', $value);
         $stmt->execute();
-        return $this->collectTableRow($stmt->fetch(\PDO::FETCH_ASSOC));
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $result ? $this->collectTableRow($result) : $result;
     }
 
     // 複数行取得
@@ -87,8 +88,7 @@ class Model
         }
         $stmt->execute();
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        $params = $this->collectTableRows($result);
-        return $params;
+        return $result ? $this->collectTableRows($result) : $result;
     }
 
     public function count($column = null, $value = null, $join = null) {

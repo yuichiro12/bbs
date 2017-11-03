@@ -11,6 +11,7 @@
   <div>
 	<textarea cols="30" name="body" rows="10"></textarea>
   </div>
+  <?= csrf_token() ?>
   <div>
 	<input type="submit" value="送信"/>
   </div>
