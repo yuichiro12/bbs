@@ -7,7 +7,7 @@
     <script src="/js/default.js"></script>
   </head>
   <body>
-    <?php if (session_id() !== ''): ?>
+    <?php if (isset($_SESSION)): ?>
 	  <form action="/logout" method="post" id="logoutForm">
 	  </form>
 	  <a href="javascript:void(0)" id="logoutLink">ログアウト</a>

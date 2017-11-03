@@ -40,7 +40,7 @@ class Model
             $setval .= "$k = :$k";
         }
         $model =  static::$model;
-        $condition = "WHERE $column = :valueOfCondition";
+        $condition = "WHERE $column=:valueOfCondition";
         $query = "UPDATE $model SET $setval $condition";
 
         $stmt = $this->db->prepare();
@@ -54,7 +54,7 @@ class Model
 
     // 1行だけ取得
     public function find($column, $value, $join = null) {
-        $condition = "WHERE $column = :value";
+        $condition = "WHERE $column=:value";
         $model = is_null($join) ? static::$model : $join['table'];
         $contents = is_null($join) ? $this->columnsToString($model)
                   : $join['columns']; 
@@ -71,7 +71,7 @@ class Model
     // TODO: 連想配列にする
     public function findAll($column = null, $value = null, $offset = null,
                             $count = null, $order = [], $join = null) {
-        $condition = is_null($column) ? '' : "WHERE $column = :value";
+        $condition = is_null($column) ? '' : "WHERE $column=:value";
         $sort = ($order === []) ? '' : $this->getOrder($order);
         $limit = '';
         if (is_numeric($count)) {
@@ -92,7 +92,7 @@ class Model
     }
 
     public function count($column = null, $value = null, $join = null) {
-        $condition = is_null($column) ? '' : "WHERE $column = :value";
+        $condition = is_null($column) ? '' : "WHERE $column=:value";
         $model = is_null($join) ? static::$model : $join['table'];
 
         $query = "SELECT COUNT(*) AS count FROM $model $condition";
@@ -106,7 +106,7 @@ class Model
     }
 
     public function delete($column, $value) {
-        $condition = "WHERE $column = :value";
+        $condition = "WHERE $column=:value";
         $model = static::$model;
         $query = "DELETE FROM $model $condition";
         $stmt = $this->db->prepare($query);
