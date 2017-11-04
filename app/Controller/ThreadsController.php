@@ -3,6 +3,7 @@ namespace app\Controller;
 
 use app\Model\Threads;
 use app\Model\Posts;
+use app\Core\NotFoundException;
 
 class ThreadsController extends Controller
 {
@@ -12,19 +13,24 @@ class ThreadsController extends Controller
         $limit = 5;
         $params = [];
         $results = $this->paginate($threads, $limit);
-        if (empty($result)) {
-            // TODO: 404 exception
-        }
-        $pageCount = ($threads->count() / $limit) + 1;
-        $params['pageCount'] = $pageCount;
+        if (empty($results)) {
+            if ($threads->count() === 0) {
+                $this->redirect('/threads/create');
+            } else {
+                throw new NotFoundException;
+            }
+        } else {
+            $pageCount = ($threads->count() / $limit) + 1;
+            $params['pageCount'] = $pageCount;
 
-        $posts = new Posts;
-        foreach ($results['threads'] as $k => $v) {
-            $params['threads'][$k] = $v;
-            $contents = $posts->findAll('thread_id', $v['id']);
-            $params['threads'][$k]['posts'] = $contents['posts'];
+            $posts = new Posts;
+            foreach ($results['threads'] as $k => $v) {
+                $params['threads'][$k] = $v;
+                $contents = $posts->findAll('thread_id', $v['id']);
+                $params['threads'][$k]['posts'] = $contents['posts'];
+            }
+            return $this->render($route, $params);
         }
-        return $this->render($route, $params);
     }
 
     public function show($id) {
@@ -34,7 +40,7 @@ class ThreadsController extends Controller
 
         $result = $threads->find('id', $id);
         if (empty($result)) {
-            // TODO: 404 exception
+            throw new NotFoundException;
         }
 
         $params['thread'] = $result['threads'];
