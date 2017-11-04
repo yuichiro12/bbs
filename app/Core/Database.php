@@ -16,7 +16,7 @@ class Database
         try {
             $this->db = new \PDO($dsn, ENV['user'], ENV['password']);
         } catch (\PDOException $e) {
-            // TODO: 例外処理 500
+            throw new InternalServerErrorException;
         }
     }
 
