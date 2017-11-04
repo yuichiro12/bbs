@@ -15,7 +15,6 @@ class Route
         return $controller->{$action}($this->param);
     }
 
-    // TODO 例外処理（404）
     private function getRoute() {
         switch ($_SERVER['REQUEST_METHOD']) {
         case 'GET':
@@ -30,6 +29,8 @@ class Route
                 return ['controller' => 'threads', 'action' => 'create'];
             case $this->match('/threads/:id'):
                 return ['controller' => 'threads', 'action' => 'show'];
+            default:
+                throw new NotFoundException;
             }
             break;
         case 'POST':
@@ -44,6 +45,8 @@ class Route
                 return ['controller' => 'users', 'action' => 'store'];
             case $this->match('/threads/create'):
                 return ['controller' => 'threads', 'action' => 'store'];
+            default:
+                throw new NotFoundException;
             }
             break;
         }
