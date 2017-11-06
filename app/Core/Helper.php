@@ -11,8 +11,8 @@ function paginate($path, $count, $limit = INF) {
     foreach (range(1, $count) as $page) {
         switch (true) {
         case (($page <= $limit) || ($page === $count)):
-            $html .= '<a href="' . $path .'?page='. $page . '">'
-                  .$page . '</a>';
+            $html .= '<span class="pager"><a href="' . $path .'?page='. $page . '">'
+                  .$page . '</a></span>';
             break;
         case ($page === $limit + 1):
             $html .= '...';
