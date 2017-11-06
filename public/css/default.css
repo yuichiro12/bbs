@@ -1,0 +1,85 @@
+@media (min-width: 1200px)
+.container {
+    width: 1170px;
+}
+
+@media (min-width: 992px)
+.container {
+    width: 970px;
+}
+
+@media (min-width: 768px)
+.container {
+    width: 750px;
+}
+
+a {
+	color: #666;
+}
+
+a:hover, a:focus {
+	text-decoration: none;
+	color: #333;
+}
+
+textarea {
+	min-height: 300px;
+}
+
+footer {
+	text-align: center;
+	margin-bottom: 50px;
+	color: #999;
+}
+
+.nav-header {
+	background-color: rgba(0, 145, 175, 0.85);
+	position: fixed;
+	width: 100%;
+}
+
+.nav-header > a {
+	color: #fff;
+	margin-left: 2%;
+}
+
+.form-search {
+	max-width: 300px;
+	padding: 8px;
+}
+
+.page-body {
+	padding-top: 80px;
+}
+
+.logo {
+	margin-left: 20% !important;
+	font-size: 2em;
+}
+
+.inline-wrapper {
+	display: inline;
+}
+
+.flex-wrapper {
+	display: flex;
+}
+
+.uname {
+	font-weight: bold;
+	color: #2ab27b;
+}
+
+.pager {
+	border: solid 1px;
+    border-radius: 3px;
+    padding: 8px;
+    margin: 3px;
+	font-family: monospace;
+}
+
+footer {
+    text-align: center;
+    margin-bottom: 50px;
+    color: #999;
+}
