@@ -5,24 +5,38 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>BBS</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+	<link href="/open-iconic/font/css/open-iconic-bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/css/default.css">
+
   </head>
   <body>
 	<div class="navbar-header nav-header">
 	  <a class="navbar-brand logo" href="/">BBS</a>
-	  <a href="/">Home</a>
-	  <a href="/threads/create">新規スレッド作成</a>
-      <?php if (isset($_SESSION)): ?>
-		<form action="/logout" method="post" id="logoutForm" class="inline-wrapper">
-		  <?= csrf_token() ?>
-		</form>
-		<a href="javascript:void(0)" id="logoutLink">ログアウト</a>
-      <?php else: ?>
-		<a href="/login">ログイン</a>
-		<a href="/signup">ユーザー登録</a>
-      <?php endif; ?>
+	  <span class="nav-icons">
+		<a href="/" class="header-icon">
+		  <span class="oi oi-home" title="Home"></span>
+		</a>
+		<a href="/threads/create" class="header-icon">
+		  <span class="oi oi-pencil" title="新規スレッド作成"></span>
+		</a>
+		<?php if (isset($_SESSION)): ?>
+		  <form action="/logout" method="post" id="logoutForm" class="inline-wrapper">
+			<?= csrf_token() ?>
+		  </form>
+		  <a href="javascript:void(0)" id="logoutLink" class="header-icon">
+			<span class="oi oi-account-logout" title="ログアウト"></span>
+		  </a>
+		<?php else: ?>
+		  <a href="/login" class="header-icon">
+			<span class="oi oi-account-login" title="ログイン"></span>
+		  </a>
+		  <a href="/signup" class="header-icon">
+			<span class="oi oi-person" title="ユーザー登録"></span>
+		  </a>
+		<?php endif; ?>
+	  </span>
 	</div>
-	<div class="mx-auto page-body container" style="width:700px">
+	<div class="mx-auto page-body container">
 	  @contents
 	</div>
 	<hr/>

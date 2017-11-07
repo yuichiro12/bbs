@@ -23,7 +23,7 @@ a:hover, a:focus {
 }
 
 textarea {
-	min-height: 300px;
+	min-height: 150px;
 }
 
 footer {
@@ -32,15 +32,33 @@ footer {
 	color: #999;
 }
 
+.header-icon {
+	vertical-align: center;
+	font-size: 24px;
+	margin: 3px;
+}
+
 .nav-header {
 	background-color: rgba(0, 145, 175, 0.85);
 	position: fixed;
 	width: 100%;
+	z-index: 10;
 }
 
 .nav-header > a {
 	color: #fff;
 	margin-left: 2%;
+}
+
+.nav-icons {
+	margin-top: 12px;
+	float: right;
+	margin-right: 10%;
+}
+
+.nav-icons > a {
+	color: #fff;
+	margin: 10px;
 }
 
 .form-search {
@@ -53,7 +71,7 @@ footer {
 }
 
 .logo {
-	margin-left: 20% !important;
+	margin-left: 10% !important;
 	font-size: 2em;
 }
 
@@ -82,4 +100,23 @@ footer {
     text-align: center;
     margin-bottom: 50px;
     color: #999;
+}
+
+.deleted {
+	color: #808080;
+}
+
+.post-edit-link {
+	margin-left: 10px;
+	color: #666;
+}
+
+.post-delete-link {
+	margin-left: 10px;
+	color: #f37575;
+}
+
+.post-nameholder {
+	margin-left: 10px;
+	margin-bottom: 10px;
 }
