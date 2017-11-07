@@ -1,4 +1,7 @@
 {
     "name": "yuichiro/bbs",
-    "require": {}
+    "require": {
+		"cebe/markdown": "~1.1.1",
+		"verot/class.upload.php": "dev-master"
+	}
 }
