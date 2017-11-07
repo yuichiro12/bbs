@@ -4,9 +4,9 @@
 	<label for="title">スレタイ</label>
 	<input name="title" type="text" value="" class="form-control" required/>
   </div>
-  <div class="form-group">
-	<label for="name">あなたの名前</label>
-    <input name="name" type="text" value="<?= h(isset($_SESSION) ? $_SESSION['user_name'] : '') ?>" class="form-control"/>
+  <div>
+	<span>Name: </span>
+    <?= $_SESSION['user_name'] ?>
   </div>
   <div class="form-group">
 	<textarea cols="30" name="body" rows="10" class="form-control"></textarea>

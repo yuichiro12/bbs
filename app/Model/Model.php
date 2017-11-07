@@ -34,14 +34,15 @@ class Model
     public function update($data, $column, $value) {
         $params = $this->setUpdated($data);
         unset($params['id']);
-        $setval = '';
+        $setval = [];
 
         foreach($params as $k => $v) {
-            $setval .= "$k = :$k";
+            $setval[] = "$k = :$k";
         }
+        $str = implode(', ', $setval);
         $model =  static::$model;
         $condition = "WHERE $column=:valueOfCondition";
-        $query = "UPDATE $model SET $setval $condition";
+        $query = "UPDATE $model SET $str $condition";
 
         $stmt = $this->db->prepare($query);
         foreach($params as $k => $v) {
@@ -81,7 +82,7 @@ class Model
         $contents = is_null($join) ? $this->columnsToString($model)
                   : $join['columns'];
 
-        $query = "SELECT $contents FROM $model $condition $limit $sort";
+        $query = "SELECT $contents FROM $model $condition $sort $limit";
         $stmt = $this->db->prepare($query);
         if (!is_null($column) && !is_null($value)) {
             $stmt->bindValue(':value', $value);
@@ -164,6 +165,11 @@ class Model
 
     private function setUpdated($data) {
         $params = $data;
+        if (array_key_exists('created_at', $params)) {
+            if ($params['created_at'] === '') {
+                unset($params['created_at']);
+            }
+        }
         if (array_key_exists('updated_at', $params)) {
             $params['updated_at'] = date("Y-m-d H:i:s");
         }

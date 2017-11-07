@@ -51,8 +51,11 @@ class ThreadsController extends Controller
     }
 
     public function create() {
-        $route = ['controller' => 'threads', 'action' => 'create'];
-        return $this->render($route);
+        if (isset($_SESSION)) {
+            $route = ['controller' => 'threads', 'action' => 'create'];
+            return $this->render($route);
+        }
+        return $this->redirect('/login');
     }
 
     public function store() {
@@ -68,8 +71,8 @@ class ThreadsController extends Controller
         $threadId = (int) $threads->getLastInsertId();
         $postData = [
             'thread_id' => $threadId,
-            'user_id' => isset($data['user_id']) ? $data['user_id'] : null,
-            'name' => $data['name'],
+            'user_id' => $_SESSION['user_id'],
+            'name' => $_SESSION['user_name'],
             'body' => $data['body'],
         ];
         $postData = $posts->validate($postData);

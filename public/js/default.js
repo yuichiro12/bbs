@@ -6,4 +6,13 @@ window.onload = function() {
 			logoutForm.submit();
 		});
 	}
+
+	var deletePost = document.getElementsByClassName('deletePost');
+	for (var i in Object.keys(deletePost)) {
+		deletePost[i].addEventListener("click", function() {
+			if (confirm('本当に削除しますか？')) {
+				this.parentNode.submit();
+			}
+		});
+	}
 }

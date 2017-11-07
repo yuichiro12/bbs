@@ -7,6 +7,7 @@ class Threads extends Model
     protected static $columns = [
         'id' => null,
         'title' => '',
+        'deleted_flag' => 0,
         'created_at' => '',
         'updated_at' => '',
     ];
