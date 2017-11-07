@@ -18,11 +18,12 @@ class Controller
     }
 
     public function paginate($model, $limit) {
+        $order = ['column' => 'created_at', 'direction' => 'DESC'];
         if (array_key_exists('page', $_GET) && is_numeric($_GET['page'])) {
             $offset = (((int) $_GET['page']) - 1) * $limit;
-            return $model->findAll(null, null, $offset, $limit);
+            return $model->findAll(null, null, $offset, $limit, $order);
         }
-        return $model->findAll(null, null, 0, $limit);
+        return $model->findAll(null, null, 0, $limit, $order);
     }
 
     public function render($route, $params = []) {
@@ -47,5 +48,9 @@ class Controller
         $class = $prefix . ucfirst($route['controller']) . 'Controller';
         $controller = new $class;
         return $controller->{$route['action']}();
+    }
+
+    public function isValidUser($id) {
+        return (isset($_SESSION) && ($id === $_SESSION['user_id']));
     }
 }

@@ -21,6 +21,8 @@ class Route
             switch (true) {
             case $this->match('/'):
                 return ['controller' => 'threads', 'action' => 'index'];
+            case $this->match('/posts/edit/:id'):
+                return ['controller' => 'posts', 'action' => 'edit'];
             case $this->match('/login'):
                 return ['controller' => 'sessions', 'action' => 'index'];
             case $this->match('/signup'):
@@ -37,6 +39,10 @@ class Route
             switch (true) {
             case $this->match('/'):
                 return ['controller' => 'posts', 'action' => 'store'];
+            case $this->match('/posts/update/:id'):
+                return ['controller' => 'posts', 'action' => 'update'];
+            case $this->match('/posts/delete/:id'):
+                return ['controller' => 'posts', 'action' => 'delete'];
             case $this->match('/login'):
                 return ['controller' => 'sessions', 'action' => 'login'];
             case $this->match('/logout'):
