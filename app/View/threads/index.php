@@ -31,10 +31,9 @@
 	  <?php if ($post['deleted_flag'] === '1'): ?>
 		<div class="deleted"><i>この投稿は削除されました。</i></div>
 	  <?php else: ?>
-		<div><?= h($post['body']) ?></div>
+		<div><?= markdown($post['body']) ?></div>
 	  <?php endif; ?>
 	</div>
-	<br/>
 	<br/>
   <?php endforeach; ?>
   <hr/>
