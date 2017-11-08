@@ -32,6 +32,20 @@ footer {
 	color: #999;
 }
 
+code {
+	padding: 2px 4px;
+	border-radius: 4px;
+    color: #006a96;
+    background-color: #e2e6e6;
+}
+
+pre code {
+	border-radius: 4px;
+	white-space: pre;
+    word-wrap: normal;
+    font-size: 14px;
+}
+
 .header-icon {
 	vertical-align: center;
 	font-size: 24px;

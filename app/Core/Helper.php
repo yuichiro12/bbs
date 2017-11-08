@@ -1,9 +1,15 @@
 <?php
 
-// Helper functions
-
 function h($str) {
     return htmlentities($str, ENT_QUOTES, mb_internal_encoding());
+}
+
+function markdown($str) {
+    $parser = new cebe\markdown\GithubMarkdown();
+    $parser->enableNewlines = true;
+    $parser->html5 = true;
+    return $parser->parse(h($str));
+    
 }
 
 function paginate($path, $count, $limit = INF) {

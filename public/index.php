@@ -7,6 +7,8 @@ spl_autoload_register(function($class) {
     require_once __DIR__ . '/../' . str_replace('\\', '/', $class) . '.php';
 });
 
+require __DIR__ . '/../vendor/autoload.php';
+
 define('ENV', json_decode(file_get_contents(__DIR__ . "/../.env"), true));
 
 $handler = new DatabaseSessionHandler;
