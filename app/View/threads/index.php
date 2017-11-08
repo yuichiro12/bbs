@@ -5,15 +5,17 @@
 	</a>
   </h2>
   <?php foreach ($thread['posts'] as $i => $post): ?>
-	<div>
+	<span class="post-cat">
+	  <img alt="post-cat" width="50px" src="/image/noraneko.svg"/>
+	</span>
+	<div class="post-body">
 	  <span><?= $i+1 ?>: </span>
-	  
 	  <span class="uname"><?= h($post['name']) ?></span>
 	  <span><?= h($post['created_at']) ?></span>
 	  <?php if (isset($_SESSION) && ((int)$post['user_id'] === (int)$_SESSION['user_id'])): ?>
 		<span>
 		  <a href="/posts/edit/<?= $post['id'] ?>" class="post-edit-link">
-			<span class="oi oi-pencil" title="編集"></span>edit
+			<span class="oi oi-pencil" title="編集"></span><span>edit</span>
 		  </a>
 		</span>
 		<form action="/posts/delete/<?= $post['id'] ?>" method="post" class="inline-wrapper">

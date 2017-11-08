@@ -1,7 +1,9 @@
 <form action="/posts/update/<?= $post['id'] ?>" method="post">
-  <div>
-	<span>Name: </span>
-	<?= h(isset($_SESSION) ? h($_SESSION['user_name']) : '名無しさん') ?>
+  <div class="post-nameholder">
+	<span class="oi oi-person"></span>
+	<span class="uname">
+	  <?= h(isset($_SESSION) ? h($_SESSION['user_name']) : '名無しさん') ?>
+	</span>
   </div>
   <div class="form-group">
 	<textarea cols="30" name="body" rows="5" class="form-control"><?= h($post['body']) ?></textarea>

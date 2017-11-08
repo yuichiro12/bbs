@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>BBS</title>
+    <title>のらねこBBS</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 	<link rel="stylesheet" href="/open-iconic/font/css/open-iconic-bootstrap.css">
 	<link rel="stylesheet" href="/css/monokai-sublime.css">
@@ -11,7 +11,7 @@
   </head>
   <body>
 	<div class="navbar-header nav-header">
-	  <a class="navbar-brand logo" href="/">BBS</a>
+	  <a class="navbar-brand logo" href="/">のらねこBBS</a>
 	  <span class="nav-icons">
 		<a href="/" class="header-icon">
 		  <span class="oi oi-home" title="Home"></span>

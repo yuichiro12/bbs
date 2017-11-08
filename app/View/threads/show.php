@@ -4,7 +4,10 @@
   </a>
 </h2>
 <?php foreach ($thread['posts'] as $i => $post): ?>
-  <div>
+  <span class="post-cat">
+	<img alt="post-cat" width="50px" src="/image/noraneko.svg"/>
+  </span>
+  <div class="post-body">
 	<span><?= $i+1 ?>: </span>
 	<span class="uname"><?= h($post['name']) ?></span>
 	<span><?= h($post['created_at']) ?></span>
