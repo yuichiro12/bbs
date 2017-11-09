@@ -4,7 +4,7 @@ $(() => {
 	var imageField = uploader.children("input[name=image]");
 	var currentForm = null;
 
-	$(".image").on("click", e => {
+	$(".image").on("click", function() {
 		currentForm = $(this).closest("form");
 		imageField.click();
 	});
@@ -21,7 +21,7 @@ $(() => {
             contentType: false,
             timeout:10000,
         }).done((data) => {
-			insert_imgurl(currentForm, data);
+			insert_imgurl(currentForm.find("textarea"), data);
         }).fail((XMLHttpRequest, textStatus, errorThrown) => {
 			alert(textStatus);
         });

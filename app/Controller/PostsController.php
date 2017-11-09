@@ -65,7 +65,21 @@ class PostsController extends Controller
     }
 
     public function upload() {
-        
+        $handle = new \upload($_FILES['image']);
+        $dir = __DIR__ . '/../../public/image/';
+        $nameBody = uniqid() . rand();
+        $result = '';
+        if ($handle->uploaded) {
+            $handle->file_new_name_body = $nameBody;
+            $handle->process($dir);
+            if ($handle->processed) {
+                $name = $handle->file_dst_name;
+                $handle->clean();
+                return ENV['baseUrl'] . '/image/' . $name;
+            } else {
+                return 'error : ' . $handle->error;
+            }
+        }
     }
 
     public function preview() {
