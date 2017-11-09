@@ -25,9 +25,12 @@ register_shutdown_function('session_write_close');
 $route = new Route();
 $body = $route->run();
 
-ob_start();
-include(__DIR__ . '/../app/View/default.php');
-$html = ob_get_contents();
-ob_end_clean();
-
-echo str_replace('@contents', $body, $html);
+if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+    echo $body;
+} else {
+    ob_start();
+    include(__DIR__ . '/../app/View/default.php');
+    $html = ob_get_contents();
+    ob_end_clean();
+    echo str_replace('@contents', $body, $html);
+}

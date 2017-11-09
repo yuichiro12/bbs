@@ -43,6 +43,8 @@ class Route
                 return ['controller' => 'posts', 'action' => 'update'];
             case $this->match('/posts/delete/:id'):
                 return ['controller' => 'posts', 'action' => 'delete'];
+            case $this->match('/posts/preview'):
+                return ['controller' => 'posts', 'action' => 'preview'];
             case $this->match('/login'):
                 return ['controller' => 'sessions', 'action' => 'login'];
             case $this->match('/logout'):

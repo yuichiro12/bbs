@@ -4,14 +4,14 @@
 </form>
 
 <div class="modal fade" id="modal_box" data-url="/posts/preview">
-  <div class="modal-dialog modal-post-preview">
-    <div class="modal-content modal-post-preview-content">
+  <div class="modal-dialog post-modal-dialog">
+    <div class="modal-content post-modal-content">
       <div class="box_inner">
       </div>
 	  <br/>
-      <p class="text-center">
+      <div class="text-center">
 		<a class="btn btn-primary" data-dismiss="modal" href="#">閉じる</a>
-	  </p>
+	  </div>
     </div>
   </div>
 </div>
