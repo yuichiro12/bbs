@@ -13,11 +13,11 @@
   <input name="thread_id" type="hidden" value="<?= $thread['id'] ?>"/>
   <div class="btn-toolbar post-toolbar" role="toolbar">
 	<div class="btn-group mr-2" role="group">
-	  <button type="button" class="btn btn-secondary">
-		<span class="oi oi-image image" title="画像アップロード"></span>
+	  <button type="button" class="btn btn-secondary image" title="画像アップロード">
+		<span class="oi oi-image"></span>
 	  </button>
-	  <button type="button" class="btn btn-secondary">
-		<span class="oi oi-eye preview" title="プレビュー"></span>
+	  <button type="button" class="btn btn-secondary preview" title="プレビュー">
+		<span class="oi oi-eye"></span>
 	  </button>
 	</div>
   </div>

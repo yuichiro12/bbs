@@ -51,15 +51,46 @@ class PostsController extends Controller
     }
 
     public function delete($id) {
+        $delete_flag = (int) $_POST['deleted_flag'];
         $posts = new Posts;
         $params = [];
         $result = $posts->find('id', $id);
         $post = $result['posts'];
         if ($this->isValidUser($post['user_id'])) {
-            $params['deleted_flag'] = 1;
+            $params['deleted_flag'] = $delete_flag;
             $posts->update($params, 'id', $id);
         }
         return $this->redirect('/threads/' . $post['thread_id']);
         // TODO: フラッシュメッセージ
+    }
+
+    public function upload() {
+        $handle = new \upload($_FILES['image']);
+        $dir = __DIR__ . '/../../public/image/';
+        $nameBody = uniqid() . rand();
+        $result = '';
+        if ($handle->uploaded) {
+            $handle->file_new_name_body = $nameBody;
+            $handle->process($dir);
+            if ($handle->processed) {
+                $name = $handle->file_dst_name;
+                $handle->clean();
+                return ENV['baseUrl'] . '/image/' . $name;
+            } else {
+                return 'error : ' . $handle->error;
+            }
+        }
+    }
+
+    public function preview() {
+        $data = $_POST;
+        if (isset($_SESSION)) {
+            $data['name'] = $_SESSION['user_name'];
+        }
+        $data['created_at'] = date("Y-m-d H:i:s");
+        $posts = new Posts;
+        $params['post'] = $posts->validate($data);
+        $route = ['controller' => 'posts', 'action' => 'preview'];
+        return $this->render($route, $params);
     }
 }

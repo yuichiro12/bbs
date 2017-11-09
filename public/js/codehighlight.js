@@ -1,8 +1,6 @@
 $(() => {
 	$('pre code').each(function(i, block) {
-		console.log(block.innerText);
 		block.innerText = decodeHtmlEntities(block.innerText);
-		console.log(block.innerText);
 		hljs.highlightBlock(block);
 	});
 

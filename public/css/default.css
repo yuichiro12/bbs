@@ -87,6 +87,10 @@ pre code {
 	color: #2ab27b;
 }
 
+#uploader {
+	display: none;
+}
+
 .pager {
 	border: solid 1px;
     border-radius: 3px;
@@ -117,6 +121,10 @@ footer {
 
 .post-nameholder {
 	margin-left: 10px;
+	margin-bottom: 10px;
+}
+
+.post-info {
 	margin-bottom: 10px;
 }
 
@@ -162,6 +170,24 @@ footer {
 	position: relative;
 	float: left;
 	top: 24px;
+}
+
+.post-toolbar {
+    margin-top: -17px;
+    margin-bottom: 17px;	
+}
+
+.post-modal-dialog {
+	max-width: 90%;
+}
+
+.post-modal-content {
+	padding: 20px;
+}
+
+.post-modified-flag {
+	cursor: pointer;
+	margin-left: 0px;
 }
 
 
