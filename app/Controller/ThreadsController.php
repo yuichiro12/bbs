@@ -20,7 +20,7 @@ class ThreadsController extends Controller
                 throw new NotFoundException;
             }
         } else {
-            $pageCount = ($threads->count() / $limit) + 1;
+            $pageCount = ceil((float)$threads->count() / $limit);
             $params['pageCount'] = $pageCount;
 
             $posts = new Posts;
