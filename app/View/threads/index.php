@@ -7,6 +7,7 @@
   <?php foreach ($thread['posts'] as $i => $post): ?>
 	<?php include(template('posts/post')) ?>
   <?php endforeach; ?>
+  <hr/>
   <?php include(template('posts/form')) ?>
 <?php endforeach; ?>
 
