@@ -31,3 +31,7 @@ function paginate($path, $count, $limit = INF) {
 function csrf_token() {
     return isset($_SESSION) ? '<input name="csrf_token" type="hidden" value="' . $_SESSION['csrf_token'] . '">' : '';
 }
+
+function template($route) {
+    return __DIR__ . '/../View/' . $route . '.php';
+}
