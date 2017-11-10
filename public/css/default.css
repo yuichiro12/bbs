@@ -238,6 +238,8 @@ footer {
 		width: 100%;
 		border: none;
 		margin: 0;
+		margin-bottom: 16px;
+		padding: 0;
 	}
 
 	.post-body:before {
