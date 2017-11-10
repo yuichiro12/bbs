@@ -61,10 +61,15 @@ class PostsController extends Controller
         $post = $result['posts'];
         if ($this->isValidUser($post['user_id'])) {
             $params['deleted_flag'] = $delete_flag;
-            $posts->update($params, 'id', $id);
+            if ($posts->update($params, 'id', $id)) {
+                $_SESSION['flash'] = 'うまくいきました';
+                $_SESSION['context'] = 'success';
+            } else {
+                $_SESSION['flash'] = 'うまいこといきませんでした';
+                $_SESSION['context'] = 'danger';
+            }
         }
-        $_SESSION['flash'] = 'うまいこといきませんでした';
-        $_SESSION['context'] = 'danger';
+        
         return $this->redirect('/threads/' . $post['thread_id']);
     }
 
