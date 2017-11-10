@@ -1,4 +1,4 @@
 .env
 .DS_Store
 /vendor/
-/public/image/
+/public/image/posts/

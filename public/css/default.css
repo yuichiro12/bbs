@@ -38,10 +38,13 @@ pre code {
 }
 
 .nav-header {
-	background-color: rgba(0, 145, 175, 0.85);
+	background-color: rgba(125, 98, 54, 0.85);
 	position: fixed;
 	width: 100%;
 	z-index: 10;
+	background-image: url(https://bbs-localhost/image/shuhari.svg);
+    background-repeat: no-repeat;
+    background-position: 20% 0%;
 }
 
 .nav-header > a {
@@ -141,7 +144,7 @@ footer {
     color: #555;
     font-size: 16px;
     background: #FFF;
-    border: solid 1px rgb(0, 145, 175);
+    border: solid 1px rgb(125, 98, 54);
     box-sizing: border-box;
     border-radius: 5px;
 	word-wrap: break-word;
@@ -165,7 +168,7 @@ footer {
     left: -27px;
     margin-top: -14px;
     border: 14px solid transparent;
-    border-right: 14px solid rgb(0, 145, 175);
+    border-right: 14px solid rgb(125, 98, 54);
     z-index: -1;
 }
 

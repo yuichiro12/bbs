@@ -70,7 +70,7 @@ class PostsController extends Controller
 
     public function upload() {
         $handle = new \upload($_FILES['image']);
-        $dir = __DIR__ . '/../../public/image/';
+        $dir = __DIR__ . '/../../public/image/posts/';
         $nameBody = uniqid() . rand();
         $result = '';
         if ($handle->uploaded) {
@@ -79,7 +79,7 @@ class PostsController extends Controller
             if ($handle->processed) {
                 $name = $handle->file_dst_name;
                 $handle->clean();
-                return ENV['baseUrl'] . '/image/' . $name;
+                return ENV['baseUrl'] . '/image/posts/' . $name;
             } else {
                 return 'error : ' . $handle->error;
             }
