@@ -1,4 +1,14 @@
 $(() => {
+	// link
+	$(".link-insert").on("click", function() {
+		var textarea = $(this).closest("form").find("textarea");
+		var body = textarea.val();
+		var pos = textarea.get(0).selectionStart;
+		var before = body.slice(0, pos);
+		var after = body.slice(pos);
+		textarea.val(before + '[](url)'+ after);		
+	});
+
 	// upload image
 	var uploader = $("form#uploader");
 	var imageField = uploader.children("input[name=image]");

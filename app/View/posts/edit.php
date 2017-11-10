@@ -12,6 +12,9 @@
   <?= csrf_token() ?>
   <div class="btn-toolbar post-toolbar" role="toolbar">
 	<div class="btn-group mr-2" role="group">
+	  <button type="button" class="btn btn-secondary link" title="リンク">
+		<span class="oi oi-link-intact"></span>
+	  </button>
 	  <button type="button" class="btn btn-secondary image" title="画像アップロード">
 		<span class="oi oi-image"></span>
 	  </button>
