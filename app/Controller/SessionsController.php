@@ -21,12 +21,10 @@ class SessionsController extends Controller
         $user = $result['users'];
 
         if (password_verify($data['password'], $user['password'])) {
-            if (!(isset($_SESSION))) {
-                session_name('bbs_session');
-                session_start();
+            if (!(isset($_SESSION['user_id']))) {
                 $_SESSION['user_name'] = $user['name'];
                 $_SESSION['user_id'] = $user['id'];
-                $_SESSION['csrf_token'] = $this->getCsrfToken();
+                $_SESSION['flash'] = 'ようこそ' . $user['name'] . 'さん';
             }
             $path = '/';
         } else {
@@ -43,18 +41,5 @@ class SessionsController extends Controller
         }
         session_destroy();
         return $this->redirect('/');
-    }
-
-    public static function getSession() {
-        if (array_key_exists('bbs_session', $_COOKIE)) {
-            session_name('bbs_session');
-            session_start();
-        }
-    }
-
-    public function getCsrfToken() {
-        $TOKEN_LENGTH = 16;
-        $bytes = openssl_random_pseudo_bytes($TOKEN_LENGTH);
-        return bin2hex($bytes);
     }
 }

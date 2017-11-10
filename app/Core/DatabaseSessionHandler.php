@@ -3,7 +3,7 @@ namespace app\Core;
 
 use app\Model\Sessions;
 
-class DatabaseSessionHandler
+class DatabaseSessionHandler implements \SessionHandlerInterface
 {
     private $session;
 
@@ -18,8 +18,7 @@ class DatabaseSessionHandler
 
     public function read($id) {
         $result = $this->session->find('session_id', $id);
-        $data = $result['sessions']['data'];
-        return empty($data) ? '' : $data;
+        return  empty($result) ? '' : $result['sessions']['data'];
     }
 
     public function write($id, $data) {

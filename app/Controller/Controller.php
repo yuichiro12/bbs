@@ -1,6 +1,8 @@
 <?php
 namespace app\Controller;
 
+use app\Core\Session;
+
 class Controller
 {
     public function __construct() {
@@ -8,10 +10,9 @@ class Controller
     }
 
     public function beforeAction() {
-        SessionsController::getSession();
-        if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_SESSION)) {
+        $session = Session::getSession();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-                // TODO: flashメッセージ
                 $this->redirect('/');
             }
         }
@@ -51,7 +52,11 @@ class Controller
         return $controller->{$route['action']}();
     }
 
+    public function isLogin() {
+        return isset($_SESSION['user_id']);
+    }
+
     public function isValidUser($id) {
-        return (isset($_SESSION) && ($id === $_SESSION['user_id']));
+        return ($this->isLogin() && ($id === $_SESSION['user_id']));
     }
 }

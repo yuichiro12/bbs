@@ -50,7 +50,7 @@ class ThreadsController extends Controller
     }
 
     public function create() {
-        if (isset($_SESSION)) {
+        if ($this->isLogin()) {
             $route = ['controller' => 'threads', 'action' => 'create'];
             return $this->render($route);
         }
