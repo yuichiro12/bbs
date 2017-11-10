@@ -16,8 +16,9 @@ class PostsController extends Controller
         if ($posts->save($params)) {
             return $this->redirect('/threads/' . $params['thread_id']);
         }
+        $_SESSION['flash'] = 'うまいこと保存できませんでした';
+        $_SESSION['context'] = 'danger';
         return $this->redirect('/');
-        // TODO: フラッシュメッセージ
     }
 
     public function edit($id) {
@@ -30,8 +31,9 @@ class PostsController extends Controller
             $route = ['controller' => 'posts', 'action' => 'edit'];
             return $this->render($route, $params);
         }
+        $_SESSION['flash'] = 'うまいこと保存できませんでした';
+        $_SESSION['context'] = 'danger';
         return $this->redirect('/threads/' . $post['thread_id']);
-        // TODO: フラッシュメッセージ
     }
 
     public function update($id) {
@@ -46,8 +48,9 @@ class PostsController extends Controller
             $params = $posts->validate($data);
             $posts->update($params, 'id', $id);
         }
+        $_SESSION['flash'] = 'うまいこと保存できませんでした';
+        $_SESSION['context'] = 'danger';
         return $this->redirect('/threads/' . $post['thread_id']);
-        // TODO: フラッシュメッセージ
     }
 
     public function delete($id) {
@@ -60,8 +63,9 @@ class PostsController extends Controller
             $params['deleted_flag'] = $delete_flag;
             $posts->update($params, 'id', $id);
         }
+        $_SESSION['flash'] = 'うまいこといきませんでした';
+        $_SESSION['context'] = 'danger';
         return $this->redirect('/threads/' . $post['thread_id']);
-        // TODO: フラッシュメッセージ
     }
 
     public function upload() {

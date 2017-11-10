@@ -13,6 +13,8 @@ class Controller
         $session = Session::getSession();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+                $_SESSION['flash'] = 'リクエストを処理できませんでした';
+                $_SESSION['context'] = 'warning';
                 $this->redirect('/');
             }
         }
@@ -42,6 +44,7 @@ class Controller
 
     public function redirect($path) {
         header('Location: ' . ENV['baseUrl'] . $path);
+        session_write_close();
         exit();
     }
 

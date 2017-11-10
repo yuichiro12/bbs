@@ -26,11 +26,12 @@ class SessionsController extends Controller
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['flash'] = 'ようこそ' . $user['name'] . 'さん';
             }
-            $path = '/';
-        } else {
-            $path = '/login';
+            return $this->redirect('/');
         }
-        return $this->redirect($path);
+
+        $_SESSION['flash'] = 'IDかパスワードが間違ってます';
+        $_SESSION['context'] = 'danger';
+        return $this->redirect('/login');
     }
 
     public function logout() {
