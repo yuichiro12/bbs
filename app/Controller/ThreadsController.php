@@ -26,7 +26,7 @@ class ThreadsController extends Controller
             $posts = new Posts;
             foreach ($results['threads'] as $k => $v) {
                 $params['threads'][$k] = $v;
-                $contents = $posts->findAll('thread_id', $v['id']);
+                $contents = $posts->where('thread_id', $v['id'])->findAll();
                 $params['threads'][$k]['posts'] = $contents['posts'];
             }
             return $this->render($route, $params);

@@ -99,6 +99,10 @@ pre code {
 	font-family: monospace;
 }
 
+.pager-wrapper {
+	text-align: center;
+}
+
 footer {
     text-align: center;
     margin-bottom: 50px;

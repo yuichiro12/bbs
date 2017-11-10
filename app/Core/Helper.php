@@ -17,14 +17,15 @@ function paginate($path, $count, $limit = INF) {
     foreach (range(1, $count) as $page) {
         switch (true) {
         case (($page <= $limit) || ($page === $count)):
-            $html .= '<span class="pager"><a href="' . $path .'?page='. $page . '">'
-                  .$page . '</a></span>';
+            $html .= '<a href="' . $path .'?page='. $page
+                  . '"><span class="pager">' .$page . '</span></a>';
             break;
         case ($page === $limit + 1):
             $html .= '...';
             break;
         }
     }
+    $html = '<div class="pager-wrapper">' . $html . '</div>';
     return $html;
 }
 

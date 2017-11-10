@@ -5,9 +5,13 @@ use app\Core\Database;
 
 class Model
 {
-    public $db = null;
-    protected static $model = '';
-    protected static $columns = [];
+    protected $db;
+    protected static $model;
+    protected static $columns;
+    protected $order;
+    protected $conditions;
+    protected $limit;
+    protected $join;
 
     public function __construct() {
         $this->db = Database::getDb();
@@ -54,52 +58,58 @@ class Model
     }
 
     // 1行だけ取得
-    public function find($column, $value, $join = null) {
+    public function find($column, $value) {
+        $this->limit(1);
         $condition = "WHERE $column=:value";
-        $model = is_null($join) ? static::$model : $join['table'];
-        $contents = is_null($join) ? $this->columnsToString($model)
-                  : $join['columns']; 
-        
-        $query = "SELECT $contents FROM $model $condition";
+        $model = is_null($this->join)
+               ? static::$model
+               : $this->join['table'];
+        $contents = is_null($this->join)
+                  ? $this->columnsToString($model)
+                  : $this->join['columns'];
+        $query = "SELECT $contents FROM $model $condition {$this->limit}";
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':value', $value);
         $stmt->execute();
+        $this->clear();
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
         return $result ? $this->collectTableRow($result) : $result;
     }
 
     // 複数行取得
-    // TODO: 連想配列にする
-    public function findAll($column = null, $value = null, $offset = null,
-                            $count = null, $order = [], $join = null) {
-        $condition = is_null($column) ? '' : "WHERE $column=:value";
-        $sort = ($order === []) ? '' : $this->getOrder($order);
-        $limit = '';
-        if (is_numeric($count)) {
-            $limit = "LIMIT $offset, $count";
-        }
-        $model = is_null($join) ? static::$model : $join['table'];
-        $contents = is_null($join) ? $this->columnsToString($model)
-                  : $join['columns'];
-
-        $query = "SELECT $contents FROM $model $condition $sort $limit";
+    public function findAll() {
+        $condition = $this->conditionsToString();
+        $model = is_null($this->join)
+               ? static::$model
+               : $this->join['table'];
+        $contents = is_null($this->join)
+                  ? $this->columnsToString($model)
+                  : $this->join['columns'];
+        $query = "SELECT $contents FROM "
+               . "$model $condition {$this->order} {$this->limit}";
         $stmt = $this->db->prepare($query);
-        if (!is_null($column) && !is_null($value)) {
-            $stmt->bindValue(':value', $value);
+        if ($condition !== '') {
+            foreach ($this->conditions as $i => $c) {
+                $stmt->bindValue($i+1, $c['value']);
+            }
         }
         $stmt->execute();
+        $this->clear();
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $result ? $this->collectTableRows($result) : $result;
     }
 
-    public function count($column = null, $value = null, $join = null) {
-        $condition = is_null($column) ? '' : "WHERE $column=:value";
-        $model = is_null($join) ? static::$model : $join['table'];
-
+    public function count() {
+        $condition = $this->conditionsToString();
+        $model = is_null($this->join)
+               ? static::$model
+               : $this->join['table'];
         $query = "SELECT COUNT(*) AS count FROM $model $condition";
         $stmt = $this->db->prepare($query);
-        if (!is_null($column) && !is_null($value)) {
-            $stmt->bindValue(':value', $value);
+        if ($condition !== '') {
+            foreach ($this->conditions as $i => $c) {
+                $stmt->bindValue($i+1, $c['value']);
+            }
         }
         $stmt->execute();
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -115,17 +125,56 @@ class Model
         $stmt->execute();
     }
 
-    public function join($joined, $key, $referenced, $prefix = 'LEFT') {
-        $model = static::$model;
-        $table = "$model $prefix JOIN $joined ON
-                  $model.$key = $joined.$referenced";
-        $columns = $this->columnsToString($model) . ', '
-                 . $this->columnsToString($joined);
-        return ['table' => $table, 'columns' => $columns];
+    public function order($column, $direction) {
+        $this->order = "ORDER BY `$column` $direction";
+        return $this;
     }
 
-    // TODO
-    public function multiJoin() {
+    public function where($column, $value, $operator = '=') {
+        $this->conditions[] = [
+            'conj' => 'WHERE',
+            'column' => $column,
+            'value' => $value,
+            'operator' => $operator,
+        ];
+        return $this;
+    }
+
+    public function and($column, $value, $operator = '=') {
+        $this->conditions[] = [
+            'conj' => 'AND',
+            'column' => $column,
+            'value' => $value,
+            'operator' => $operator,
+        ];
+        return $this;
+    }
+
+    public function or($column, $value, $operator = '=') {
+        $this->conditions[] = [
+            'conj' => 'OR',
+            'column' => $column,
+            'value' => $value,
+            'operator' => $operator,
+        ];
+        return $this;
+    }
+
+    public function limit(int $count, int $offset = 0) {
+        $this->limit = "LIMIT $offset, $count";
+        return $this;
+    }
+
+    public function join($joined, $key, $referenced, $prefix = 'LEFT') {
+        $table = static::$model;
+        if (is_null($this->join)) {
+            $this->join['table'] = $table;
+            $this->join['columns'] = $this->columnsToString($table);
+        }
+        $this->join['table'] .= " $prefix JOIN $joined"
+                             . " ON $key = $joined.$referenced";
+        $this->join['columns'] .= ', ' . $this->columnsToString($joined);
+        return $this;
     }
 
     public function beginTransaction() {
@@ -176,8 +225,11 @@ class Model
         return $params;
     }
 
-    private function getOrder($order) {
-        return  "ORDER BY `{$order['column']}` {$order['direction']}";
+    private function clear() {
+        $this->conditions = null;
+        $this->order = null;
+        $this->limit = null;
+        $this->join = null;
     }
 
     private function columnsToString($modelName) {
@@ -187,6 +239,16 @@ class Model
             $columns[] = "$modelName.$k AS '$modelName.$k'";
         }
         $str = implode(', ', $columns);
+        return $str;
+    }
+
+    private function conditionsToString() {
+        $str = '';
+        if (isset($this->conditions)) {
+            foreach ($this->conditions as $c) {
+                $str .= "{$c['conj']} {$c['column']} {$c['operator']} ? ";
+            }
+        }
         return $str;
     }
 
