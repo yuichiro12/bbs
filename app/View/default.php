@@ -19,7 +19,7 @@
 		<a href="/threads/create" class="header-icon">
 		  <span class="oi oi-pencil" title="新規スレッド作成"></span>
 		</a>
-		<?php if (isset($_SESSION)): ?>
+		<?php if (isLogin()): ?>
 		  <form action="/logout" method="post" id="logoutForm" class="inline-wrapper">
 			<?= csrf_token() ?>
 		  </form>
@@ -37,6 +37,7 @@
 	  </span>
 	</div>
 	<div class="mx-auto page-body container">
+      <?= flashMessage() ?>
 	  @contents
 	</div>
 	<hr/>

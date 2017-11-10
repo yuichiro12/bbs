@@ -1,7 +1,9 @@
 <form action="/" method="post">
   <div class="post-nameholder">
 	<span class="oi oi-person"></span>
-	<span class="uname"><?= h(isset($_SESSION) ? h($_SESSION['user_name']) : '名無しさん') ?></span>
+	<span class="uname">
+	  <?= isLogin() ? h($_SESSION['user_name']) : '名無しさん' ?>
+	</span>
   </div>
   <div class="form-group">
 	<textarea cols="30" name="body" rows="5" class="form-control"></textarea>

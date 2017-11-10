@@ -11,7 +11,7 @@
 		<i>(modified)</i>
 	  </span>
 	<?php endif; ?>
-	<?php if (isset($_SESSION) && ((int)$post['user_id'] === (int)$_SESSION['user_id'])): ?>
+	<?php if (isLogin() && ((int)$post['user_id'] === (int)$_SESSION['user_id'])): ?>
 	  <span>
 		<a href="/posts/edit/<?= $post['id'] ?>" class="post-edit-link">
 		  <span class="oi oi-pencil" title="編集"></span>edit

@@ -7,7 +7,7 @@ class PostsController extends Controller
 {
     public function store() {
         $data = $_POST;
-        if (isset($_SESSION)) {
+        if ($this->isLogin()) {
             $data['name'] = $_SESSION['user_name'];
             $data['user_id'] = $_SESSION['user_id'];
         }
@@ -84,7 +84,7 @@ class PostsController extends Controller
 
     public function preview() {
         $data = $_POST;
-        if (isset($_SESSION)) {
+        if ($this->isLogin()) {
             $data['name'] = $_SESSION['user_name'];
         }
         $data['created_at'] = date("Y-m-d H:i:s");
