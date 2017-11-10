@@ -42,9 +42,8 @@ class ThreadsController extends Controller
         if (empty($result)) {
             throw new NotFoundException;
         }
-
         $params['thread'] = $result['threads'];
-        $contents = $posts->findAll('thread_id', $params['thread']['id']);
+        $contents = $posts->where('thread_id', $id)->findAll();
         $params['thread']['posts'] = $contents['posts'];
         $route = ['controller' => 'threads', 'action' => 'show'];
         return $this->render($route, $params);
