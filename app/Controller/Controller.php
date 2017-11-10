@@ -18,12 +18,13 @@ class Controller
     }
 
     public function paginate($model, $limit) {
-        $order = ['column' => 'created_at', 'direction' => 'DESC'];
         if (array_key_exists('page', $_GET) && is_numeric($_GET['page'])) {
             $offset = (((int) $_GET['page']) - 1) * $limit;
-            return $model->findAll(null, null, $offset, $limit, $order);
+            return $model->order('created_at', 'DESC')
+                ->limit($limit, $offset)->findAll();
         }
-        return $model->findAll(null, null, 0, $limit, $order);
+        return $model->order('created_at', 'DESC')
+            ->limit($limit)->findAll();
     }
 
     public function render($route, $params = []) {
