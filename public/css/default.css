@@ -42,7 +42,7 @@ pre code {
 	position: fixed;
 	width: 100%;
 	z-index: 10;
-	background-image: url(https://bbs-localhost/image/shuhari.svg);
+	background-image: url(/image/shuhari.svg);
     background-repeat: no-repeat;
     background-position: 20% 0%;
 }
