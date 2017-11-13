@@ -2,6 +2,7 @@
 namespace app\Controller;
 
 use app\Core\Session;
+use app\Model\Users;
 
 class Controller
 {

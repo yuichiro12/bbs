@@ -5,6 +5,7 @@
 	</a>
   </h2>
   <?php foreach ($thread['posts'] as $i => $post): ?>
+	<?php $user = $thread['users'][$i]; ?>
 	<?php include(template('posts/post')) ?>
   <?php endforeach; ?>
   <hr/>

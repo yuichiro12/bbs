@@ -9,7 +9,13 @@ class Users extends Model
         'name' => '',
         'password' => '',
         'email' => '',
+        'icon' => '',
         'created_at' => '',
         'updated_at' => '',
     ];
+
+    public function getUser($id) {
+        $result = $this->find('id', $id);
+        return $result['users'];
+    }
 }

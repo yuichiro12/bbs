@@ -1,5 +1,9 @@
 <span class="post-cat">
-  <img alt="post-cat" width="50px" src="/image/noraneko.svg"/>
+  <?php if (empty($user['icon'])): ?>
+	<img alt="post-cat" width="50px" src="/image/noraneko.svg"/>
+  <?php else: ?>
+	<img alt="icon<?= $post['user_id'] ?>" width="50px" src="<?= $user['icon'] ?>"/>
+  <?php endif; ?>
 </span>
 <div class="post-body">
   <div class="post-info">

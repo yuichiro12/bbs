@@ -24,6 +24,7 @@ class SessionsController extends Controller
             if (!$this->isLogin()) {
                 $_SESSION['user_name'] = $user['name'];
                 $_SESSION['user_id'] = $user['id'];
+                $_SESSION['user_icon'] = $user['icon'];
                 $this->session->setFlash("ようこそ{$user['name']}さん",
                                          'success');
             }

@@ -31,10 +31,18 @@ pre code {
     font-size: 14px;
 }
 
+img {
+	max-width: 100%;
+}
+
 .header-icon {
 	vertical-align: center;
 	font-size: 24px;
 	margin: 3px;
+}
+
+.header-icon-img {
+	vertical-align: sub;
 }
 
 .nav-header {
@@ -256,4 +264,15 @@ footer {
 	.post-cat {
 		display: none;
 	}
+}
+
+.icon-upload {
+	width: 50px;
+	cursor: pointer;
+	background: #fff;
+}
+
+.icon-upload:hover {
+	opacity: 0.6;
+	background: #ccc;
 }

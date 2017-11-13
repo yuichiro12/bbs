@@ -31,6 +31,10 @@ class Route
                 return ['controller' => 'threads', 'action' => 'create'];
             case $this->match('/threads/:id'):
                 return ['controller' => 'threads', 'action' => 'show'];
+            case $this->match('/users/edit/:id'):
+                return ['controller' => 'users', 'action' => 'edit'];
+            case $this->match('/users/editPassword/:id'):
+                return ['controller' => 'users', 'action' => 'editPassword'];
             default:
                 throw new NotFoundException;
             }
@@ -53,6 +57,12 @@ class Route
                 return ['controller' => 'sessions', 'action' => 'logout'];
             case $this->match('/signup'):
                 return ['controller' => 'users', 'action' => 'store'];
+            case $this->match('/users/update/:id'):
+                return ['controller' => 'users', 'action' => 'update'];
+            case $this->match('/users/upload'):
+                return ['controller' => 'users', 'action' => 'upload'];
+            case $this->match('/users/updatePassword/:id'):
+                return ['controller' => 'users', 'action' => 'updatePassword'];
             case $this->match('/threads/create'):
                 return ['controller' => 'threads', 'action' => 'store'];
             default:
