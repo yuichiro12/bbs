@@ -49,7 +49,7 @@ class UsersController extends Controller
         case (mb_strlen($data['email'], 'UTF-8') > 150):
             $this->session->setFlash('メールアドレスは150文字以内で入力してください');
             return false;
-        case (!empty($user['email'])):
+        case (!empty($user)):
             $this->session->setFlash('そのメールアドレスは既に登録されています。');
             return false;
         }
