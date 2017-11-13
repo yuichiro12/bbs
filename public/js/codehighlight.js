@@ -7,7 +7,7 @@ $(() => {
 	function decodeHtmlEntities(text, proc) {
 		var entities = [
 			['&amp;', '&'],
-			['&apos;', "'"],
+			['&#039;', "'"],
 			['&lt;', '<'],
 			['&gt;', '>'],
 			['&quot;', '"']
