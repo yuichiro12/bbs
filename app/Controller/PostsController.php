@@ -80,9 +80,6 @@ class PostsController extends Controller
         $result = '';
         if ($handle->uploaded) {
             $handle->file_new_name_body = $nameBody;
-             $handle->image_resize = true;
-             $handle->image_x = 50;
-             $handle->image_y = 50;
             $handle->process($dir);
             if ($handle->processed) {
                 $name = $handle->file_dst_name;
