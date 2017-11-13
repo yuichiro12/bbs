@@ -27,6 +27,55 @@ class UsersController extends Controller
         }
     }
 
+    public function edit($id) {
+        if ($_SESSION['user_id'] != $id) {
+            $this->session->setFlash('不正なリクエストです。');
+            return $this->redirect('/');
+        }
+        $users = new Users;
+        $result = $users->find('id', $id);
+        $params = [];
+        if ($result !== false) {
+            $params['user'] = $result['users'];
+            $route = ['controller' => 'users', 'action' => 'edit'];
+            return $this->render($route, $params);
+        } else {
+            throw new NotFoundException;
+        }
+    }
+
+    public function editPassword($id) {
+        if ($_SESSION['user_id'] != $id) {
+            $this->session->setFlash('不正なリクエストです。');
+            return $this->redirect('/');
+        }
+    }
+
+    public function upload() {
+        $handle = new \upload($_FILES['image']);
+        $dir = __DIR__ . '/../../public/image/users/';
+        $nameBody = uniqid() . rand();
+        $result = '';
+        if ($handle->uploaded) {
+            $handle->file_new_name_body = $nameBody;
+            $handle->process($dir);
+            if ($handle->processed) {
+                $name = $handle->file_dst_name;
+                $handle->clean();
+                $url = ENV['baseUrl'] . '/image/users/' . $name;
+                $users = new Users;
+                $users->update(['icon' => $url],
+                               'id',
+                               $_SESSION['user_id']);
+                return $url;
+            } else {
+                return 'error : ' . $handle->error;
+            }
+        }
+    }
+
+
+
     protected function validate($data) {
         $users = new Users;
         $user = $users->find('email', $data['email']);

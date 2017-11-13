@@ -37,6 +37,10 @@ pre code {
 	margin: 3px;
 }
 
+.header-icon-img {
+	vertical-align: sub;
+}
+
 .nav-header {
 	background-color: rgba(125, 98, 54, 0.85);
 	position: fixed;
@@ -256,4 +260,15 @@ footer {
 	.post-cat {
 		display: none;
 	}
+}
+
+.icon-upload {
+	width: 50px;
+	cursor: pointer;
+	background: #fff;
+}
+
+.icon-upload:hover {
+	opacity: 0.6;
+	background: #ccc;
 }
