@@ -24,7 +24,7 @@ class DatabaseSessionHandler implements \SessionHandlerInterface
     public function write($id, $data) {
         if (empty($this->session->find('session_id', $id))) {
             $params = ['session_id' => $id,'data' => $data];
-            $this->session->save($this->session->validate($params));
+            $this->session->save($this->session->setDefault($params));
         } else {
             $this->session->update(['data' => $data], 'session_id', $id);
         }

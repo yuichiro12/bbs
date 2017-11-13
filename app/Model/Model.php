@@ -2,6 +2,7 @@
 namespace app\Model;
 
 use app\Core\Database;
+use app\Core\Session;
 
 class Model
 {
@@ -193,8 +194,8 @@ class Model
         
     }
 
-    // バリデーション（マスアサインメント対策）
-    public function validate($data) {
+    // マスアサインメント対策
+    public function setDefault($data) {
         $columns = static::$columns;
         $params = [];
         foreach ($columns as $k => $v) {
