@@ -12,10 +12,8 @@ class PostsController extends Controller
             $data['user_id'] = $_SESSION['user_id'];
         }
         $posts = new Posts;
-        $params = $posts->validate($data);
-        if ($params === false) {
-            $this->session->setFlash('入力してください。');
-        } else {
+        $params = $this->validate($posts->setDefault($data));
+        if ($params !== false) {
             if ($posts->save($params)) {
                 return $this->redirect('/threads/' . $params['thread_id']);
             }
@@ -47,12 +45,11 @@ class PostsController extends Controller
             $data['modified_flag'] = 1;
             $data['name'] = $_SESSION['user_name'];
             $data['user_id'] = $_SESSION['user_id'];
-            $params = $posts->validate($data);
-            if ($params === false) {
-                $this->session->setFlash('入力してください。');
+            $params = $this->validate($posts->setDefault($data));
+            if ($params !== false) {
+                $posts->update($params, 'id', $id);
+                $route = ['controller' => 'threads', 'action' => ''];
             }
-            $posts->update($params, 'id', $id);
-            $route = ['controller' => 'threads', 'action' => ''];
         } else {
             $this->session->setFlash('うまいこと保存できませんでした');
         }
@@ -73,7 +70,6 @@ class PostsController extends Controller
                 $this->session->setFlash('うまいこと保存できませんでした');
             }
         }
-        
         return $this->redirect('/threads/' . $post['thread_id']);
     }
 
@@ -102,8 +98,16 @@ class PostsController extends Controller
         }
         $data['created_at'] = date("Y-m-d H:i:s");
         $posts = new Posts;
-        $params['post'] = $posts->validate($data);
+        $params['post'] = $posts->setDefault($data);
         $route = ['controller' => 'posts', 'action' => 'preview'];
         return $this->render($route, $params);
+    }
+
+    protected function validate($data) {
+        if ($data['body'] === '') {
+            $this->session->setFlash('投稿内容が空です。');
+            return false;
+        }
+        return $data;
     }
 }

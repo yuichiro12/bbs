@@ -19,7 +19,7 @@ class Session
         return bin2hex($bytes);
     }
 
-    final public static function verifyCsrf() {
+    final public function verifyCsrf() {
         return $_POST['csrf_token'] !== $_SESSION['csrf_token'];
     }
 
