@@ -27,7 +27,9 @@ class ThreadsController extends Controller
             foreach ($results['threads'] as $k => $v) {
                 $params['threads'][$k] = $v;
                 $contents = $posts->join('users', 'posts.user_id', 'id')
-                          ->where('thread_id', $v['id'])->findAll();
+                          ->where('thread_id', $v['id'])
+                          ->order('posts.created_at', 'ASC')
+                          ->findAll();
                 $params['threads'][$k]['posts'] = $contents['posts'];
                 $params['threads'][$k]['users'] = $contents['users'];
             }
@@ -46,7 +48,9 @@ class ThreadsController extends Controller
         }
         $params['thread'] = $result['threads'];
         $contents = $posts->join('users', 'posts.user_id', 'id')
-                  ->where('thread_id', $id)->findAll();
+                  ->where('thread_id', $id)
+                  ->order('posts.created_at', 'ASC')
+                  ->findAll();
         $params['thread']['posts'] = $contents['posts'];
         $params['thread']['users'] = $contents['users'];
         $route = ['controller' => 'threads', 'action' => 'show'];
