@@ -12,6 +12,7 @@
 	<label for="password">パスワード</label>
 	<input name="password" type="password" value="" class="form-control" required/>
   </div>
+  <?= csrf_token() ?>
   <div class="form-group">
 	<input type="submit" value="登録" class="btn btn-success"/>
   </div>

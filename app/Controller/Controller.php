@@ -5,16 +5,17 @@ use app\Core\Session;
 
 class Controller
 {
+    protected $session;
+
     public function __construct() {
         $this->beforeAction();
     }
 
     public function beforeAction() {
-        $session = Session::getSession();
+        $this->session = Session::getSession();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-                $_SESSION['flash'] = 'リクエストを処理できませんでした';
-                $_SESSION['context'] = 'warning';
+            if ($this->session->verifyCsrf()) {
+                $this->session->setFlash('リクエストを処理できませんでした');
                 $this->redirect('/');
             }
         }

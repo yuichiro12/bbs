@@ -19,6 +19,15 @@ class Session
         return bin2hex($bytes);
     }
 
+    final public function verifyCsrf() {
+        return $_POST['csrf_token'] !== $_SESSION['csrf_token'];
+    }
+
+    final public function setFlash($message, $context = 'warning') {
+        $_SESSION['flash'] = $message;
+        $_SESSION['context'] = $context;
+    }
+
     final public static function getSession() {
         if (!self::$instance) self::$instance = new Session;
         return self::$instance;

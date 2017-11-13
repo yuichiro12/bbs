@@ -21,16 +21,15 @@ class SessionsController extends Controller
         $user = $result['users'];
 
         if (password_verify($data['password'], $user['password'])) {
-            if (!(isset($_SESSION['user_id']))) {
+            if (!$this->isLogin()) {
                 $_SESSION['user_name'] = $user['name'];
                 $_SESSION['user_id'] = $user['id'];
-                $_SESSION['flash'] = 'ようこそ' . $user['name'] . 'さん';
+                $this->session->setFlash("ようこそ{$user['name']}さん",
+                                         'success');
             }
             return $this->redirect('/');
         }
-
-        $_SESSION['flash'] = 'IDかパスワードが間違ってます';
-        $_SESSION['context'] = 'danger';
+        $this->session->setFlash('IDかパスワードが間違ってます');
         return $this->redirect('/login');
     }
 
