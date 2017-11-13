@@ -15,4 +15,11 @@ class Posts extends Model
         'created_at' => '',
         'updated_at' => '',
     ];
+
+    public function validate($data) {
+        if ('body' === '') {
+            return false;
+        }
+        return parent::validate($data);
+    }
 }

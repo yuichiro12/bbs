@@ -13,11 +13,14 @@ class PostsController extends Controller
         }
         $posts = new Posts;
         $params = $posts->validate($data);
-        if ($posts->save($params)) {
-            return $this->redirect('/threads/' . $params['thread_id']);
+        if ($params === false) {
+            $this->session->setFlash('入力してください。');
+        } else {
+            if ($posts->save($params)) {
+                return $this->redirect('/threads/' . $params['thread_id']);
+            }
+            $this->session->setFlash('うまいこと保存できませんでした');
         }
-        $_SESSION['flash'] = 'うまいこと保存できませんでした';
-        $_SESSION['context'] = 'danger';
         return $this->redirect('/');
     }
 
@@ -31,8 +34,7 @@ class PostsController extends Controller
             $route = ['controller' => 'posts', 'action' => 'edit'];
             return $this->render($route, $params);
         }
-        $_SESSION['flash'] = 'うまいこと保存できませんでした';
-        $_SESSION['context'] = 'danger';
+        $this->session->setFlash('うまいこと保存できませんでした');
         return $this->redirect('/threads/' . $post['thread_id']);
     }
 
@@ -46,10 +48,14 @@ class PostsController extends Controller
             $data['name'] = $_SESSION['user_name'];
             $data['user_id'] = $_SESSION['user_id'];
             $params = $posts->validate($data);
+            if ($params === false) {
+                $this->session->setFlash('入力してください。');
+            }
             $posts->update($params, 'id', $id);
+            $route = ['controller' => 'threads', 'action' => ''];
+        } else {
+            $this->session->setFlash('うまいこと保存できませんでした');
         }
-        $_SESSION['flash'] = 'うまいこと保存できませんでした';
-        $_SESSION['context'] = 'danger';
         return $this->redirect('/threads/' . $post['thread_id']);
     }
 
@@ -62,11 +68,9 @@ class PostsController extends Controller
         if ($this->isValidUser($post['user_id'])) {
             $params['deleted_flag'] = $delete_flag;
             if ($posts->update($params, 'id', $id)) {
-                $_SESSION['flash'] = 'うまくいきました';
-                $_SESSION['context'] = 'success';
+                $this->session->setFlash('うまくいきました', 'success');
             } else {
-                $_SESSION['flash'] = 'うまいこといきませんでした';
-                $_SESSION['context'] = 'danger';
+                $this->session->setFlash('うまいこと保存できませんでした');
             }
         }
         
