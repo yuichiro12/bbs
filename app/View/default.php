@@ -28,7 +28,7 @@
 			<span class="oi oi-account-logout" title="ログアウト"></span>
 		  </a>
 		  <a href="/users/edit/<?= $_SESSION['user_id'] ?>" class="header-icon" title="アカウント設定">
-			<img alt="icon" width="28px" src="<?= $_SESSION['user_icon'] ?>" class="header-icon-img"/>
+			<img alt="icon" width="28px" src="<?= $_SESSION['user_icon'] ? : '/image/noraneko.svg'?>" class="header-icon-img"/>
 		  </a>
 		<?php else: ?>
 		  <a href="/login" class="header-icon">

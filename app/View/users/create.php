@@ -14,7 +14,7 @@
   </div>
   <div class="form-group">
 	<label for="password-confirm">パスワード（確認）</label>
-	<input id="password-confirm" name="password-confirm" type="password" value="" class="form-control" required/>
+	<input id="password-confirm" name="passwordConfirm" type="password" value="" class="form-control" required/>
   </div>
   <?= csrf_token() ?>
   <div class="form-group">

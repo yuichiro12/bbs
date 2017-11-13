@@ -1,14 +1,10 @@
 <h2>ユーザー情報編集</h2>
-<form action="/users/update" method="post">
+<form action="/users/update/<?= $user['id']?>" method="post">
   <div class="form-group">
 	<label for="icon">icon</label>
 	<br/>
 	<p id="icon" class="icon-upload" title="アイコン変更">
-	  <?php if ($user['icon'] === ''): ?>
-		<img alt="post-cat" width="50px" src="/image/noraneko.svg">
-	  <?php else: ?>
-		<img alt="icon" width="50px" src="<?= $user['icon']?>">
-	  <?php endif; ?>
+	  <img alt="post-cat" width="50px" src="<?= $user['icon'] ? : '/image/noraneko.svg' ?>">
 	</p>
   </div>
   <input name="icon" type="hidden" value=""/>
