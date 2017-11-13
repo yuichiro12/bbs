@@ -29,5 +29,4 @@
   <?= csrf_token() ?>
 </form>
 
-<script src="/js/passwordConfirm.js"></script>
 <script src="/js/iconUpload.js"></script>

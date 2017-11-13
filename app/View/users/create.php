@@ -16,8 +16,11 @@
 	<label for="password-confirm">パスワード（確認）</label>
 	<input id="password-confirm" name="passwordConfirm" type="password" value="" class="form-control" required/>
   </div>
+  <div id="confirm-alert"></div>
   <?= csrf_token() ?>
   <div class="form-group">
 	<input type="submit" value="登録" class="btn btn-success"/>
   </div>
 </form>
+
+<script src="/js/passwordConfirm.js"></script>
