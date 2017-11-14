@@ -42,7 +42,7 @@
 	</div>
 	<div class="mx-auto page-body container">
       <?= flashMessage() ?>
-	  @contents
+	  <?php include("$path_to_contents.php"); ?>
 	</div>
 	<hr/>
 	<footer>

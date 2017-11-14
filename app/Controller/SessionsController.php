@@ -7,9 +7,8 @@ use app\Model\Users;
 class SessionsController extends Controller
 {
     public function index() {
-        $controller = isset($_SESSION['id']) ? 'threads' : 'sessions';
-        $route = ['controller' => $controller, 'action' => 'index'];
-        return $this->render($route);
+        $dir = isset($_SESSION['id']) ? 'threads' : 'sessions';
+        return $this->render("$dir/index");
     }
 
     public function login() {

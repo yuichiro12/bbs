@@ -29,8 +29,7 @@ class PostsController extends Controller
         if ($this->isValidUser($post['user_id'])) {
             $params = [];
             $params['post'] = $post;
-            $route = ['controller' => 'posts', 'action' => 'edit'];
-            return $this->render($route, $params);
+            return $this->render('posts/edit', $params);
         }
         $this->session->setFlash('うまいこと保存できませんでした');
         return $this->redirect('/threads/' . $post['thread_id']);
@@ -99,8 +98,7 @@ class PostsController extends Controller
         $data['created_at'] = date("Y-m-d H:i:s");
         $posts = new Posts;
         $params['post'] = $posts->setDefault($data);
-        $route = ['controller' => 'posts', 'action' => 'preview'];
-        return $this->render($route, $params);
+        return $this->render('posts/preview', $params);
     }
 
     protected function validate($data) {
