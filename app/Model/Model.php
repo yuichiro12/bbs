@@ -2,7 +2,6 @@
 namespace app\Model;
 
 use app\Core\Database;
-use app\Core\Session;
 
 class Model
 {
