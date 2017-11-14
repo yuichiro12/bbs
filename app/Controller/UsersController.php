@@ -9,8 +9,7 @@ class UsersController extends Controller
     }
 
     public function create() {
-        $route = ['controller' => 'users', 'action' => 'create'];
-        return $this->render($route);
+        return $this->render('users/create');
     }
 
     public function store() {
@@ -89,8 +88,7 @@ class UsersController extends Controller
         $params = [];
         if ($result !== false) {
             $params['user'] = $result['users'];
-            $route = ['controller' => 'users', 'action' => 'edit'];
-            return $this->render($route, $params);
+            return $this->render('users/edit', $params);
         } else {
             throw new NotFoundException;
         }
@@ -102,8 +100,7 @@ class UsersController extends Controller
             return $this->redirect('/');
         }
         $params['id'] = $id;
-        $route = ['controller' => 'users', 'action' => 'editPassword'];
-        return $this->render($route, $params);
+        return $this->render('users/editPassword', $params);
     }
 
     public function upload() {

@@ -9,7 +9,6 @@ class ThreadsController extends Controller
 {
     public function index() {
         $threads = new Threads;
-        $route = ['controller' => 'threads', 'action' => 'index'];
         $limit = 5;
         $params = [];
         $results = $this->paginate($threads, $limit);
@@ -33,7 +32,7 @@ class ThreadsController extends Controller
                 $params['threads'][$k]['posts'] = $contents['posts'];
                 $params['threads'][$k]['users'] = $contents['users'];
             }
-            return $this->render($route, $params);
+            return $this->render('threads/index', $params);
         }
     }
 
@@ -53,14 +52,12 @@ class ThreadsController extends Controller
                   ->findAll();
         $params['thread']['posts'] = $contents['posts'];
         $params['thread']['users'] = $contents['users'];
-        $route = ['controller' => 'threads', 'action' => 'show'];
-        return $this->render($route, $params);
+        return $this->render('threads/show', $params);
     }
 
     public function create() {
         if ($this->isLogin()) {
-            $route = ['controller' => 'threads', 'action' => 'create'];
-            return $this->render($route);
+            return $this->render('threads/create');
         }
         return $this->redirect('/login');
     }

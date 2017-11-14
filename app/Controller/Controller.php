@@ -32,16 +32,18 @@ class Controller
             ->limit($limit)->findAll();
     }
 
-    public function render($route, $params = []) {
+    public function render($path_to_contents, $params = []) {
         extract($params);
         include(__DIR__ . '/../Core/Helper.php');
 
         ob_start();
-        include(__DIR__ . "/../View/{$route['controller']}/{$route['action']}.php");
-        $html = ob_get_contents();
-        ob_end_clean();
-
-        return $html;
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])
+            && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+            include(__DIR__ . "/../View/$path_to_contents.php");
+        } else {
+            include(__DIR__ . '/../View/default.php');
+        }
+        ob_end_flush();
     }
 
     public function redirect($path) {
