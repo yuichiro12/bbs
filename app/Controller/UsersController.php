@@ -123,9 +123,9 @@ class UsersController extends Controller
                                'id',
                                $_SESSION['user_id']);
                 $_SESSION['user_icon'] = $url;
-                return $url;
+                echo $url;
             } else {
-                return 'error : ' . $handle->error;
+                echo 'error : ' . $handle->error;
             }
         }
     }

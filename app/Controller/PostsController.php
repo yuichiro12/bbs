@@ -83,9 +83,9 @@ class PostsController extends Controller
             if ($handle->processed) {
                 $name = $handle->file_dst_name;
                 $handle->clean();
-                return ENV['baseUrl'] . '/image/posts/' . $name;
+                echo ENV['baseUrl'] . '/image/posts/' . $name;
             } else {
-                return 'error : ' . $handle->error;
+                echo 'error : ' . $handle->error;
             }
         }
     }
