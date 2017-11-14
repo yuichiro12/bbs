@@ -41,6 +41,7 @@ class UsersController extends Controller
         $params = [];
         if ($data !== false) {
             if ($users->update($data, 'id', $id)) {
+                $_SESSION['user_name'] = $data['name'];
                 $this->session->setFlash('保存しました。', 'success');
             } else {
                 $this->session->setFlash('保存できませんでした。');
