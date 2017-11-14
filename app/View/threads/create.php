@@ -7,7 +7,7 @@
   <div class="post-nameholder">
 	<span class="oi oi-person"></span>
 	<span class="uname">
-	  <?= $_SESSION['user_name'] ?>
+	  <?= h($_SESSION['user_name']) ?>
 	</span>
   </div>
   <div class="form-group">
