@@ -8,9 +8,13 @@
 <div class="post-body">
   <div class="post-info">
 	<span><?= $i+1 ?>: </span>
-	<a href="/users/<?= $user['id'] ?>">
-	  <span class="uname"><?= h($user['name'] ? : '名無しさん') ?></span>
-	</a>
+	<?php if ($user['name']): ?>
+	  <a href="/users/<?= $user['id'] ?>">
+		<span class="uname"><?= h($user['name']) ?></span>
+	  </a>
+	<?php else: ?>
+	  <span class="uname-anonymous">名無しさん</span>
+	<?php endif; ?>
 	<span> <?= h($post['created_at']) ?></span>
 	<?php if ($post['modified_flag'] === '1'): ?>
 	  <span class="post-modified-flag" title="<?= $post['updated_at'] ?>">

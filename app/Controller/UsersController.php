@@ -10,10 +10,11 @@ class UsersController extends Controller
         $posts = new Posts;
         $result = $users->find('id', $id);
         $result2 = $posts
-                 ->limit(10)
+                 ->limit(20)
                  ->join('threads', 'thread_id', 'id')
                  ->order('posts.created_at', 'DESC')
-                 ->findAll('posts.user_id', $id);
+                 ->where('posts.user_id', $id)
+                 ->findAll();
         $params['user'] = $result['users'];
         $params['posts'] = $result2['posts'];
         $params['threads'] = $result2['threads'];

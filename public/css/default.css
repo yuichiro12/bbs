@@ -102,6 +102,10 @@ img {
 	color: #2ab27b;
 }
 
+.uname-anonymous {
+	color: #2ab27b;
+}
+
 #uploader {
 	display: none;
 }
@@ -302,4 +306,15 @@ footer {
 
 .user-profile {
 	margin-top: 20px;
+}
+
+table.user-recent-activities {
+	width: 100%;
+}
+
+tr.user-act-row {
+}
+
+td.user-act-data {
+	padding: 7px;
 }
