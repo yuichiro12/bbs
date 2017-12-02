@@ -1,13 +1,12 @@
-<h2>ユーザー情報編集</h2>
+<h2>アカウント設定</h2>
 <form action="/users/update/<?= $user['id']?>" method="post">
   <div class="form-group">
-	<label for="icon">icon</label>
+	<label for="icon">アイコン</label>
 	<br/>
 	<p id="icon" class="icon-upload" title="アイコン変更">
-	  <img alt="post-cat" width="50px" src="<?= $user['icon'] ? : '/image/noraneko.svg' ?>">
+	  <img alt="post-cat" width="150px" src="<?= $user['icon'] ? : '/image/noraneko.svg' ?>">
 	</p>
   </div>
-  <input name="icon" type="hidden" value=""/>
   <div class="form-group">
 	<label for="name">ユーザー名</label>
 	<input id="name" name="name" type="text" value="<?= h($user['name']) ?>" class="form-control" required/>
@@ -15,6 +14,10 @@
   <div class="form-group">
 	<label for="email">email</label>
 	<input id="email" name="email" type="email" value="<?= h($user['email']) ?>" class="form-control" required/>
+  </div>
+  <div class="form-group">
+	<label for="profile">プロフィール (150文字以内)</label>
+	<input id="profile" name="profile" class="form-control" value="<?= h($user['profile']) ?>"/>
   </div>
   <?= csrf_token() ?>
   <div class="form-group">

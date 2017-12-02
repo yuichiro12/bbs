@@ -78,7 +78,6 @@ class ThreadsController extends Controller
             $postData = [
                 'thread_id' => $threadId,
                 'user_id' => $_SESSION['user_id'],
-                'name' => $_SESSION['user_name'],
                 'body' => $data['body'],
             ];
             $postData = $this->validatePost($posts->setDefault($postData));

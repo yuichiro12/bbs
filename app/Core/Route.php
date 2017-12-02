@@ -31,6 +31,8 @@ class Route
                 return ['controller' => 'threads', 'action' => 'create'];
             case $this->match('/threads/:id'):
                 return ['controller' => 'threads', 'action' => 'show'];
+            case $this->match('/users/:id'):
+                return ['controller' => 'users', 'action' => 'index'];
             case $this->match('/users/edit/:id'):
                 return ['controller' => 'users', 'action' => 'edit'];
             case $this->match('/users/editPassword/:id'):

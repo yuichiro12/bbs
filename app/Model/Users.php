@@ -10,6 +10,7 @@ class Users extends Model
         'password' => '',
         'email' => '',
         'icon' => '',
+        'profile' => '',
         'created_at' => '',
         'updated_at' => '',
     ];

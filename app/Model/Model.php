@@ -41,11 +41,11 @@ class Model
         $setval = [];
 
         foreach($params as $k => $v) {
-            $setval[] = "$k = :$k";
+            $setval[] = "`$k` = :$k";
         }
         $str = implode(', ', $setval);
         $model =  static::$model;
-        $condition = "WHERE $column=:valueOfCondition";
+        $condition = "WHERE `$column`=:valueOfCondition";
         $query = "UPDATE $model SET $str $condition";
 
         $stmt = $this->db->prepare($query);

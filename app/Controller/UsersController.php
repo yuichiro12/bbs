@@ -1,11 +1,23 @@
 <?php
 namespace app\Controller;
 
-use app\Model\Users;
+use app\Model\{Users,Posts};
 
 class UsersController extends Controller
 {
-    public function index() {
+    public function index($id) {
+        $users = new Users;
+        $posts = new Posts;
+        $result = $users->find('id', $id);
+        $result2 = $posts
+                 ->limit(10)
+                 ->join('threads', 'thread_id', 'id')
+                 ->order('posts.created_at', 'DESC')
+                 ->findAll('posts.user_id', $id);
+        $params['user'] = $result['users'];
+        $params['posts'] = $result2['posts'];
+        $params['threads'] = $result2['threads'];
+        return $this->render('users/index', $params);
     }
 
     public function create() {
@@ -31,13 +43,13 @@ class UsersController extends Controller
             $this->session->setFlash('不正なリクエストです。');
             return $this->redirect('/');
         }
-        $data = [];
+
         $data['name'] = $_POST['name'];
         $data['email'] = $_POST['email'];
+        $data['profile'] = $_POST['profile'];
         $data['updated_at'] = '';
         $users = new Users;
         $data = $this->validateNoPassword($data);
-        $params = [];
         if ($data !== false) {
             if ($users->update($data, 'id', $id)) {
                 $_SESSION['user_name'] = $data['name'];
@@ -46,7 +58,7 @@ class UsersController extends Controller
                 $this->session->setFlash('保存できませんでした。');
             }
         }
-        return $this->redirect('/users/edit/' . $id);        
+        return $this->redirect('/users/' . $id);        
     }
 
     public function updatePassword($id) {
@@ -111,8 +123,8 @@ class UsersController extends Controller
         if ($handle->uploaded) {
             $handle->file_new_name_body = $nameBody;
             $handle->image_resize = true;
-            $handle->image_x = 50;
-            $handle->image_y = 50;
+            $handle->image_x = 150;
+            $handle->image_y = 150;
             $handle->process($dir);
             if ($handle->processed) {
                 $name = $handle->file_dst_name;
@@ -148,7 +160,7 @@ class UsersController extends Controller
         case (mb_strlen($data['name'], 'UTF-8') > 150):
             $this->session->setFlash('名前は150文字以内で入力してください');
             return false;
-        case (mb_strlen($data['password'], 'UTF-8') <= 8
+        case (mb_strlen($data['password'], 'UTF-8') < 8
               || mb_strlen($data['password'], 'UTF-8') > 150):
             $this->session->setFlash('パスワードは8文字以上150文字以内で入力してください');
             return false;
@@ -179,6 +191,9 @@ class UsersController extends Controller
             return false;
         case (mb_strlen($data['email'], 'UTF-8') > 150):
             $this->session->setFlash('メールアドレスは150文字以内で入力してください');
+            return false;
+        case (mb_strlen($data['profile'], 'UTF-8') > 150):
+            $this->session->setFlash('プロフィールは150文字以内で入力してください');
             return false;
         case (!empty($user) && ($user['id'] !== $_SESSION['user_id'])):
             $this->session->setFlash('そのメールアドレスは既に登録されています。');
