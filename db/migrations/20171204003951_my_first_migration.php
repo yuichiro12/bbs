@@ -44,21 +44,6 @@ class MyFirstMigration extends AbstractMigration
             ->addColumn('created_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
             ->addColumn('updated_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP',
                                                    'update' => 'CURRENT_TIMESTAMP'])
-            ->addIndex('')
-            ->create();
-
-        $posts = $this->table('posts');
-        $posts
-            ->addColumn('user_id', 'integer', ['null' => true, 'default' => NULL])
-            ->addColumn('thread_id', 'integer')
-            ->addColumn('body', 'text')
-            ->addColumn('modified_flag', 'binary', ['default' => 0])
-            ->addColumn('deleted_flag', 'binary', ['default' => 0])
-            ->addColumn('created_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP',
-                                                   'update' => 'CURRENT_TIMESTAMP'])
-            ->addForeignKey('user_id', 'users', 'id')
-            ->addForeignKey('thread_id', 'thread', 'id')
             ->create();
 
         $users = $this->table('users');
@@ -72,6 +57,20 @@ class MyFirstMigration extends AbstractMigration
             ->addColumn('updated_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP',
                                                    'update' => 'CURRENT_TIMESTAMP'])
             ->addIndex('email', ['unique' => true])
+            ->create();
+
+        $posts = $this->table('posts');
+        $posts
+            ->addColumn('user_id', 'integer', ['null' => true, 'default' => NULL])
+            ->addColumn('thread_id', 'integer')
+            ->addColumn('body', 'text')
+            ->addColumn('modified_flag', 'binary', ['default' => 0])
+            ->addColumn('deleted_flag', 'binary', ['default' => 0])
+            ->addColumn('created_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
+            ->addColumn('updated_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP',
+                                                   'update' => 'CURRENT_TIMESTAMP'])
+            ->addForeignKey(['user_id'], 'users', 'id')
+            ->addForeignKey(['thread_id'], 'threads', 'id')
             ->create();
     }
 }
