@@ -15,7 +15,7 @@ class Controller
     public function beforeAction() {
         $this->session = Session::getSession();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if ($this->session->verifyCsrf()) {
+            if (!$this->session->verifyCsrf()) {
                 $this->session->setFlash('リクエストを処理できませんでした');
                 $this->redirect('/');
             }

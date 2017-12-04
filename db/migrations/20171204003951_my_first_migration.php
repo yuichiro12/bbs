@@ -28,7 +28,7 @@ class MyFirstMigration extends AbstractMigration
      */
     public function change()
     {
-        $sessions = $this->table('sessions');
+        $sessions = $this->table('sessions', ['collation' => 'utf8mb4_general_ci']);
         $sessions
             ->addColumn('session_id', 'string', ['limit' => 255])
             ->addColumn('data', 'text')
@@ -37,7 +37,7 @@ class MyFirstMigration extends AbstractMigration
                                                    'update' => 'CURRENT_TIMESTAMP'])
             ->create();
 
-        $threads = $this->table('threads');
+        $threads = $this->table('threads', ['collation' => 'utf8mb4_general_ci']);
         $threads
             ->addColumn('title', 'string', ['limit' => 255])
             ->addColumn('deleted_flag', 'binary', ['default' => 0])
@@ -46,7 +46,7 @@ class MyFirstMigration extends AbstractMigration
                                                    'update' => 'CURRENT_TIMESTAMP'])
             ->create();
 
-        $users = $this->table('users');
+        $users = $this->table('users', ['collation' => 'utf8mb4_general_ci']);
         $users
             ->addColumn('name', 'string', ['limit' => 255])
             ->addColumn('password', 'string', ['limit' => 255])
@@ -59,7 +59,7 @@ class MyFirstMigration extends AbstractMigration
             ->addIndex('email', ['unique' => true])
             ->create();
 
-        $posts = $this->table('posts');
+        $posts = $this->table('posts', ['collation' => 'utf8mb4_general_ci']);
         $posts
             ->addColumn('user_id', 'integer', ['null' => true, 'default' => NULL])
             ->addColumn('thread_id', 'integer')

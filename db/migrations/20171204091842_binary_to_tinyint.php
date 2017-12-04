@@ -44,6 +44,7 @@ class BinaryToTinyint extends AbstractMigration
 
     public function down()
     {
+        $threads = $this->table('threads');
         $threads
             ->changeColumn('deleted_flag', 'binary', ['default' => 0])
             ->save();

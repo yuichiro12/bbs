@@ -300,8 +300,12 @@ footer {
 	margin-right: 20px;
 }
 
-.user-follow-button {
+button.user-follow-button {
 	padding: 5px 10px;
+}
+
+form.user-follow-form {
+	display: none;
 }
 
 .user-profile {

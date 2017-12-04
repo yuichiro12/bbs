@@ -67,6 +67,10 @@ class Route
                 return ['controller' => 'users', 'action' => 'updatePassword'];
             case $this->match('/threads/create'):
                 return ['controller' => 'threads', 'action' => 'store'];
+            case $this->match('/followers/store'):
+                return ['controller' => 'followers', 'action' => 'store'];
+            case $this->match('/followers/delete'):
+                return ['controller' => 'followers', 'action' => 'delete'];
             default:
                 throw new NotFoundException;
             }

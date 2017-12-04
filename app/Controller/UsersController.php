@@ -1,7 +1,7 @@
 <?php
 namespace app\Controller;
 
-use app\Model\{Users,Posts};
+use app\Model\{Users, Posts, Followers};
 
 class UsersController extends Controller
 {
@@ -18,6 +18,13 @@ class UsersController extends Controller
         $params['user'] = $result['users'];
         $params['posts'] = $result2['posts'];
         $params['threads'] = $result2['threads'];
+        if ($this->isLogin()) {
+            $followers = new Followers;
+            $result3 = $followers->where('user_id', $id)
+                ->and('follower_id', $_SESSION['user_id'])
+                ->find();
+            $params['is_following'] = !empty($result3);
+        }
         return $this->render('users/index', $params);
     }
 

@@ -28,14 +28,14 @@ class CreateFollowers extends AbstractMigration
      */
     public function change()
     {
-        $followers = $this->table('followers');
+        $followers = $this->table('followers', ['collation' => 'utf8mb4_general_ci']);
         $followers
             ->addColumn('user_id', 'integer')
             ->addColumn('follower_id', 'integer')
             ->addColumn('created_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
             ->addColumn('updated_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP',
                                                    'update' => 'CURRENT_TIMESTAMP'])
-            ->addIndex(['user_id', 'follower_id'], ['unique' => true])
+            ->addIndex(['user_id', 'follower_id'], ['unique' => true, 'name' => 'follow_follower'])
             ->addForeignKey(['user_id'], 'users', 'id')
             ->addForeignKey(['follower_id'], 'users', 'id')
             ->create();

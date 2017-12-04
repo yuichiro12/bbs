@@ -54,9 +54,11 @@ class Model
     }
 
     // 1行だけ取得
-    public function find($column, $value) {
+    public function find($column = null, $value = null) {
         $this->limit(1);
-        $condition = "WHERE $column=:value";
+        $condition = is_null($column)
+                   ? $this->conditionsToString()
+                   : "WHERE `$column`=:value";
         $model = is_null($this->join)
                ? static::$model
                : $this->join['table'];
@@ -65,7 +67,13 @@ class Model
                   : $this->join['columns'];
         $query = "SELECT $contents FROM $model $condition {$this->limit}";
         $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':value', $value);
+        if (is_null($column)) {
+            foreach ($this->conditions as $i => $c) {
+                $stmt->bindValue($i+1, $c['value']);
+            }
+        } else {
+            $stmt->bindValue(':value', $value);
+        }
         $stmt->execute();
         $this->clear();
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -112,17 +120,25 @@ class Model
         return (int)$result['count'];
     }
 
-    public function delete($column, $value) {
-        $condition = "WHERE $column=:value";
+    public function delete($column = null, $value = null) {
+        $condition = is_null($column)
+                   ? $this->conditionsToString()
+                   : "WHERE `$column`=:value";
         $model = static::$model;
         $query = "DELETE FROM $model $condition";
         $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':value', $value);
+        if (is_null($column)) {
+            foreach ($this->conditions as $i => $c) {
+                $stmt->bindValue($i+1, $c['value']);
+            }
+        } else {
+            $stmt->bindValue(':value', $value);
+        }
         $stmt->execute();
     }
 
     public function order($column, $direction) {
-        $this->order = "ORDER BY `$column` $direction";
+        $this->order = "ORDER BY $column $direction";
         return $this;
     }
 
