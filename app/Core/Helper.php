@@ -55,3 +55,28 @@ function csrf_token() {
 function template($route) {
     return __DIR__ . '/../View/' . $route . '.php';
 }
+
+function relative_time($time) {
+    $date = new \DateTime($time);
+    $now = new \DateTime;
+    $y = $now->diff($date)->y;
+    $m = $now->diff($date)->m;
+    $d = $now->diff($date)->d;
+    $h = $now->diff($date)->h;
+    $i = $now->diff($date)->i;
+    $s = $now->diff($date)->s;
+    switch (true) {
+    case ($y > 0):
+        return $y . '年前';
+    case ($m > 0):
+        return $m . 'ヶ月前';
+    case ($d > 0):
+        return $d . '日前';
+    case ($h > 0):
+        return $h . '時間前';
+    case ($i > 0):
+        return $i . '分前';
+    case ($s > 0):
+        return $s . '秒前';
+    }
+}

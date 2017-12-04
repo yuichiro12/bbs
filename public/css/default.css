@@ -35,6 +35,10 @@ img {
 	max-width: 100%;
 }
 
+.clear {
+	clear: both;
+}
+
 .header-icon {
 	vertical-align: center;
 	font-size: 24px;
@@ -95,6 +99,10 @@ img {
 
 .uname {
 	font-weight: bold;
+	color: #2ab27b;
+}
+
+.uname-anonymous {
 	color: #2ab27b;
 }
 
@@ -267,7 +275,7 @@ footer {
 }
 
 .icon-upload {
-	width: 50px;
+	width: 150px;
 	cursor: pointer;
 	background: #fff;
 }
@@ -275,4 +283,38 @@ footer {
 .icon-upload:hover {
 	opacity: 0.6;
 	background: #ccc;
+}
+
+.user-info {
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
+.user-icon {
+	float: left;
+	margin-right: 20px;
+}
+
+.user-name-h3 {
+	float: left;
+	margin-right: 20px;
+}
+
+.user-follow-button {
+	padding: 5px 10px;
+}
+
+.user-profile {
+	margin-top: 20px;
+}
+
+table.user-recent-activities {
+	width: 100%;
+}
+
+tr.user-act-row {
+}
+
+td.user-act-data {
+	padding: 7px;
 }

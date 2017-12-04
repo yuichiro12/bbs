@@ -1,5 +1,7 @@
 <span>preview: </span>
-<span class="uname"><?= h($post['name']) ?></span>
+<span class="uname">
+  <?= isLogin() ? h($_SESSION['user_name']) : '名無しさん' ?>
+</span>
 <span><?= h($post['created_at']) ?></span>
 <div><?= markdown($post['body']) ?></div>
 

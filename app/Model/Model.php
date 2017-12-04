@@ -41,11 +41,11 @@ class Model
         $setval = [];
 
         foreach($params as $k => $v) {
-            $setval[] = "$k = :$k";
+            $setval[] = "`$k` = :$k";
         }
         $str = implode(', ', $setval);
         $model =  static::$model;
-        $condition = "WHERE $column=:valueOfCondition";
+        $condition = "WHERE `$column`=:valueOfCondition";
         $query = "UPDATE $model SET $str $condition";
 
         $stmt = $this->db->prepare($query);
@@ -132,7 +132,7 @@ class Model
 
     public function where($column, $value, $operator = '=') {
         $this->conditions[] = [
-            'conj' => 'WHERE',
+            'conj' => empty($this->conditions) ? 'WHERE' : 'AND',
             'column' => $column,
             'value' => $value,
             'operator' => $operator,
@@ -141,18 +141,12 @@ class Model
     }
 
     public function and($column, $value, $operator = '=') {
-        $this->conditions[] = [
-            'conj' => 'AND',
-            'column' => $column,
-            'value' => $value,
-            'operator' => $operator,
-        ];
-        return $this;
+        return $this->where($column, $value, $operator);
     }
 
     public function or($column, $value, $operator = '=') {
         $this->conditions[] = [
-            'conj' => 'OR',
+            'conj' => empty($this->conditions) ? 'WHERE' : 'OR',
             'column' => $column,
             'value' => $value,
             'operator' => $operator,
