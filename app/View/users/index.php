@@ -8,7 +8,7 @@
   </div>
   <div>
 	<h3 class="user-name-h3"><?= h($user['name']) ?></h3>
-	<?php if (isLogin()): ?>
+	<?php if (isLogin() && ($user['id'] !== $_SESSION['user_id'])): ?>
 	  <button class="btn <?= $is_following ? 'btn-info' : 'btn-outline-info' ?> user-follow-button follow" title="<?= h($user['name']) ?>の書き込みを通知します"><span class="oi oi-eye"></span> <span class="user-follow-status"><?= $is_following ? '観察中' : '観察する' ?></span></button>
 	  <form action="/followers/<?= $is_following ? 'delete' : 'store' ?>" class="user-follow-form">
 		<input name="user_id" type="text" value="<?= $user['id'] ?>"/>
