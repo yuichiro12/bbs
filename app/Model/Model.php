@@ -18,16 +18,14 @@ class Model
     }
 
     public function save($data) {
-        $params = $this->setCreated($data);
-        unset($params['id']);
-        $columns = implode(', ', array_keys($params));
-        $ph = implode(', ', array_fill(0, count($params), '?'));
+        $columns = implode(', ', array_keys($data));
+        $ph = implode(', ', array_fill(0, count($data), '?'));
 
         $query = 'INSERT INTO ' . static::$model . "($columns) VALUES($ph)";
         $stmt = $this->db->prepare($query);
 
         $i = 1;
-        foreach ($params as $v) {
+        foreach ($data as $v) {
             $stmt->bindValue($i, $v);
             $i++;
         }
@@ -36,11 +34,9 @@ class Model
     }
 
     public function update($data, $column, $value) {
-        $params = $this->setUpdated($data);
-        unset($params['id']);
         $setval = [];
 
-        foreach($params as $k => $v) {
+        foreach($data as $k => $v) {
             $setval[] = "`$k` = :$k";
         }
         $str = implode(', ', $setval);
@@ -49,7 +45,7 @@ class Model
         $query = "UPDATE $model SET $str $condition";
 
         $stmt = $this->db->prepare($query);
-        foreach($params as $k => $v) {
+        foreach($data as $k => $v) {
             $stmt->bindValue(":$k", $v);
         }
         $stmt->bindValue(':valueOfCondition', $value);
@@ -192,29 +188,8 @@ class Model
         $columns = static::$columns;
         $params = [];
         foreach ($columns as $k => $v) {
+            if ($k === 'id' || $k === 'created_at' || $k === 'updated_at') continue;
             $params[$k] = isset($data[$k]) ? $data[$k] : $v;
-        }
-        return $params;
-    }
-
-    private function setCreated($data) {
-        $params = $data;
-        if (array_key_exists('created_at', $params)) {
-            $params['created_at'] = date("Y-m-d H:i:s");
-        }
-        $params = $this->setUpdated($params);
-        return $params;
-    }
-
-    private function setUpdated($data) {
-        $params = $data;
-        if (array_key_exists('created_at', $params)) {
-            if ($params['created_at'] === '') {
-                unset($params['created_at']);
-            }
-        }
-        if (array_key_exists('updated_at', $params)) {
-            $params['updated_at'] = date("Y-m-d H:i:s");
         }
         return $params;
     }

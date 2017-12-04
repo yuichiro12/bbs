@@ -48,7 +48,6 @@ class UsersController extends Controller
         $data['name'] = $_POST['name'];
         $data['email'] = $_POST['email'];
         $data['profile'] = $_POST['profile'];
-        $data['updated_at'] = '';
         $users = new Users;
         $data = $this->validateNoPassword($data);
         if ($data !== false) {
