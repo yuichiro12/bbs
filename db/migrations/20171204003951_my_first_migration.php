@@ -44,6 +44,7 @@ class MyFirstMigration extends AbstractMigration
             ->addColumn('created_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
             ->addColumn('updated_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP',
                                                    'update' => 'CURRENT_TIMESTAMP'])
+            ->addIndex('')
             ->create();
 
         $posts = $this->table('posts');
@@ -56,6 +57,8 @@ class MyFirstMigration extends AbstractMigration
             ->addColumn('created_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
             ->addColumn('updated_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP',
                                                    'update' => 'CURRENT_TIMESTAMP'])
+            ->addForeignKey('user_id', 'users', 'id')
+            ->addForeignKey('thread_id', 'thread', 'id')
             ->create();
 
         $users = $this->table('users');
@@ -68,6 +71,7 @@ class MyFirstMigration extends AbstractMigration
             ->addColumn('created_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
             ->addColumn('updated_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP',
                                                    'update' => 'CURRENT_TIMESTAMP'])
+            ->addIndex('email', ['unique' => true])
             ->create();
     }
 }
