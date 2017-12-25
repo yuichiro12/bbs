@@ -80,3 +80,10 @@ function relative_time($time) {
         return $s . '秒前';
     }
 }
+
+function getObject($name) {
+    $className = ucfirst($name) . 'Composer';
+    require __DIR__ . '/../View/ViewComposer/' . $className . '.php';
+    $className = "app\\View\\ViewComposer\\$className";
+    return new $className;
+}

@@ -5,7 +5,7 @@
 	<img alt="icon<?= $post['user_id'] ?>" width="50px" src="<?= $user['icon'] ?>"/>
   <?php endif; ?>
 </span>
-<div class="post-body">
+<div id="<?= $post['id'] ?>" class="post-body">
   <div class="post-info">
 	<span><?= $i+1 ?>: </span>
 	<?php if ($user['name']): ?>

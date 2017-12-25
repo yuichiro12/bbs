@@ -11,38 +11,7 @@
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
   </head>
   <body>
-	<div class="navbar-header nav-header">
-	  <a class="navbar-brand logo" href="/">のらねこBBS</a>
-	  <span class="nav-icons">
-		<a href="/" class="header-icon">
-		  <span class="oi oi-home" title="Home"></span>
-		</a>
-		<a href="/threads/create" class="header-icon">
-		  <span class="oi oi-pencil" title="新規スレッド作成"></span>
-		</a>
-		<?php if (isLogin()): ?>
-		  <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			<span class="oi oi-chat header-icon-notification"></span>
-			<span data-notification="1"></span>
-			<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-			  <a class="dropdown-item" href="#">Action</a>
-			  <a class="dropdown-item" href="#">Another action</a>
-			  <a class="dropdown-item" href="#">Something else here</a>
-			</div>
-		  </a>
-		  <a href="/users/edit/<?= $_SESSION['user_id'] ?>" class="header-icon" title="アカウント設定">
-			<img alt="icon" width="28px" src="<?= $_SESSION['user_icon'] ? : '/image/noraneko.svg'?>" class="header-icon-img"/>
-		  </a>
-		<?php else: ?>
-		  <a href="/login" class="header-icon">
-			<span class="oi oi-account-login" title="ログイン"></span>
-		  </a>
-		  <a href="/signup" class="header-icon">
-			<span class="oi oi-person" title="ユーザー登録"></span>
-		  </a>
-		<?php endif; ?>
-	  </span>
-	</div>
+	<?php include('header.php') ?>
 	<div class="mx-auto page-body container">
       <?= flashMessage() ?>
 	  <?php include("$path_to_contents.php"); ?>

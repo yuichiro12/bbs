@@ -6,6 +6,21 @@
 	font-size: 24px;
 }
 
+.icon-notification-item {
+	width: 30px;
+}
+
+.notification-box {
+	max-width: 700px;
+}
+
+.notification-item {
+	padding: 3px 5px;
+	font-size: 14px;
+	top: auto;
+	white-space: normal;
+}
+
 span[data-notification]:before {
 	margin-left: -24px;
 	position: relative;
@@ -216,6 +231,14 @@ footer {
     z-index: -1;
 }
 
+.post-body div p a {
+	color: #549eda;
+}
+
+.post-body div p a:hover {
+	color: #3d719a;
+}
+
 
 .post-cat {
 	position: relative;
@@ -239,67 +262,6 @@ footer {
 .post-modified-flag {
 	cursor: pointer;
 	margin-left: 0px;
-}
-
-
-@media screen and (min-width: 1200px) {
-	.post-body {
-		width: 1000px;
-	}
-}
-
-@media screen and (min-width: 992px) and (max-width: 1200px) {
-	.post-body {
-		width: 792px;
-	}	
-}
-
-@media screen and (min-width: 768px) and (max-width: 992px) {
-	.post-body {
-		width: 568px;
-	}
-}
-
-@media screen and (min-width: 550px) and (max-width: 768px) {
-	.post-body {
-		width: 400px;
-	}
-}
-
-@media screen and (max-width: 550px) {
-	.nav-header > a.logo {
-		margin-left: 10px;
-		margin-right: 0;
-	}
-
-	.nav-icons {
-		margin-right: 10px;
-	}
-
-	.nav-icons > a {
-		color: #fff;
-		margin: 4px;
-	}
-
-	.post-body {
-		width: 100%;
-		border: none;
-		margin: 0;
-		margin-bottom: 16px;
-		padding: 0;
-	}
-
-	.post-body:before {
-		content: none;
-	}
-
-	.post-body:after {
-		content: none;
-	}
-
-	.post-cat {
-		display: none;
-	}
 }
 
 .icon-upload {
@@ -349,4 +311,73 @@ tr.user-act-row {
 
 td.user-act-data {
 	padding: 7px;
+}
+
+
+@media screen and (min-width: 1200px) {
+	.post-body {
+		width: 1000px;
+	}
+}
+
+@media screen and (min-width: 992px) and (max-width: 1200px) {
+	.post-body {
+		width: 792px;
+	}	
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+	.post-body {
+		width: 568px;
+	}
+}
+
+@media screen and (min-width: 550px) and (max-width: 768px) {
+	.post-body {
+		width: 400px;
+	}
+
+	.notification-box {
+		max-width: 500px;
+	}
+}
+
+@media screen and (max-width: 550px) {
+	.nav-header > a.logo {
+		margin-left: 10px;
+		margin-right: 0;
+	}
+
+	.nav-icons {
+		margin-right: 10px;
+	}
+
+	.nav-icons > a {
+		color: #fff;
+		margin: 4px;
+	}
+
+	.post-body {
+		width: 100%;
+		border: none;
+		margin: 0;
+		margin-bottom: 16px;
+		padding: 0;
+	}
+
+	.post-body:before {
+		content: none;
+	}
+
+	.post-body:after {
+		content: none;
+	}
+
+	.post-cat {
+		display: none;
+	}
+
+	.notification-box {
+		max-width: 330px;
+	}
 }

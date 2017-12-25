@@ -187,9 +187,13 @@ class Model
         $this->db->beginTransaction();
     }
 
-    public function commit($array) {
-        foreach ($array as $val) {
-            if (!$val) return $this->db->rollBack();
+    public function commit($bools) {
+        if (!is_array($bools)) {
+            if (!$bools) return $this->db->rollBack();
+        } else {
+            foreach ($bools as $b) {
+                if (!$b) return $this->db->rollBack();
+            }
         }
         return $this->db->commit();
     }
