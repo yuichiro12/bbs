@@ -21,11 +21,14 @@
 		  <span class="oi oi-pencil" title="新規スレッド作成"></span>
 		</a>
 		<?php if (isLogin()): ?>
-		  <form action="/logout" method="post" id="logoutForm" class="inline-wrapper">
-			<?= csrf_token() ?>
-		  </form>
-		  <a href="javascript:void(0)" id="logoutLink" class="header-icon">
-			<span class="oi oi-account-logout" title="ログアウト"></span>
+		  <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<span class="oi oi-chat header-icon-notification"></span>
+			<span data-notification="1"></span>
+			<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+			  <a class="dropdown-item" href="#">Action</a>
+			  <a class="dropdown-item" href="#">Another action</a>
+			  <a class="dropdown-item" href="#">Something else here</a>
+			</div>
 		  </a>
 		  <a href="/users/edit/<?= $_SESSION['user_id'] ?>" class="header-icon" title="アカウント設定">
 			<img alt="icon" width="28px" src="<?= $_SESSION['user_icon'] ? : '/image/noraneko.svg'?>" class="header-icon-img"/>
@@ -52,6 +55,5 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     <script src="/js/highlight.pack.js"></script>
 	<script src="/js/codehighlight.js"></script>
-	<script src="/js/default.js"></script>
   </body>
 </html>

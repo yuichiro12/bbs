@@ -31,5 +31,12 @@
   <input type="file" name="image">
   <?= csrf_token() ?>
 </form>
+<form action="/logout" method="post" id="logoutForm" class="inline-wrapper">
+  <?= csrf_token() ?>
+</form>
+<a href="javascript:void(0)" id="logoutLink">
+  <span class="oi oi-account-logout" title="ログアウト"></span> ログアウト
+</a>
 
+<script src="/js/logout.js"></script>
 <script src="/js/iconUpload.js"></script>
