@@ -12,7 +12,7 @@
 	  <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 		<span class="oi oi-chat header-icon-notification"></span>
 		<?php if ($header->count > 0): ?>
-		  <span data-notification="<?= $header->count ?>"></span>
+		  <span id="badge" data-notification="<?= $header->count ?>"></span>
 		<?php endif ?>
 		<div class="dropdown-menu notification-box" aria-labelledby="dropdownMenuLink">
 		  <?php if ($header->count > 0): ?>
