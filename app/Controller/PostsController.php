@@ -139,7 +139,7 @@ class PostsController extends Controller
     }
 
     protected function send($data) {
-        $sock = "unix:///Users/yuichiro/Sites/bbs/tmp/bbs-uds.sock";
+        $sock = ENV["unixSocketUrl"];
         $fp = fsockopen($sock);
 
         fwrite($fp, json_encode($data));
