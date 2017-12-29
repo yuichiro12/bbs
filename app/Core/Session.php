@@ -20,7 +20,7 @@ class Session
     }
 
     final public function verifyCsrf() {
-        return $_POST['csrf_token'] !== $_SESSION['csrf_token'];
+        return $_POST['csrf_token'] === $_SESSION['csrf_token'];
     }
 
     final public function setFlash($message, $context = 'warning') {

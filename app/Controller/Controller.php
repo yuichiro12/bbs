@@ -15,7 +15,7 @@ class Controller
     public function beforeAction() {
         $this->session = Session::getSession();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if ($this->session->verifyCsrf()) {
+            if (!$this->session->verifyCsrf()) {
                 $this->session->setFlash('リクエストを処理できませんでした');
                 $this->redirect('/');
             }
@@ -52,11 +52,11 @@ class Controller
         exit();
     }
 
-    public function callAction($route) {
+    public function callAction($route, $param=null) {
         $prefix = __NAMESPACE__ . '\\';
         $class = $prefix . ucfirst($route['controller']) . 'Controller';
         $controller = new $class;
-        return $controller->{$route['action']}();
+        return $controller->{$route['action']}($param);
     }
 
     public function isLogin() {
@@ -65,5 +65,11 @@ class Controller
 
     public function isValidUser($id) {
         return ($this->isLogin() && ($id === $_SESSION['user_id']));
+    }
+
+    public function user() {
+        $users = new Users;
+        return $this->isLogin() ?
+            $users->find('id', $_SESSION['user_id'])['users'] : null;
     }
 }

@@ -18,16 +18,14 @@ class Model
     }
 
     public function save($data) {
-        $params = $this->setCreated($data);
-        unset($params['id']);
-        $columns = implode(', ', array_keys($params));
-        $ph = implode(', ', array_fill(0, count($params), '?'));
+        $columns = implode(', ', array_keys($data));
+        $ph = implode(', ', array_fill(0, count($data), '?'));
 
         $query = 'INSERT INTO ' . static::$model . "($columns) VALUES($ph)";
         $stmt = $this->db->prepare($query);
 
         $i = 1;
-        foreach ($params as $v) {
+        foreach ($data as $v) {
             $stmt->bindValue($i, $v);
             $i++;
         }
@@ -36,11 +34,9 @@ class Model
     }
 
     public function update($data, $column, $value) {
-        $params = $this->setUpdated($data);
-        unset($params['id']);
         $setval = [];
 
-        foreach($params as $k => $v) {
+        foreach($data as $k => $v) {
             $setval[] = "`$k` = :$k";
         }
         $str = implode(', ', $setval);
@@ -49,7 +45,7 @@ class Model
         $query = "UPDATE $model SET $str $condition";
 
         $stmt = $this->db->prepare($query);
-        foreach($params as $k => $v) {
+        foreach($data as $k => $v) {
             $stmt->bindValue(":$k", $v);
         }
         $stmt->bindValue(':valueOfCondition', $value);
@@ -57,10 +53,40 @@ class Model
         return $stmt->execute();
     }
 
+    public function updateAll($data) {
+        $setval = [];
+        $count = 0;
+
+        foreach($data as $k => $v) {
+            $setval[] = "`$k` = ?";
+        }
+        $str = implode(', ', $setval);
+
+        $condition = $this->conditionsToString();
+        $model = static::$model;
+        $query = "UPDATE $model SET $str $condition";
+        $stmt = $this->db->prepare($query);
+        foreach($data as $v) {
+            $count++;
+            $stmt->bindValue($count, $v);
+        }
+        if ($condition !== '') {
+            foreach ($this->conditions as $i => $c) {
+                $stmt->bindValue($count+$i+1, $c['value']);
+            }
+        } else {
+            return false;
+        }
+        $stmt->execute();
+        $this->clear();
+    }
+
     // 1行だけ取得
-    public function find($column, $value) {
+    public function find($column = null, $value = null) {
         $this->limit(1);
-        $condition = "WHERE $column=:value";
+        $condition = is_null($column)
+                   ? $this->conditionsToString()
+                   : "WHERE `$column`=:value";
         $model = is_null($this->join)
                ? static::$model
                : $this->join['table'];
@@ -69,7 +95,13 @@ class Model
                   : $this->join['columns'];
         $query = "SELECT $contents FROM $model $condition {$this->limit}";
         $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':value', $value);
+        if (is_null($column)) {
+            foreach ($this->conditions as $i => $c) {
+                $stmt->bindValue($i+1, $c['value']);
+            }
+        } else {
+            $stmt->bindValue(':value', $value);
+        }
         $stmt->execute();
         $this->clear();
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -116,17 +148,25 @@ class Model
         return (int)$result['count'];
     }
 
-    public function delete($column, $value) {
-        $condition = "WHERE $column=:value";
+    public function delete($column = null, $value = null) {
+        $condition = is_null($column)
+                   ? $this->conditionsToString()
+                   : "WHERE `$column`=:value";
         $model = static::$model;
         $query = "DELETE FROM $model $condition";
         $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':value', $value);
+        if (is_null($column)) {
+            foreach ($this->conditions as $i => $c) {
+                $stmt->bindValue($i+1, $c['value']);
+            }
+        } else {
+            $stmt->bindValue(':value', $value);
+        }
         $stmt->execute();
     }
 
     public function order($column, $direction) {
-        $this->order = "ORDER BY `$column` $direction";
+        $this->order = "ORDER BY $column $direction";
         return $this;
     }
 
@@ -175,16 +215,19 @@ class Model
         $this->db->beginTransaction();
     }
 
-    public function commit($array) {
-        foreach ($array as $val) {
-            if (!$val) return $this->db->rollBack();
+    public function commit($bools) {
+        if (!is_array($bools)) {
+            if (!$bools) return $this->db->rollBack();
+        } else {
+            foreach ($bools as $b) {
+                if (!$b) return $this->db->rollBack();
+            }
         }
         return $this->db->commit();
     }
 
     public function getLastInsertId() {
         return $this->db->lastInsertId();
-        
     }
 
     // マスアサインメント対策
@@ -192,29 +235,8 @@ class Model
         $columns = static::$columns;
         $params = [];
         foreach ($columns as $k => $v) {
+            if ($k === 'id' || $k === 'created_at' || $k === 'updated_at') continue;
             $params[$k] = isset($data[$k]) ? $data[$k] : $v;
-        }
-        return $params;
-    }
-
-    private function setCreated($data) {
-        $params = $data;
-        if (array_key_exists('created_at', $params)) {
-            $params['created_at'] = date("Y-m-d H:i:s");
-        }
-        $params = $this->setUpdated($params);
-        return $params;
-    }
-
-    private function setUpdated($data) {
-        $params = $data;
-        if (array_key_exists('created_at', $params)) {
-            if ($params['created_at'] === '') {
-                unset($params['created_at']);
-            }
-        }
-        if (array_key_exists('updated_at', $params)) {
-            $params['updated_at'] = date("Y-m-d H:i:s");
         }
         return $params;
     }

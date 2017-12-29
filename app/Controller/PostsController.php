@@ -1,7 +1,7 @@
 <?php
 namespace app\Controller;
 
-use app\Model\Posts;
+use app\Model\{Posts, Followers, Threads, Notification};
 
 class PostsController extends Controller
 {
@@ -11,8 +11,14 @@ class PostsController extends Controller
         $posts = new Posts;
         $params = $this->validate($posts->setDefault($data));
         if ($params !== false) {
-            if ($posts->save($params)) {
-                return $this->redirect('/threads/' . $params['thread_id']);
+            $posts->beginTransaction();
+            $is_saved = $posts->save($params);
+            $post_id = $posts->getLastInsertId();
+            $posts->commit($is_saved);
+            if ($is_saved) {
+                $thread_id = $data['thread_id'];
+                $this->notify($thread_id, $post_id);
+                return $this->redirect("/threads/$thread_id/#$post_id");
             }
             $this->session->setFlash('うまいこと保存できませんでした');
         }
@@ -28,7 +34,7 @@ class PostsController extends Controller
             $params['post'] = $post;
             return $this->render('posts/edit', $params);
         }
-        $this->session->setFlash('うまいこと保存できませんでした');
+        $this->session->setFlash('その投稿は編集できません。');
         return $this->redirect('/threads/' . $post['thread_id']);
     }
 
@@ -48,7 +54,7 @@ class PostsController extends Controller
         } else {
             $this->session->setFlash('うまいこと保存できませんでした');
         }
-        return $this->redirect('/threads/' . $post['thread_id']);
+        return $this->redirect("/threads/{$post['thread_id']}/#$id");
     }
 
     public function delete($id) {
@@ -66,6 +72,35 @@ class PostsController extends Controller
             }
         }
         return $this->redirect('/threads/' . $post['thread_id']);
+    }
+
+    public function notify($thread_id, $post_id) {
+        $notification = new Notification;
+        $followers = new Followers;
+        $user = $this->user();
+        $results = $followers
+                 ->where('user_id', $user['id'])
+                 ->findAll()['followers'];
+        if (!empty($results)) {
+            $threads = new Threads;
+            $title = $threads->find('id', $thread_id)['threads']['title'];
+            $message = "{$user['name']}さんが「{$title}」に投稿しました。";
+
+            $data = [
+                'message' => $message,
+                'icon' => $user['icon'],
+                'url' => "/threads/$thread_id/#$post_id"
+            ];
+            $ids = [];
+            foreach ($results as $r) {
+                $ids[] = (int)$r['follower_id'];
+                $record = $data;
+                $record['user_id'] = $r['follower_id'];
+                $notification->save($record);
+            }
+            $data['ids'] = $ids;
+            $this->send($data);
+        }
     }
 
     public function upload() {
@@ -101,5 +136,13 @@ class PostsController extends Controller
             return false;
         }
         return $data;
+    }
+
+    protected function send($data) {
+        $sock = ENV["unixSocketUrl"];
+        $fp = fsockopen($sock);
+
+        fwrite($fp, json_encode($data));
+        fclose($fp);
     }
 }

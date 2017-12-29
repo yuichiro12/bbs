@@ -37,6 +37,8 @@ class Route
                 return ['controller' => 'users', 'action' => 'edit'];
             case $this->match('/users/editPassword/:id'):
                 return ['controller' => 'users', 'action' => 'editPassword'];
+            case $this->match('/notification/show/:id'):
+                return ['controller' => 'notification', 'action' => 'show'];
             default:
                 throw new NotFoundException;
             }
@@ -67,6 +69,10 @@ class Route
                 return ['controller' => 'users', 'action' => 'updatePassword'];
             case $this->match('/threads/create'):
                 return ['controller' => 'threads', 'action' => 'store'];
+            case $this->match('/followers/store'):
+                return ['controller' => 'followers', 'action' => 'store'];
+            case $this->match('/followers/delete'):
+                return ['controller' => 'followers', 'action' => 'delete'];
             default:
                 throw new NotFoundException;
             }

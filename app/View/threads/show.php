@@ -9,5 +9,6 @@
 <?php endforeach; ?>
 <hr/>
 <?php include(template('posts/form')) ?>
-
 <?php include(template('posts/widget')) ?>
+
+<script src="/js/scroll.js"></script>

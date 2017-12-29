@@ -1,3 +1,46 @@
+.dropdown-toggle:after {
+	display: none;
+}
+
+.header-icon-notification {
+	font-size: 24px;
+}
+
+.icon-notification-item {
+	width: 30px;
+}
+
+.notification-box {
+	max-width: 700px;
+}
+
+.notification-item {
+	padding: 3px 5px;
+	font-size: 14px;
+	top: auto;
+	white-space: normal;
+}
+
+.notification-badge:before {
+	margin-left: -24px;
+	position: relative;
+    display: inline-block;
+    font-weight: bold;
+    background-color: #f00;
+    border-radius: 50%;
+    font-size: 14px;
+	min-width: 24px;
+    line-height: 1;
+	text-align: center;
+    padding: 3px;
+    border: 2px solid #fff;
+    box-shadow: 0px 0px 3px #999;
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%);
+    content: attr(data-notification);
+}
+
 a {
 	color: #666;
 }
@@ -188,6 +231,14 @@ footer {
     z-index: -1;
 }
 
+.post-body div p a {
+	color: #549eda;
+}
+
+.post-body div p a:hover {
+	color: #3d719a;
+}
+
 
 .post-cat {
 	position: relative;
@@ -213,6 +264,55 @@ footer {
 	margin-left: 0px;
 }
 
+.icon-upload {
+	width: 150px;
+	cursor: pointer;
+	background: #fff;
+}
+
+.icon-upload:hover {
+	opacity: 0.6;
+	background: #ccc;
+}
+
+.user-info {
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
+.user-icon {
+	float: left;
+	margin-right: 20px;
+}
+
+.user-name-h3 {
+	float: left;
+	margin-right: 20px;
+}
+
+button.user-follow-button {
+	padding: 5px 10px;
+}
+
+form.user-follow-form {
+	display: none;
+}
+
+.user-profile {
+	margin-top: 20px;
+}
+
+table.user-recent-activities {
+	width: 100%;
+}
+
+tr.user-act-row {
+}
+
+td.user-act-data {
+	padding: 7px;
+}
+
 
 @media screen and (min-width: 1200px) {
 	.post-body {
@@ -235,6 +335,10 @@ footer {
 @media screen and (min-width: 550px) and (max-width: 768px) {
 	.post-body {
 		width: 400px;
+	}
+
+	.notification-box {
+		max-width: 500px;
 	}
 }
 
@@ -272,49 +376,8 @@ footer {
 	.post-cat {
 		display: none;
 	}
-}
 
-.icon-upload {
-	width: 150px;
-	cursor: pointer;
-	background: #fff;
-}
-
-.icon-upload:hover {
-	opacity: 0.6;
-	background: #ccc;
-}
-
-.user-info {
-	margin-top: 20px;
-	margin-bottom: 10px;
-}
-
-.user-icon {
-	float: left;
-	margin-right: 20px;
-}
-
-.user-name-h3 {
-	float: left;
-	margin-right: 20px;
-}
-
-.user-follow-button {
-	padding: 5px 10px;
-}
-
-.user-profile {
-	margin-top: 20px;
-}
-
-table.user-recent-activities {
-	width: 100%;
-}
-
-tr.user-act-row {
-}
-
-td.user-act-data {
-	padding: 7px;
+	.notification-box {
+		max-width: 330px;
+	}
 }
