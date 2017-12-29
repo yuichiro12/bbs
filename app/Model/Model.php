@@ -53,6 +53,34 @@ class Model
         return $stmt->execute();
     }
 
+    public function updateAll($data) {
+        $setval = [];
+        $count = 0;
+
+        foreach($data as $k => $v) {
+            $setval[] = "`$k` = ?";
+        }
+        $str = implode(', ', $setval);
+
+        $condition = $this->conditionsToString();
+        $model = static::$model;
+        $query = "UPDATE $model SET $str $condition";
+        $stmt = $this->db->prepare($query);
+        foreach($data as $v) {
+            $count++;
+            $stmt->bindValue($count, $v);
+        }
+        if ($condition !== '') {
+            foreach ($this->conditions as $i => $c) {
+                $stmt->bindValue($count+$i+1, $c['value']);
+            }
+        } else {
+            return false;
+        }
+        $stmt->execute();
+        $this->clear();
+    }
+
     // 1行だけ取得
     public function find($column = null, $value = null) {
         $this->limit(1);
@@ -200,7 +228,6 @@ class Model
 
     public function getLastInsertId() {
         return $this->db->lastInsertId();
-        
     }
 
     // マスアサインメント対策
