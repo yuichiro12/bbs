@@ -9,25 +9,21 @@
 	  <span class="oi oi-pencil" title="新規スレッド作成"></span>
 	</a>
 	<?php if (isLogin()): ?>
+	  <div id="uid" style="display:none"><?= $_SESSION["user_id"] ?></div>
 	  <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		<span class="oi oi-chat header-icon-notification"></span>
-		<?php if ($header->count > 0): ?>
-		  <span id="badge" data-notification="<?= $header->count ?>"></span>
-		<?php endif ?>
+		<span class="oi oi-chat header-icon-notification" data-url="/notification/show/<?= $_SESSION["user_id"] ?>"></span>
+		<span id="badge" data-notification="<?= $header->count ?>"></span>
 		<div class="dropdown-menu notification-box" aria-labelledby="dropdownMenuLink">
-		  <?php if ($header->count > 0): ?>
-			<?php foreach($header->notification as $n): ?>
-			  <a class="dropdown-item notification-item" href="<?= $n['url']?>">
-				<img class="icon-notification-item" src="<?= !empty($n['icon']) ? h($n['icon']) : '/image/noraneko.svg' ?>"/>
-				<?= h($n['message']) ?>
-				<?= relative_time($n['created_at']) ?>
-			  </a>
-			<?php endforeach; ?>
-		  <?php else: ?>
-			<a class="dropdown-item notification-item" href="javascript:void(0)">
-			  新しいお知らせはありません。
+		  <?php foreach($header->notification as $n): ?>
+			<a class="dropdown-item notification-item" href="<?= $n['url']?>">
+			  <img class="icon-notification-item" src="<?= !empty($n['icon']) ? h($n['icon']) : '/image/noraneko.svg' ?>"/>
+			  <?= h($n['message']) ?>
+			  <?= relative_time($n['created_at']) ?>
 			</a>
-		  <?php endif; ?>
+		  <?php endforeach; ?>
+		  <a class="dropdown-item notification-item" href="javascript:void(0)">
+			新しいお知らせはありません。
+		  </a>
 		</div>
 	  </a>
 	  <a href="/users/edit/<?= $_SESSION['user_id'] ?>" class="header-icon" title="アカウント設定">

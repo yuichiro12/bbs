@@ -12,16 +12,13 @@ class HeaderComposer
         $noti = new Notification;
         if (isset($_SESSION['user_id'])) {
             $results = $noti->where('user_id', $_SESSION['user_id'])
-                     ->limit(10)
+                     ->limit(15)
                      ->order('created_at', 'DESC')
                      ->findAll();
-            if (!empty($results)) {
-                $this->notification = $results['notification'];
-                $this->count = count($this->notification);
-            } else {
-                $this->count = 0;
-            }
-            
+            $this->notification = $results['notification'];
+            $this->count = $noti->where('user_id', $_SESSION['user_id'])
+                         ->and('read_flag', 0)
+                         ->count();
         }
     }
 }

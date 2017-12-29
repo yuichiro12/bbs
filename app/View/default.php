@@ -25,6 +25,8 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/1.0.4/push.min.js"></script>
     <script src="/js/highlight.pack.js"></script>
 	<script src="/js/codehighlight.js"></script>
-	<script src="/js/websocket-notification.js"></script>
+	<?php if (isLogin()): ?>
+	  <script src="/js/websocket-notification.js"></script>
+	<?php endif; ?>
   </body>
 </html>

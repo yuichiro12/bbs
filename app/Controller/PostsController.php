@@ -86,15 +86,20 @@ class PostsController extends Controller
             $title = $threads->find('id', $thread_id)['threads']['title'];
             $message = "{$user['name']}さんが「{$title}」に投稿しました。";
 
+            $data = [
+                'message' => $message,
+                'icon' => $user['icon'],
+                'url' => "/threads/$thread_id/#$post_id"
+            ];
+            $ids = [];
             foreach ($results as $r) {
-                $data = [
-                    'user_id' => $r['follower_id'],
-                    'message' => $message,
-                    'icon' => $user['icon'],
-                    'url' => "/threads/$thread_id/#$post_id"
-                ];
-                $notification->save($data);
+                $ids[] = (int)$r['follower_id'];
+                $record = $data;
+                $record['user_id'] = $r['follower_id'];
+                $notification->save($record);
             }
+            $data['ids'] = $ids;
+            $this->send($data);
         }
     }
 
@@ -131,5 +136,13 @@ class PostsController extends Controller
             return false;
         }
         return $data;
+    }
+
+    protected function send($data) {
+        $sock = "unix:///Users/yuichiro/Sites/bbs/tmp/bbs-uds.sock";
+        $fp = fsockopen($sock);
+
+        fwrite($fp, json_encode($data));
+        fclose($fp);
     }
 }
