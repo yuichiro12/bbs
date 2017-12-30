@@ -1,3 +1,4 @@
+<?php include(template('jumbotron')) ?>
 <?php foreach ($threads as $thread): ?>
   <h2>
 	<a href="/threads/<?= $thread['id'] ?>">

@@ -1,3 +1,17 @@
+.big-post-cat {
+	float: left;
+	width: 270px;
+	padding-right: 20px;
+}
+
+.jumbotron-body {
+	padding-left: 300px;
+}
+
+.centering-wrapper {
+	text-align: center;
+}
+
 .dropdown-toggle:after {
 	display: none;
 }
@@ -340,6 +354,17 @@ td.user-act-data {
 	.notification-box {
 		max-width: 500px;
 	}
+
+	.big-post-cat {
+		float: none;
+		width: 270px;
+		margin-bottom: 30px;
+	}
+
+	.jumbotron-body {
+		padding-left: 0px;
+	}
+
 }
 
 @media screen and (max-width: 550px) {
@@ -379,5 +404,15 @@ td.user-act-data {
 
 	.notification-box {
 		max-width: 330px;
+	}
+
+	.big-post-cat {
+		float: none;
+		width: 270px;
+		margin-bottom: 30px;
+	}
+
+	.jumbotron-body {
+		padding-left: 0px;
 	}
 }
