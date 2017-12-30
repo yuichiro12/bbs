@@ -50,6 +50,18 @@ class NotificationController extends Controller
         }
     }
 
+    public function notifyFollowed($params) {
+        $notification = new Notification;
+        $user = $this->user();
+        $data = [
+            'ids' => [$]
+            'message' => $message,
+            'icon' => $user['icon'],
+            'url' => "/users/$user['id']"
+        ]
+        $notification->save();
+    }
+
     protected function send($data) {
         $sock = ENV["unixSocketUrl"];
         $fp = fsockopen($sock);

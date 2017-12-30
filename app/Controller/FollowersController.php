@@ -9,8 +9,17 @@ class FollowersController extends Controller
         $data = $_POST;
         $followers = new Followers;
         if ($this->isValidUser($data['follower_id'])) {
-            $followers->save($followers->setDefault($data));
-            return true;
+            if ($followers->save($followers->setDefault($data))) {
+                $route = [
+                    'controller' => 'notification',
+                    'action' => 'notifyFollowed'
+                ];
+                $params = [
+                    
+                ];
+                $this->callAction($route, $params);
+                return true;
+            }
         }
         return false;
     }
