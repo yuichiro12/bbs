@@ -1,7 +1,7 @@
 <?php
 namespace app\Controller;
 
-use app\Model\{Posts, Followers, Threads, Notification};
+use app\Model\Posts;
 
 class PostsController extends Controller
 {
@@ -17,7 +17,15 @@ class PostsController extends Controller
             $posts->commit($is_saved);
             if ($is_saved) {
                 $thread_id = $data['thread_id'];
-                $this->notify($thread_id, $post_id);
+                $notif_params = [
+                    'thread_id' => $thread_id,
+                    'post_id' => $post_id
+                ];
+                $route = [
+                    'controller' => 'notification',
+                    'action' => 'notifyUserPost'
+                ];
+                $this->callAction($route, $notif_params);
                 return $this->redirect("/threads/$thread_id/#$post_id");
             }
             $this->session->setFlash('うまいこと保存できませんでした');
@@ -74,35 +82,6 @@ class PostsController extends Controller
         return $this->redirect('/threads/' . $post['thread_id']);
     }
 
-    public function notify($thread_id, $post_id) {
-        $notification = new Notification;
-        $followers = new Followers;
-        $user = $this->user();
-        $results = $followers
-                 ->where('user_id', $user['id'])
-                 ->findAll()['followers'];
-        if (!empty($results)) {
-            $threads = new Threads;
-            $title = $threads->find('id', $thread_id)['threads']['title'];
-            $message = "{$user['name']}さんが「{$title}」に投稿しました。";
-
-            $data = [
-                'message' => $message,
-                'icon' => $user['icon'],
-                'url' => "/threads/$thread_id/#$post_id"
-            ];
-            $ids = [];
-            foreach ($results as $r) {
-                $ids[] = (int)$r['follower_id'];
-                $record = $data;
-                $record['user_id'] = $r['follower_id'];
-                $notification->save($record);
-            }
-            $data['ids'] = $ids;
-            $this->send($data);
-        }
-    }
-
     public function upload() {
         $handle = new \upload($_FILES['image']);
         $dir = __DIR__ . '/../../public/image/posts/';
@@ -136,13 +115,5 @@ class PostsController extends Controller
             return false;
         }
         return $data;
-    }
-
-    protected function send($data) {
-        $sock = ENV["unixSocketUrl"];
-        $fp = fsockopen($sock);
-
-        fwrite($fp, json_encode($data));
-        fclose($fp);
     }
 }

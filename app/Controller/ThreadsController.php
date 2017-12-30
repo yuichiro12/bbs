@@ -86,8 +86,16 @@ class ThreadsController extends Controller
             } else {
                 $isSuccess[] = $posts->save($postData);
             }
+            $postId = (int) $posts->getLastInsertId();
             $threads->commit($isSuccess);
             // トランザクション終了
+
+            $route = [
+                'controller' => 'Notification',
+                'action' => 'notifyUserPost'
+            ];
+            $params = ['thread_id' => $threadId, 'post_id' => $postId];
+            $this->callAction($route, $params);
             return $this->redirect('/');
         } else {
             return $this->redirect('/threads/create');
