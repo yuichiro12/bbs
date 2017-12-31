@@ -1,7 +1,7 @@
 <?php
 namespace app\Controller;
 
-use app\Model\{Followers, Threads, Notification};;
+use app\Model\{Followers, Threads, Notification, Users};
 
 class NotificationController extends Controller
 {
@@ -52,14 +52,19 @@ class NotificationController extends Controller
 
     public function notifyFollowed($params) {
         $notification = new Notification;
-        $user = $this->user();
+        $users = new Users;
+        $user = $users->find('id', $params['user_id'])['users'];
+        $follower = $this->user();
+        $message = "{$follower['name']}さんに観察されています。";
         $data = [
-            'ids' => [$]
+            'user_id' => $user['id'],
             'message' => $message,
-            'icon' => $user['icon'],
-            'url' => "/users/$user['id']"
-        ]
-        $notification->save();
+            'icon' => $follower['icon'],
+            'url' => "/users/{$follower['id']}"
+        ];
+        $notification->save($data);
+        $data['ids'] = [(int)$user['id']];
+        $this->send($data);
     }
 
     protected function send($data) {
@@ -69,5 +74,4 @@ class NotificationController extends Controller
         fwrite($fp, json_encode($data));
         fclose($fp);
     }
-
 }
