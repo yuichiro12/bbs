@@ -3,7 +3,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class CreateFollowers extends AbstractMigration
+class CreateWatch extends AbstractMigration
 {
     /**
      * Change Method.
@@ -28,14 +28,14 @@ class CreateFollowers extends AbstractMigration
      */
     public function change()
     {
-        $followers = $this->table('followers', ['collation' => 'utf8mb4_general_ci']);
-        $followers->addColumn('user_id', 'integer')
-            ->addColumn('follower_id', 'integer')
+        $watch = $this->table('watch', ['collation' => 'utf8mb4_general_ci']);
+        $watch->addColumn('user_id', 'integer')
+            ->addColumn('thread_id', 'integer')
             ->addColumn('created_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
             ->addColumn('updated_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP', 'update' => 'CURRENT_TIMESTAMP'])
-            ->addIndex(['user_id', 'follower_id'], ['unique' => true, 'name' => 'follow_follower'])
+            ->addIndex(['user_id', 'thread_id'], ['unique' => true, 'name' => 'thread_watch'])
             ->addForeignKey(['user_id'], 'users', 'id')
-            ->addForeignKey(['follower_id'], 'users', 'id')
+            ->addForeignKey(['thread_id'], 'threads', 'id')
             ->create();
     }
 }

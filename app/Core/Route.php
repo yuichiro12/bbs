@@ -73,6 +73,10 @@ class Route
                 return ['controller' => 'followers', 'action' => 'store'];
             case $this->match('/followers/delete'):
                 return ['controller' => 'followers', 'action' => 'delete'];
+            case $this->match('/watch/store'):
+                return ['controller' => 'watch', 'action' => 'store'];
+            case $this->match('/watch/delete'):
+                return ['controller' => 'watch', 'action' => 'delete'];
             default:
                 throw new NotFoundException;
             }

@@ -25,10 +25,10 @@ class Controller
     public function paginate($model, $limit) {
         if (array_key_exists('page', $_GET) && is_numeric($_GET['page'])) {
             $offset = (((int) $_GET['page']) - 1) * $limit;
-            return $model->order('created_at', 'DESC')
+            return $model->order('updated_at', 'DESC')
                 ->limit($limit, $offset)->findAll();
         }
-        return $model->order('created_at', 'DESC')
+        return $model->order('updated_at', 'DESC')
             ->limit($limit)->findAll();
     }
 

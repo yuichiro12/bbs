@@ -1,23 +1,38 @@
 <?php
 namespace app\Controller;
 
-use app\Model\{Posts, Followers, Threads, Notification};
+use app\Model\{Posts, Threads};
 
 class PostsController extends Controller
 {
     public function store() {
         $data = $_POST;
-        $data['user_id'] = $this->isLogin() ? $_SESSION['user_id'] : null;
+        if ($this->isLogin()) {
+            $data['user_id'] = $_SESSION['user_id'];
+        }
         $posts = new Posts;
         $params = $this->validate($posts->setDefault($data));
         if ($params !== false) {
             $posts->beginTransaction();
             $is_saved = $posts->save($params);
             $post_id = $posts->getLastInsertId();
-            $posts->commit($is_saved);
+            $is_saved = $posts->commit($is_saved);
+            // 成功したらスレッドのupdated_atを更新し，通知を投げる
             if ($is_saved) {
                 $thread_id = $data['thread_id'];
-                $this->notify($thread_id, $post_id);
+                // updated_atを更新
+                $threads = new Threads;
+                $threads->update(['updated_at' => date('Y-m-d H:i:s')], 'id', $thread_id);
+                // 通知
+                $notif_params = [
+                    'thread_id' => $thread_id,
+                    'post_id' => $post_id
+                ];
+                $route = [
+                    'controller' => 'notification',
+                    'action' => 'notifyUserPost'
+                ];
+                $this->callAction($route, $notif_params);
                 return $this->redirect("/threads/$thread_id/#$post_id");
             }
             $this->session->setFlash('うまいこと保存できませんでした');
@@ -74,35 +89,6 @@ class PostsController extends Controller
         return $this->redirect('/threads/' . $post['thread_id']);
     }
 
-    public function notify($thread_id, $post_id) {
-        $notification = new Notification;
-        $followers = new Followers;
-        $user = $this->user();
-        $results = $followers
-                 ->where('user_id', $user['id'])
-                 ->findAll()['followers'];
-        if (!empty($results)) {
-            $threads = new Threads;
-            $title = $threads->find('id', $thread_id)['threads']['title'];
-            $message = "{$user['name']}さんが「{$title}」に投稿しました。";
-
-            $data = [
-                'message' => $message,
-                'icon' => $user['icon'],
-                'url' => "/threads/$thread_id/#$post_id"
-            ];
-            $ids = [];
-            foreach ($results as $r) {
-                $ids[] = (int)$r['follower_id'];
-                $record = $data;
-                $record['user_id'] = $r['follower_id'];
-                $notification->save($record);
-            }
-            $data['ids'] = $ids;
-            $this->send($data);
-        }
-    }
-
     public function upload() {
         $handle = new \upload($_FILES['image']);
         $dir = __DIR__ . '/../../public/image/posts/';
@@ -136,13 +122,5 @@ class PostsController extends Controller
             return false;
         }
         return $data;
-    }
-
-    protected function send($data) {
-        $sock = ENV["unixSocketUrl"];
-        $fp = fsockopen($sock);
-
-        fwrite($fp, json_encode($data));
-        fclose($fp);
     }
 }

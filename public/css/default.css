@@ -189,6 +189,11 @@ footer {
 	color: #808080;
 }
 
+.thread-title {
+	float: left;
+	padding-right: 15px;
+}
+
 .post-edit-link {
 	margin-left: 10px;
 	color: #666;
