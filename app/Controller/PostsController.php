@@ -1,22 +1,29 @@
 <?php
 namespace app\Controller;
 
-use app\Model\Posts;
+use app\Model\{Posts, Threads};
 
 class PostsController extends Controller
 {
     public function store() {
         $data = $_POST;
-        $data['user_id'] = $this->isLogin() ? $_SESSION['user_id'] : null;
+        if ($this->isLogin()) {
+            $data['user_id'] = $_SESSION['user_id'];
+        }
         $posts = new Posts;
         $params = $this->validate($posts->setDefault($data));
         if ($params !== false) {
             $posts->beginTransaction();
             $is_saved = $posts->save($params);
             $post_id = $posts->getLastInsertId();
-            $posts->commit($is_saved);
+            $is_saved = $posts->commit($is_saved);
+            // 成功したらスレッドのupdated_atを更新し，通知を投げる
             if ($is_saved) {
                 $thread_id = $data['thread_id'];
+                // updated_atを更新
+                $threads = new Threads;
+                $threads->update(['updated_at' => date('Y-m-d H:i:s')], 'id', $thread_id);
+                // 通知
                 $notif_params = [
                     'thread_id' => $thread_id,
                     'post_id' => $post_id

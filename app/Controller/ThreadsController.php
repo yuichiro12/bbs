@@ -1,8 +1,7 @@
 <?php
 namespace app\Controller;
 
-use app\Model\Threads;
-use app\Model\Posts;
+use app\Model\{Threads, Posts, Watch};
 use app\Core\NotFoundException;
 
 class ThreadsController extends Controller
@@ -31,6 +30,16 @@ class ThreadsController extends Controller
                           ->findAll();
                 $params['threads'][$k]['posts'] = $contents['posts'];
                 $params['threads'][$k]['users'] = $contents['users'];
+                // ユーザーがログイン中ならばスレッドを観察中かどうかも付け加える
+                if ($this->isLogin()) {
+                    $watch = new Watch;
+                    $is_watching = !empty(
+                        $watch->where('thread_id', $v['id'])
+                        ->and('user_id', $_SESSION['user_id'])
+                        ->findAll()
+                    );
+                    $params['threads'][$k]['is_watching'] = $is_watching;
+                }
             }
             return $this->render('threads/index', $params);
         }
@@ -52,6 +61,16 @@ class ThreadsController extends Controller
                   ->findAll();
         $params['thread']['posts'] = $contents['posts'];
         $params['thread']['users'] = $contents['users'];
+        // ユーザーがログイン中ならばスレッドを観察中かどうかも付け加える
+        if ($this->isLogin()) {
+            $watch = new Watch;
+            $is_watching = !empty(
+                $watch->where('thread_id', $id)
+                ->and('user_id', $_SESSION['user_id'])
+                ->findAll()
+            );
+            $params['is_watching'] = $is_watching;
+        }
         return $this->render('threads/show', $params);
     }
 
