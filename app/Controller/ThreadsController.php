@@ -69,7 +69,7 @@ class ThreadsController extends Controller
                 ->and('user_id', $_SESSION['user_id'])
                 ->findAll()
             );
-            $params['is_watching'] = $is_watching;
+            $params['thread']['is_watching'] = $is_watching;
         }
         return $this->render('threads/show', $params);
     }
