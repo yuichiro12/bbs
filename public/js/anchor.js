@@ -1,16 +1,19 @@
 $(() => {
 	var a = $("a[href='#anchor']");
-	var post;
-	a.on("mouseenter", function(e) {
+	var posts = [];
+	$(document).on("mouseenter", "a[href='#anchor']", function(e) {
 		var anchor = $(this).text().substr(2);
 		var thread = $(this).parents(".thread-body").find(".post-body");
-		post = $(thread[anchor - 1]).clone()
+		var post = $(thread[anchor - 1]).clone()
 			.addClass("post-appended")
 			.addClass("notriangle");
+		posts.push(post);
 		$(this).prepend(post);
 	});
 	a.on("mouseleave", function(e){
-		post.remove();
+		posts.forEach(function(v){
+			v.remove();
+		});
 	});
 	scrollBy(0,-60);
 })
