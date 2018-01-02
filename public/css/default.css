@@ -55,6 +55,19 @@
     content: attr(data-notification);
 }
 
+.post-appended {
+	position: absolute !important;
+	z-index: 10 !important;
+}
+
+.notriangle:before {
+	content: none !important;
+}
+
+.notriangle:after {
+	content: none !important;
+}
+
 a {
 	color: #666;
 }
@@ -196,7 +209,7 @@ footer {
 
 .post-edit-link {
 	margin-left: 10px;
-	color: #666;
+	color: #666 !important;
 }
 
 .post-delete-link {
