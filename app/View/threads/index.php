@@ -13,14 +13,17 @@
 	</form>
   <?php endif; ?>
   <div class="clear"></div>
-  <?php foreach ($thread['posts'] as $i => $post): ?>
-	<?php $user = $thread['users'][$i]; ?>
-	<?php include(template('posts/post')) ?>
-  <?php endforeach; ?>
+  <div class="thread-body">
+	<?php foreach ($thread['posts'] as $i => $post): ?>
+	  <?php $user = $thread['users'][$i]; ?>
+	  <?php include(template('posts/post')) ?>
+	<?php endforeach; ?>
+  </div>
   <hr/>
   <?php include(template('posts/form')) ?>
 <?php endforeach; ?>
 
 <?php include(template('posts/widget')) ?>
 <?= paginate('/', $pageCount) ?>
+<script src="/js/anchor.js"></script>
 <script src="/js/watch.js"></script>

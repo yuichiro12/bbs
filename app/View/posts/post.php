@@ -32,7 +32,7 @@
   <?php if ($post['deleted_flag'] === '1'): ?>
 	<div class="deleted"><i>この投稿は削除されました。</i></div>
   <?php else: ?>
-	<div><?= markdown($post['body']) ?></div>
+	<div class="post-content"><?= markdown($post['body']) ?></div>
   <?php endif; ?>
 </div>
 <br/>

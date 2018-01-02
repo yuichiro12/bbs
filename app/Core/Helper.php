@@ -5,11 +5,15 @@ function h($str) {
 }
 
 function markdown($str) {
+    // anchorをリンクに変換
+    $pattern = '/>>[0-9]+/';
+    $replacement = '[$0](#anchor)';
+    $str = preg_replace($pattern, $replacement, $str);
+    // markdown
     $parser = new cebe\markdown\GithubMarkdown();
     $parser->enableNewlines = true;
     $parser->html5 = true;
     return $parser->parse(h($str));
-    
 }
 
 function paginate($path, $count, $limit = INF) {
