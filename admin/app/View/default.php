@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 	<link rel="stylesheet" href="/open-iconic/font/css/open-iconic-bootstrap.css">
     <link rel="stylesheet" href="/css/default.css">
+    <link rel="stylesheet" href="/css/admin.css">
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
   </head>
   <body>
@@ -14,6 +15,29 @@
 	  <a class="navbar-brand logo" href="/admin/posts/index">のらねこAdmin</a>
 	</div>
 	<div class="mx-auto page-body container">
+	  <div class="table-box-wrapper">
+		<div class="table-box">
+		  <a href="/admin/posts/index">posts</a>
+		</div>
+		<div class="table-box">
+		  <a href="/admin/threads/index">threads</a>
+		</div>
+		<div class="table-box">
+		  <a href="/admin/users/index">users</a>
+		</div>
+		<div class="table-box">
+		  <a href="/admin/notification/index">notification</a>
+		</div>
+		<div class="table-box">
+		  <a href="/admin/watch/index">watch</a>
+		</div>
+		<div class="table-box">
+		  <a href="/admin/followers/index">followers</a>
+		</div>
+		<div class="table-box">
+		  <a href="/admin/sessions/index">sessions</a>
+		</div>
+	  </div>
 	  <?php include("$path_to_contents.php"); ?>
 	</div>
 	<hr/>

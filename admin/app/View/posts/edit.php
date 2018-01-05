@@ -1,5 +1,5 @@
 <h2>post: <?= $post['id'] ?></h2>
-<form action="/admin/posts/edit/<?= $post['id'] ?>">
+<form action="/admin/posts/update/<?= $post['id'] ?>" method="post">
   <div class="form-group">
 	<label for="user_id">user_id</label>
 	<input id="user_id" class="form-control" name="user_id" type="text" value="<?= $post['user_id'] ?>"/>
@@ -30,4 +30,9 @@
   </div>
   <?= csrf_token() ?>
   <button class="btn btn-success" type="sumbit">submit</button>
+</form>
+<hr/>
+<form action="/admin/posts/delete/<?= $post['id'] ?>" method="post" onsubmit="return confirm('本当に削除しますか？')">
+  <?= csrf_token() ?>
+  <button class="btn btn-danger" type="sumbit">delete</button>
 </form>

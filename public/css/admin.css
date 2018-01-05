@@ -1,0 +1,25 @@
+.sites-admin {
+	background-color: rgba(132, 132, 132, 0.63);
+}
+
+.table-box-wrapper {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.table-box {
+	background-color: #333;
+	display: inline;
+	padding: 15px;
+	border-radius: 5px;
+	margin: 5px;
+}
+
+.table-box a {
+	color: #fff;
+}
+
+.icon {
+	min-width: 62px;
+	max-width: 62px;
+}
