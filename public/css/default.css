@@ -1,3 +1,11 @@
+html {
+	background-image: url(/image/bg.png);
+}
+
+body {
+	background-color: transparent;
+}
+
 .big-post-cat {
 	float: left;
 	width: 270px;
