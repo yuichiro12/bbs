@@ -75,7 +75,6 @@ class UsersController extends Controller
         }
         $data = [];
         $data['password'] = $_POST['password'];
-        $data['updated_at'] = '';
         $currentPassword = $_POST['currentPassword'];
         $users = new Users;
         $result = $users->find('id', $id);
