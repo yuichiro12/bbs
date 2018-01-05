@@ -15,7 +15,8 @@ class NotificationController extends Controller
                 ->limit(15)
                 ->order('created_at', 'DESC')
                 ->findAll();
-        $params["notification"] = $result["notification"];
+        $params["notification"] = !empty($result) ?
+                                $result["notification"] : null;
         return $this->render("notification/show", $params);
     }
 

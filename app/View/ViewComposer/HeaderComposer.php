@@ -5,7 +5,7 @@ use app\Model\Notification;
 
 class HeaderComposer
 {
-    public $notification;
+    public $notification = [];
     public $count;
 
     public function __construct() {
@@ -15,7 +15,9 @@ class HeaderComposer
                      ->limit(15)
                      ->order('created_at', 'DESC')
                      ->findAll();
-            $this->notification = $results['notification'];
+            if (!empty($results)) {
+                $this->notification = $results['notification'];
+            }
             $this->count = $noti->where('user_id', $_SESSION['user_id'])
                          ->and('read_flag', 0)
                          ->count();
