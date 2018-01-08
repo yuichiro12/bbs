@@ -46,7 +46,8 @@ class AuthUrlsController extends Controller
     private function sendmail($email, $url) {
         $subject = 'のらねこBBS -ユーザー登録';
         $body = "以下のリンクをクリックして本登録を完了してください。\n{$url}\nこのメールに心当たりがない方は、本メールは破棄して頂けるようお願いいたします。\n\nのらねこBBS";
-        mail($email, $subject, $body);
+        $header = 'From: no-reply@ssb64.space';
+        mail($email, $subject, $body, $header);
         $this->session->setFlash('登録アドレスにメールを送信しました。メール内のリンクにアクセスして本登録を完了させてください。');
 
     }
