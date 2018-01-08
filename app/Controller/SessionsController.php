@@ -20,7 +20,9 @@ class SessionsController extends Controller
         $user = $result['users'];
 
         if (password_verify($data['password'], $user['password'])) {
-            if (!$this->isLogin()) {
+            if ($user['activated_flag'] !== '1') {
+                $this->session->setFlash('あなたは現在仮登録の状態です。あなた宛に送信したリンクから登録を完了させてください。');
+            } elseif (!$this->isLogin()) {
                 $_SESSION['user_name'] = $user['name'];
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['user_icon'] = $user['icon'];

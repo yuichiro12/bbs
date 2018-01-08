@@ -11,6 +11,7 @@ class Users extends Model
         'email' => '',
         'icon' => '',
         'profile' => '',
+        'activated_flag' => 0,
         'created_at' => '',
         'updated_at' => '',
     ];
