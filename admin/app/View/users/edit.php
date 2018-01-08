@@ -17,6 +17,10 @@
 	<input class="form-control" name="profile" value="<?= h($user['profile']) ?>"/>
   </div>
   <div class="form-group">
+	<label for="activated_flag">activated_flag</label>
+	<input class="form-control" name="activated_flag" value="<?= $user['activated_flag'] ?>"/>
+  </div>
+  <div class="form-group">
 	<label for="created_at">created_at</label>
 	<input name="created_at" class="form-control" type="text" value="<?= $user['created_at']?>"/>
   </div>

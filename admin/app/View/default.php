@@ -35,6 +35,9 @@
 		  <a href="/admin/followers/index">followers</a>
 		</div>
 		<div class="table-box">
+		  <a href="/admin/authUrls/index">authUrls</a>
+		</div>
+		<div class="table-box">
 		  <a href="/admin/sessions/index">sessions</a>
 		</div>
 	  </div>

@@ -8,6 +8,7 @@
       <th>email</th>
       <th>icon</th>
       <th>profile</th>
+      <th>activated_flag</th>
       <th>created_at</th>
       <th>updated_at</th>
     </tr>
@@ -20,6 +21,7 @@
 		<td><?= $u['email']?></td>
 		<td><img alt="<?= $u['icon'] ?>" class="icon" src="<?= $u['icon'] ?>"/></td>
 		<td><?= $u['profile']?></td>
+		<td><?= $u['activated_flag']?></td>
 		<td><?= $u['created_at']?></td>
 		<td><?= $u['updated_at']?></td>
       </tr>

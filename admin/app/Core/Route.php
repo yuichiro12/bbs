@@ -45,6 +45,10 @@ class Route
                 return ['controller' => 'followers', 'action' => 'index'];
             case $this->match('/admin/followers/edit/:id'):
                 return ['controller' => 'followers', 'action' => 'edit'];
+            case $this->match('/admin/authUrls/index'):
+                return ['controller' => 'authUrls', 'action' => 'index'];
+            case $this->match('/admin/authUrls/edit/:id'):
+                return ['controller' => 'authUrls', 'action' => 'edit'];
             default:
                 throw new NotFoundException;
             }
@@ -75,6 +79,10 @@ class Route
                 return ['controller' => 'followers', 'action' => 'update'];
             case $this->match('/admin/followers/delete/:id'):
                 return ['controller' => 'followers', 'action' => 'delete'];
+            case $this->match('/admin/authUrls/update/:id'):
+                return ['controller' => 'authUrls', 'action' => 'update'];
+            case $this->match('/admin/authUrls/delete/:id'):
+                return ['controller' => 'authUrls', 'action' => 'delete'];
             default:
                 throw new NotFoundException;
             }
