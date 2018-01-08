@@ -39,6 +39,8 @@ class Route
                 return ['controller' => 'users', 'action' => 'editPassword'];
             case $this->match('/notification/show/:id'):
                 return ['controller' => 'notification', 'action' => 'show'];
+            case $this->match('/activate'):
+                return ['controller' => 'authUrls', 'action' => 'index'];
             default:
                 throw new NotFoundException;
             }

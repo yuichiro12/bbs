@@ -1,7 +1,7 @@
 <?php
 namespace app\Controller;
 
-use app\Model\{Users, Posts, Followers};
+use app\Model\{Users, Posts, Followers, AuthUrls};
 
 class UsersController extends Controller
 {
@@ -38,12 +38,18 @@ class UsersController extends Controller
         $params = $this->validate($users->setDefault($data));
         if ($params !== false) {
             $params['password'] = password_hash($params['password'], PASSWORD_DEFAULT);
-            $users->save($params);
-            $route = ['controller' => 'sessions', 'action' => 'login'];
-            return $this->callAction($route);
-        } else {
-            return $this->redirect('/signup');
+            $users->beginTransaction();
+            $is_saved = $users->save($params);
+            $id = $users->getLastInsertId();
+            if ($users->commit($is_saved)) {
+                $params = ['user_id' => $id, 'email' => $params['email']];
+                $route = ['controller' => 'authUrls', 'action' => 'store'];
+                $this->callAction($route, $params);
+                return $this->redirect('/');
+            }
         }
+        $this->session->setFlash('ユーザー登録に失敗しました。');
+        return $this->redirect('/signup');
     }
 
     public function update($id) {
@@ -148,6 +154,16 @@ class UsersController extends Controller
         }
     }
 
+    public function activate() {
+        $url = $_GET['url'];
+        $auth_urls = new AuthUrls;
+        $auth_url = $auth_urls->find('url', $url)['auth_urls'];
+        if (!empty($auth_url)) {
+            $route = ['controller' => 'sessions', 'action' => 'login'];
+            return $this->callAction($route);
+        }
+        return $this->redirect('/');
+    }
 
 
     protected function validate($data) {
