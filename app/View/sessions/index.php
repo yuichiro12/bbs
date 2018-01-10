@@ -13,4 +13,4 @@
 	<input type="submit" value="ログイン" class="btn btn-primary"/>
   </div>
 </form>
-<hr/>
+<a href="/authUrls/resend">登録の確認メールが届きませんか？</a>

@@ -41,6 +41,8 @@ class Route
                 return ['controller' => 'notification', 'action' => 'show'];
             case $this->match('/activate'):
                 return ['controller' => 'authUrls', 'action' => 'index'];
+            case $this->match('/authUrls/resend'):
+                return ['controller' => 'authUrls', 'action' => 'resend'];
             default:
                 throw new NotFoundException;
             }
@@ -79,6 +81,8 @@ class Route
                 return ['controller' => 'watch', 'action' => 'store'];
             case $this->match('/watch/delete'):
                 return ['controller' => 'watch', 'action' => 'delete'];
+            case $this->match('/authUrls/resendmail'):
+                return ['controller' => 'authUrls', 'action' => 'resendmail'];
             default:
                 throw new NotFoundException;
             }

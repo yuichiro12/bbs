@@ -22,5 +22,6 @@
 	<input type="submit" value="登録" class="btn btn-success"/>
   </div>
 </form>
+<a href="/authUrls/resend">登録の確認メールが届きませんか？</a>
 
 <script src="/js/passwordConfirm.js"></script>
