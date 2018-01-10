@@ -46,9 +46,10 @@ class UsersController extends Controller
                 $route = ['controller' => 'authUrls', 'action' => 'store'];
                 $this->callAction($route, $params);
                 return $this->redirect('/');
+            } else {
+                $this->session->setFlash('ユーザー登録に失敗しました。');
             }
         }
-        $this->session->setFlash('ユーザー登録に失敗しました。');
         return $this->redirect('/signup');
     }
 
