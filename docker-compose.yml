@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+
+  mysql:
+    image: mysql:5.7
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+  php7:
+    build: "./containers/php7"
+    restart: always
+    volumes:
+      - .:/var/www/bbs
+    links:
+      - mysql
+
+  nginx:
+    image: nginx:1.14.0
+    volumes:
+      - ./containers/nginx/conf.d:/etc/nginx/conf.d
+      - ./containers/nginx/ssl:/etc/nginx/ssl
+      - ./public:/var/www/bbs/public
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - php7
