@@ -27,6 +27,7 @@
 	<script src="/js/codehighlight.js"></script>
 	<?php if (isLogin()): ?>
 	  <script src="/js/websocket-notification.js"></script>
+	  <script src="/js/scroll.js"></script>
 	<?php endif; ?>
   </body>
 </html>
