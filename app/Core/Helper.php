@@ -1,9 +1,5 @@
 <?php
 
-function h($str) {
-    return htmlentities($str, ENT_QUOTES, mb_internal_encoding());
-}
-
 function markdown($str) {
     // anchorをリンクに変換
     $pattern = '/>>[0-9]+/';

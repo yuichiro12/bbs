@@ -1,8 +1,9 @@
 {
-    "name": "yuichiro/bbs",
-    "require": {
-		"cebe/markdown": "~1.1.1",
-		"verot/class.upload.php": "dev-master",
-		"robmorgan/phinx": ">=0.9.1"
-	}
+  "name": "yuichiro/bbs",
+  "require": {
+    "cebe/markdown": "~1.1.1",
+    "verot/class.upload.php": "dev-master",
+    "robmorgan/phinx": ">=0.9.1",
+    "abraham/twitteroauth": "dev-master"
+  }
 }
