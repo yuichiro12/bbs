@@ -9,7 +9,14 @@ spl_autoload_register(function($class) {
 
 require __DIR__ . '/../vendor/autoload.php';
 
-define('ENV', json_decode(file_get_contents(__DIR__ . "/../.env"), true));
+$env_file_name = '.env.default';
+switch (getenv('APP_ENV')) {
+    case 'production':
+        $env_file_name = '.env.prod';
+    case 'development':
+        $env_file_name = '.env.dev';
+}
+define('ENV', json_decode(file_get_contents(__DIR__ . '/../' . $env_file_name), true));
 
 $handler = new DatabaseSessionHandler;
 session_set_save_handler(

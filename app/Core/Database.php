@@ -11,10 +11,10 @@ class Database
     private function __construct() {
         $dsn = 'mysql:dbname='
              . ENV['dbname'] . ';host='
-             . ENV['host'] . '; charset='
-             . ENV['charset'];
+             . ENV['dbhost'] . '; charset='
+             . ENV['dbcharset'];
         try {
-            $this->db = new \PDO($dsn, ENV['user'], ENV['password']);
+            $this->db = new \PDO($dsn, ENV['dbuser'], ENV['dbpassword']);
         } catch (\PDOException $e) {
             throw new InternalServerErrorException;
         }

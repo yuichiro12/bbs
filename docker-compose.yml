@@ -20,6 +20,9 @@ services:
       - .:/var/www/bbs
     links:
       - mysql
+    environment:
+      APP_ENV: ${APP_ENV}
+
 
   nginx:
     image: nginx:1.14.0
